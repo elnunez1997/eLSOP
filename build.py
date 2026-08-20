@@ -1,0 +1,134 @@
+#!/usr/bin/env python3
+"""
+build.py — eLSOP Knowledge Portal static site generator
+Reads data/sops.json, renders Jinja2 templates, writes to site/
+"""
+
+import json
+import os
+import shutil
+from pathlib import Path
+from datetime import datetime
+from collections import Counter
+
+try:
+    from jinja2 import Environment, FileSystemLoader, select_autoescape
+except ImportError:
+    print("Installing jinja2...")
+    import subprocess, sys
+    subprocess.check_call([sys.executable, "-m", "pip", "install", "jinja2"])
+    from jinja2 import Environment, FileSystemLoader, select_autoescape
+
+# ── Paths ────────────────────────────────────────────────────────────────────
+ROOT      = Path(__file__).parent
+DATA_DIR  = ROOT / "data"
+TMPL_DIR  = ROOT / "templates"
+SITE_DIR  = ROOT / "site"
+STATIC_DIR = ROOT / "static"
+
+# ── Load data ────────────────────────────────────────────────────────────────
+def load_sops():
+    with open(DATA_DIR / "sops.json", encoding="utf-8") as f:
+        sops = json.load(f)
+    # Attach derived fields
+    for s in sops:
+        s["updated_dt"] = datetime.strptime(s["updated"], "%Y-%m-%d")
+        s["created_dt"] = datetime.strptime(s["created"], "%Y-%m-%d")
+    return sops
+
+# ── Dashboard stats ──────────────────────────────────────────────────────────
+def build_stats(sops):
+    dept_counts = Counter(s["department"] for s in sops)
+    status_counts = Counter(s["status"] for s in sops)
+    top_viewed   = sorted(sops, key=lambda s: s["views"], reverse=True)[:5]
+    recent       = sorted(sops, key=lambda s: s["updated_dt"], reverse=True)[:5]
+    pending      = [s for s in sops if s["status"] == "Pending Review"]
+    return {
+        "total":         len(sops),
+        "dept_counts":   dict(dept_counts),
+        "status_counts": dict(status_counts),
+        "top_viewed":    top_viewed,
+        "recent":        recent,
+        "pending_count": len(pending),
+        "dept_labels":   json.dumps(list(dept_counts.keys())),
+        "dept_values":   json.dumps(list(dept_counts.values())),
+    }
+
+# ── Jinja2 env ───────────────────────────────────────────────────────────────
+def make_env():
+    env = Environment(
+        loader=FileSystemLoader(str(TMPL_DIR)),
+        autoescape=select_autoescape(["html"]),
+    )
+    env.globals["build_time"] = datetime.utcnow().strftime("%Y-%m-%d %H:%M UTC")
+    return env
+
+# ── Copy static assets ───────────────────────────────────────────────────────
+def copy_static():
+    if STATIC_DIR.exists():
+        for f in STATIC_DIR.iterdir():
+            dest = SITE_DIR / f.name
+            shutil.copy2(f, dest)
+            print(f"  copied static: {f.name}")
+
+# ── Render ───────────────────────────────────────────────────────────────────
+def render(env, template_name, out_path, **ctx):
+    tmpl = env.get_template(template_name)
+    html = tmpl.render(**ctx)
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    out_path.write_text(html, encoding="utf-8")
+    print(f"  wrote: {out_path.relative_to(ROOT)}")
+
+# ── Main ─────────────────────────────────────────────────────────────────────
+def main():
+    print("eLSOP build starting...")
+    SITE_DIR.mkdir(exist_ok=True)
+
+    sops  = load_sops()
+    stats = build_stats(sops)
+    env   = make_env()
+
+    departments = sorted(set(s["department"] for s in sops))
+    categories  = sorted(set(s["category"]   for s in sops))
+    statuses    = sorted(set(s["status"]      for s in sops))
+    owners      = sorted(set(s["owner"]       for s in sops))
+    recent_sops = sorted(sops, key=lambda s: s["updated_dt"], reverse=True)[:6]
+
+    sops_json = json.dumps([{
+        "id": s["id"], "title": s["title"], "department": s["department"],
+        "category": s["category"], "owner": s["owner"], "version": s["version"],
+        "status": s["status"], "updated": s["updated"], "views": s["views"],
+        "description": s["description"], "tags": s["tags"],
+        "file": s.get("file", ""),
+    } for s in sops], ensure_ascii=False)
+
+    common = dict(sops_json=sops_json, depth="")
+
+    # Homepage
+    render(env, "index.html.j2", SITE_DIR / "index.html",
+           sops=sops, recent_sops=recent_sops,
+           departments=departments, stats=stats, **common)
+
+    # Library
+    render(env, "library.html.j2", SITE_DIR / "library.html",
+           sops=sops, departments=departments,
+           categories=categories, statuses=statuses, owners=owners, **common)
+
+    # Dashboard
+    render(env, "dashboard.html.j2", SITE_DIR / "dashboard.html",
+           sops=sops, stats=stats, departments=departments, **common)
+
+    # Individual SOP reader pages
+    reader_common = dict(sops_json=sops_json, depth="../")
+    for sop in sops:
+        render(env, "reader.html.j2",
+               SITE_DIR / "reader" / f"{sop['id']}.html",
+               sop=sop, sops=sops, **reader_common)
+
+    copy_static()
+
+    print(f"\nBuild complete. {len(sops)} SOPs, {len(sops)+3} pages generated.")
+    print(f"Output: {SITE_DIR}")
+
+if __name__ == "__main__":
+    main()

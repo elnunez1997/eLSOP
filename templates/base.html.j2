@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}eLSOP Knowledge Portal{% endblock %}</title>
+<link rel="stylesheet" href="{{ depth|default('') }}portal.css">
+<meta name="description" content="eLSOP — GCIT Standard Operating Procedure Knowledge Portal">
+</head>
+<body>
+
+<!-- ── Nav ─────────────────────────────────────────────────────────────── -->
+<nav class="topnav">
+  <div class="topnav-inner">
+    <a class="brand" href="{{ depth|default('') }}index.html">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+      </svg>
+      <span class="brand-name">eLSOP</span>
+      <span class="brand-badge">GCIT</span>
+    </a>
+    <div class="nav-links">
+      <a href="{{ depth|default('') }}index.html" class="nav-link {% block nav_home %}{% endblock %}">Home</a>
+      <a href="{{ depth|default('') }}library.html" class="nav-link {% block nav_library %}{% endblock %}">SOP Library</a>
+      <a href="{{ depth|default('') }}dashboard.html" class="nav-link {% block nav_dash %}{% endblock %}">Dashboard</a>
+      <a href="{{ depth|default('') }}sops.html" class="nav-link">Formal SOPs</a>
+    </div>
+    <div class="nav-actions">
+      <div class="nav-search-wrap">
+        <svg class="nav-search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input id="globalSearch" class="nav-search" type="text" placeholder="Search SOPs…" autocomplete="off">
+        <div id="globalResults" class="global-results" style="display:none"></div>
+      </div>
+      <button class="theme-toggle" onclick="toggleTheme()" title="Toggle dark mode" aria-label="Toggle dark mode">
+        <svg id="themeIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+          <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- ── Content ──────────────────────────────────────────────────────────── -->
+<main>
+{% block content %}{% endblock %}
+</main>
+
+<!-- ── Footer ───────────────────────────────────────────────────────────── -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-brand">eLSOP Knowledge Portal &nbsp;·&nbsp; GCIT</div>
+    <div class="footer-meta">Built {{ build_time }} &nbsp;·&nbsp; ACOSTA customers only</div>
+    <div class="footer-made">Made with IBM Bob</div>
+  </div>
+</footer>
+
+<script>
+// ── Global SOP data (embedded for search) ──
+const ALL_SOPS = {{ sops_json|default('[]') }};
+
+// ── Theme ──
+function toggleTheme() {
+  const html = document.documentElement;
+  const isDark = html.getAttribute('data-theme') === 'dark';
+  html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+  localStorage.setItem('theme', isDark ? 'light' : 'dark');
+  updateThemeIcon(!isDark);
+}
+function updateThemeIcon(dark) {
+  const icon = document.getElementById('themeIcon');
+  if (!icon) return;
+  icon.innerHTML = dark
+    ? '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>'
+    : '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>';
+}
+(function() {
+  const saved = localStorage.getItem('theme') || 'light';
+  document.documentElement.setAttribute('data-theme', saved);
+  updateThemeIcon(saved === 'dark');
+})();
+
+// ── Bookmarks ──
+function getBookmarks() { try { return JSON.parse(localStorage.getItem('bookmarks') || '[]'); } catch { return []; } }
+function toggleBookmark(id) {
+  let bm = getBookmarks();
+  if (bm.includes(id)) bm = bm.filter(x => x !== id);
+  else bm.push(id);
+  localStorage.setItem('bookmarks', JSON.stringify(bm));
+  document.querySelectorAll(`[data-bookmark="${id}"]`).forEach(el => {
+    el.classList.toggle('bookmarked', bm.includes(id));
+    el.title = bm.includes(id) ? 'Remove bookmark' : 'Bookmark this SOP';
+  });
+}
+function isBookmarked(id) { return getBookmarks().includes(id); }
+
+// ── Global search ──
+const gs = document.getElementById('globalSearch');
+const gr = document.getElementById('globalResults');
+if (gs) {
+  gs.addEventListener('input', function() {
+    const q = this.value.trim().toLowerCase();
+    if (!q || ALL_SOPS.length === 0) { gr.style.display = 'none'; return; }
+    const hits = ALL_SOPS.filter(s =>
+      s.title.toLowerCase().includes(q) ||
+      s.id.toLowerCase().includes(q) ||
+      s.department.toLowerCase().includes(q) ||
+      (s.tags||[]).join(' ').toLowerCase().includes(q)
+    ).slice(0, 8);
+    if (!hits.length) { gr.style.display = 'none'; return; }
+    const base = '{{ depth|default("") }}';
+    gr.innerHTML = hits.map(s => `
+      <a class="gr-item" href="${base}reader/${s.id}.html">
+        <span class="gr-id">${s.id}</span>
+        <span class="gr-title">${s.title}</span>
+        <span class="gr-dept">${s.department}</span>
+      </a>`).join('');
+    gr.style.display = 'block';
+  });
+  document.addEventListener('click', e => { if (!gs.contains(e.target) && !gr.contains(e.target)) gr.style.display = 'none'; });
+}
+</script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

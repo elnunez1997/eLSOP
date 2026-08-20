@@ -1,0 +1,194 @@
+{% extends "base.html.j2" %}
+{% block title %}SOP Library — eLSOP{% endblock %}
+{% block nav_library %}active{% endblock %}
+
+{% block content %}
+<div class="lib-layout">
+
+  <!-- ── Sidebar filters ──────────────────────────────────────────────────── -->
+  <aside class="lib-sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-heading">Department</div>
+      <label class="filter-opt"><input type="radio" name="dept" value=""> All</label>
+      {% for dept in departments %}
+      <label class="filter-opt"><input type="radio" name="dept" value="{{ dept }}"> {{ dept }}</label>
+      {% endfor %}
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-heading">Category</div>
+      <label class="filter-opt"><input type="radio" name="cat" value=""> All</label>
+      {% for cat in categories %}
+      <label class="filter-opt"><input type="radio" name="cat" value="{{ cat }}"> {{ cat }}</label>
+      {% endfor %}
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-heading">Status</div>
+      <label class="filter-opt"><input type="radio" name="status" value=""> All</label>
+      {% for st in statuses %}
+      <label class="filter-opt"><input type="radio" name="status" value="{{ st }}"> {{ st }}</label>
+      {% endfor %}
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-heading">Owner</div>
+      <label class="filter-opt"><input type="radio" name="owner" value=""> All</label>
+      {% for ow in owners %}
+      <label class="filter-opt"><input type="radio" name="owner" value="{{ ow }}"> {{ ow }}</label>
+      {% endfor %}
+    </div>
+    <button class="clear-filters-btn" onclick="clearFilters()">Clear Filters</button>
+  </aside>
+
+  <!-- ── Main content ─────────────────────────────────────────────────────── -->
+  <div class="lib-main">
+    <div class="lib-toolbar">
+      <div class="lib-search-wrap">
+        <svg class="lib-search-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input id="libSearch" class="lib-search" type="text" placeholder="Search SOPs…" oninput="applyFilters()">
+      </div>
+      <div class="lib-toolbar-right">
+        <span id="libCount" class="count-badge"></span>
+        <select id="sortSelect" onchange="applyFilters()" class="sort-select">
+          <option value="updated">Recently Updated</option>
+          <option value="title">Title A–Z</option>
+          <option value="views">Most Viewed</option>
+          <option value="id">SOP Number</option>
+        </select>
+        <div class="view-toggle">
+          <button id="btnGrid" class="view-btn active" onclick="setView('grid')" title="Grid view">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+          </button>
+          <button id="btnList" class="view-btn" onclick="setView('list')" title="List view">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="libGrid" class="card-grid lib-grid"></div>
+    <div id="libList" class="lib-list-view" style="display:none"></div>
+    <div id="libEmpty" class="lib-empty" style="display:none">
+      No SOPs match your filters. <button onclick="clearFilters()" class="link-btn">Clear filters</button>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+const SOPS_LIB = {{ sops_json }};
+let currentView = 'grid';
+
+function statusClass(st) {
+  return 'status-' + st.toLowerCase().replace(/\s+/g,'-');
+}
+
+function cardHTML(s) {
+  const bm = isBookmarked(s.id);
+  return `<div class="sop-card" data-id="${s.id}">
+    <div class="sop-card-top">
+      <span class="sop-id-badge">${s.id}</span>
+      <button class="bookmark-btn${bm?' bookmarked':''}" data-bookmark="${s.id}"
+              onclick="toggleBookmark('${s.id}')" title="${bm?'Remove bookmark':'Bookmark'}" aria-label="Bookmark">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+      </button>
+    </div>
+    <h3 class="sop-card-title"><a href="reader/${s.id}.html">${s.title}</a></h3>
+    <p class="sop-card-desc">${s.description.slice(0,130)}${s.description.length>130?'…':''}</p>
+    <div class="sop-card-meta">
+      <span class="meta-dept">${s.department}</span>
+      <span class="meta-ver">v${s.version}</span>
+      <span class="meta-status ${statusClass(s.status)}">${s.status}</span>
+    </div>
+    <div class="sop-card-footer">
+      <span class="meta-date">Updated ${s.updated}</span>
+      <a class="card-read-btn" href="reader/${s.id}.html">Read →</a>
+    </div>
+  </div>`;
+}
+
+function rowHTML(s) {
+  const bm = isBookmarked(s.id);
+  return `<div class="lib-row" data-id="${s.id}">
+    <div class="lib-row-id"><span class="sop-id-badge">${s.id}</span></div>
+    <div class="lib-row-main">
+      <a class="lib-row-title" href="reader/${s.id}.html">${s.title}</a>
+      <div class="lib-row-meta">
+        <span class="meta-dept">${s.department}</span>
+        <span class="meta-ver">v${s.version}</span>
+        <span class="meta-status ${statusClass(s.status)}">${s.status}</span>
+        <span class="meta-date">Updated ${s.updated}</span>
+        <span class="meta-views">${s.views} views</span>
+      </div>
+    </div>
+    <div class="lib-row-actions">
+      <button class="bookmark-btn${bm?' bookmarked':''}" data-bookmark="${s.id}"
+              onclick="toggleBookmark('${s.id}')" title="Bookmark" aria-label="Bookmark">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+      </button>
+      <a class="card-read-btn" href="reader/${s.id}.html">Read →</a>
+    </div>
+  </div>`;
+}
+
+function getFilters() {
+  return {
+    q:      document.getElementById('libSearch').value.trim().toLowerCase(),
+    dept:   document.querySelector('input[name="dept"]:checked')?.value || '',
+    cat:    document.querySelector('input[name="cat"]:checked')?.value || '',
+    status: document.querySelector('input[name="status"]:checked')?.value || '',
+    owner:  document.querySelector('input[name="owner"]:checked')?.value || '',
+    sort:   document.getElementById('sortSelect').value,
+  };
+}
+
+function applyFilters() {
+  const f = getFilters();
+  let items = SOPS_LIB.filter(s => {
+    if (f.dept   && s.department !== f.dept)   return false;
+    if (f.cat    && s.category   !== f.cat)    return false;
+    if (f.status && s.status     !== f.status) return false;
+    if (f.owner  && s.owner      !== f.owner)  return false;
+    if (f.q) {
+      const hay = [s.id, s.title, s.department, s.description, ...(s.tags||[])].join(' ').toLowerCase();
+      if (!hay.includes(f.q)) return false;
+    }
+    return true;
+  });
+  // Sort
+  if (f.sort === 'title')   items.sort((a,b) => a.title.localeCompare(b.title));
+  else if (f.sort === 'views')  items.sort((a,b) => b.views - a.views);
+  else if (f.sort === 'id')     items.sort((a,b) => a.id.localeCompare(b.id));
+  else items.sort((a,b) => b.updated.localeCompare(a.updated));
+
+  document.getElementById('libCount').textContent = `${items.length} of ${SOPS_LIB.length} SOPs`;
+  document.getElementById('libEmpty').style.display = items.length ? 'none' : '';
+  document.getElementById('libGrid').innerHTML = items.map(cardHTML).join('');
+  document.getElementById('libList').innerHTML = items.map(rowHTML).join('');
+}
+
+function setView(v) {
+  currentView = v;
+  document.getElementById('libGrid').style.display = v === 'grid' ? '' : 'none';
+  document.getElementById('libList').style.display = v === 'list' ? '' : 'none';
+  document.getElementById('btnGrid').classList.toggle('active', v === 'grid');
+  document.getElementById('btnList').classList.toggle('active', v === 'list');
+}
+
+function clearFilters() {
+  document.getElementById('libSearch').value = '';
+  document.querySelectorAll('input[type="radio"]').forEach(r => { r.checked = r.value === ''; });
+  document.getElementById('sortSelect').value = 'updated';
+  applyFilters();
+}
+
+// Handle ?dept= query param from homepage links
+const params = new URLSearchParams(location.search);
+if (params.has('dept')) {
+  const d = params.get('dept');
+  const r = document.querySelector(`input[name="dept"][value="${d}"]`);
+  if (r) r.checked = true;
+}
+
+applyFilters();
+</script>
+{% endblock %}

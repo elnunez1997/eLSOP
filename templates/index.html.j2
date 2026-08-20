@@ -1,0 +1,153 @@
+{% extends "base.html.j2" %}
+{% block title %}eLSOP — Knowledge Portal{% endblock %}
+{% block nav_home %}active{% endblock %}
+
+{% block content %}
+<!-- ── Hero ──────────────────────────────────────────────────────────────── -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-text">
+      <h1 class="hero-title">GCIT SOP Knowledge Portal</h1>
+      <p class="hero-sub">Your single source of truth for Standard Operating Procedures — searchable, bookmarkable, always up to date.</p>
+      <div class="hero-search-wrap">
+        <svg class="hero-search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input id="heroSearch" class="hero-search" type="text" placeholder="Search by title, SOP number, department…" autocomplete="off">
+        <div id="heroResults" class="hero-results" style="display:none"></div>
+      </div>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-card"><span class="stat-num">{{ stats.total }}</span><span class="stat-lbl">Total SOPs</span></div>
+      <div class="stat-card"><span class="stat-num">{{ stats.dept_counts|length }}</span><span class="stat-lbl">Departments</span></div>
+      <div class="stat-card"><span class="stat-num">{{ stats.pending_count }}</span><span class="stat-lbl">Pending Review</span></div>
+      <div class="stat-card"><span class="stat-num">{{ recent_sops|length }}</span><span class="stat-lbl">Updated This Quarter</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Departments ───────────────────────────────────────────────────────── -->
+<section class="home-section">
+  <div class="home-section-inner">
+    <h2 class="section-heading">Departments</h2>
+    <div class="dept-grid">
+      {% set dept_icons = {'Claims': '📋', 'Compliance': '✅', 'Finance': '💰', 'Operations': '⚙️', 'IT': '💻', 'HR': '👥'} %}
+      {% for dept in departments %}
+      <a class="dept-card" href="library.html?dept={{ dept|urlencode }}">
+        <span class="dept-icon">{{ dept_icons.get(dept, '📁') }}</span>
+        <span class="dept-name">{{ dept }}</span>
+        <span class="dept-count">{{ stats.dept_counts.get(dept, 0) }} SOPs</span>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ── Recently Updated ──────────────────────────────────────────────────── -->
+<section class="home-section home-section-alt">
+  <div class="home-section-inner">
+    <div class="section-header-row">
+      <h2 class="section-heading">Recently Updated</h2>
+      <a class="section-link" href="library.html">View all →</a>
+    </div>
+    <div class="card-grid">
+      {% for sop in recent_sops %}
+      <div class="sop-card">
+        <div class="sop-card-top">
+          <span class="sop-id-badge">{{ sop.id }}</span>
+          <button class="bookmark-btn {% if false %}bookmarked{% endif %}"
+                  data-bookmark="{{ sop.id }}"
+                  onclick="toggleBookmark('{{ sop.id }}')"
+                  title="Bookmark this SOP" aria-label="Bookmark">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+          </button>
+        </div>
+        <h3 class="sop-card-title"><a href="reader/{{ sop.id }}.html">{{ sop.title }}</a></h3>
+        <p class="sop-card-desc">{{ sop.description[:120] }}{% if sop.description|length > 120 %}…{% endif %}</p>
+        <div class="sop-card-meta">
+          <span class="meta-dept">{{ sop.department }}</span>
+          <span class="meta-ver">v{{ sop.version }}</span>
+          <span class="meta-status status-{{ sop.status|lower|replace(' ', '-') }}">{{ sop.status }}</span>
+        </div>
+        <div class="sop-card-footer">
+          <span class="meta-date">Updated {{ sop.updated }}</span>
+          <a class="card-read-btn" href="reader/{{ sop.id }}.html">Read →</a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ── Bookmarked SOPs ───────────────────────────────────────────────────── -->
+<section class="home-section" id="bookmarksSection" style="display:none">
+  <div class="home-section-inner">
+    <div class="section-header-row">
+      <h2 class="section-heading">⭐ Your Bookmarks</h2>
+      <button class="section-link" onclick="clearAllBookmarks()">Clear all</button>
+    </div>
+    <div class="card-grid" id="bookmarkGrid"></div>
+  </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+const SOPS_DATA = {{ sops_json }};
+
+// ── Hero search ──
+const hs = document.getElementById('heroSearch');
+const hr = document.getElementById('heroResults');
+hs.addEventListener('input', function() {
+  const q = this.value.trim().toLowerCase();
+  if (!q) { hr.style.display = 'none'; return; }
+  const hits = SOPS_DATA.filter(s =>
+    s.title.toLowerCase().includes(q) ||
+    s.id.toLowerCase().includes(q) ||
+    s.department.toLowerCase().includes(q) ||
+    (s.tags||[]).join(' ').toLowerCase().includes(q) ||
+    s.description.toLowerCase().includes(q)
+  ).slice(0, 10);
+  if (!hits.length) { hr.style.display = 'none'; return; }
+  hr.innerHTML = hits.map(s => `
+    <a class="hr-item" href="reader/${s.id}.html">
+      <div class="hr-main">
+        <span class="gr-id">${s.id}</span>
+        <span class="gr-title">${s.title}</span>
+      </div>
+      <span class="gr-dept">${s.department} · v${s.version}</span>
+    </a>`).join('');
+  hr.style.display = 'block';
+});
+document.addEventListener('click', e => { if (!hs.contains(e.target) && !hr.contains(e.target)) hr.style.display = 'none'; });
+
+// ── Bookmarks panel ──
+function renderBookmarks() {
+  const bm = getBookmarks();
+  const section = document.getElementById('bookmarksSection');
+  const grid = document.getElementById('bookmarkGrid');
+  if (!bm.length) { section.style.display = 'none'; return; }
+  section.style.display = '';
+  const items = SOPS_DATA.filter(s => bm.includes(s.id));
+  grid.innerHTML = items.map(s => `
+    <div class="sop-card">
+      <div class="sop-card-top">
+        <span class="sop-id-badge">${s.id}</span>
+        <button class="bookmark-btn bookmarked" data-bookmark="${s.id}"
+                onclick="toggleBookmark('${s.id}');renderBookmarks()" title="Remove bookmark" aria-label="Remove bookmark">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+        </button>
+      </div>
+      <h3 class="sop-card-title"><a href="reader/${s.id}.html">${s.title}</a></h3>
+      <p class="sop-card-desc">${s.description.slice(0,120)}${s.description.length>120?'…':''}</p>
+      <div class="sop-card-footer">
+        <span class="meta-date">Updated ${s.updated}</span>
+        <a class="card-read-btn" href="reader/${s.id}.html">Read →</a>
+      </div>
+    </div>`).join('');
+}
+function clearAllBookmarks() {
+  localStorage.removeItem('bookmarks');
+  renderBookmarks();
+}
+renderBookmarks();
+</script>
+{% endblock %}

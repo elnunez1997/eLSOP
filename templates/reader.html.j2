@@ -1,0 +1,241 @@
+{% extends "base.html.j2" %}
+{% block title %}{{ sop.title }} — eLSOP{% endblock %}
+
+{% block content %}
+<div class="reader-layout">
+
+  <!-- ── TOC sidebar ──────────────────────────────────────────────────────── -->
+  <aside class="reader-toc" id="readerToc">
+    <div class="toc-header">
+      <div class="toc-sop-id">{{ sop.id }}</div>
+      <div class="toc-sop-title">{{ sop.title }}</div>
+    </div>
+    <div class="toc-meta">
+      <div class="toc-meta-row"><span class="toc-meta-lbl">Version</span><span>v{{ sop.version }}</span></div>
+      <div class="toc-meta-row"><span class="toc-meta-lbl">Dept</span><span>{{ sop.department }}</span></div>
+      <div class="toc-meta-row"><span class="toc-meta-lbl">Owner</span><span>{{ sop.owner }}</span></div>
+      <div class="toc-meta-row"><span class="toc-meta-lbl">Updated</span><span>{{ sop.updated }}</span></div>
+      <div class="toc-meta-row"><span class="toc-meta-lbl">Status</span>
+        <span class="meta-status status-{{ sop.status|lower|replace(' ','-') }}">{{ sop.status }}</span>
+      </div>
+    </div>
+    <nav class="toc-nav">
+      <div class="toc-nav-heading">Table of Contents</div>
+      {% for section in sop.sections %}
+      <a class="toc-link" href="#{{ section.id }}" onclick="scrollToSection('{{ section.id }}')">
+        <span class="toc-num">{{ loop.index }}</span> {{ section.title }}
+      </a>
+      {% endfor %}
+    </nav>
+    <div class="toc-progress">
+      <div class="toc-progress-lbl">Reading Progress</div>
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+      <div class="progress-pct" id="progressPct">0%</div>
+    </div>
+    <div class="toc-actions">
+      {% if sop.file %}
+      <a class="toc-action-btn" href="../{{ sop.file }}" download>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download DOCX
+      </a>
+      {% endif %}
+      <button class="toc-action-btn" onclick="window.print()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        Print
+      </button>
+      <button class="toc-action-btn" id="bookmarkBtn" onclick="handleBookmark()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+        <span id="bookmarkLabel">Bookmark</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- ── Reader main ──────────────────────────────────────────────────────── -->
+  <div class="reader-main" id="readerMain">
+
+    <!-- Page header -->
+    <div class="reader-page-header">
+      <a href="../library.html" class="reader-back">← Back to Library</a>
+      <div class="reader-page-nav">
+        {% set ns = namespace(prev=none, next=none) %}
+        {% for s in sops %}
+          {% if s.id == sop.id %}
+            {% if not loop.first %}{% set ns.prev = sops[loop.index0 - 1] %}{% endif %}
+            {% if not loop.last  %}{% set ns.next = sops[loop.index0 + 1] %}{% endif %}
+          {% endif %}
+        {% endfor %}
+        {% if ns.prev %}
+        <a class="page-nav-btn" href="{{ ns.prev.id }}.html">← {{ ns.prev.id }}</a>
+        {% endif %}
+        {% if ns.next %}
+        <a class="page-nav-btn" href="{{ ns.next.id }}.html">{{ ns.next.id }} →</a>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- SOP header -->
+    <header class="reader-header">
+      <div class="reader-header-top">
+        <span class="sop-id-badge sop-id-lg">{{ sop.id }}</span>
+        <span class="meta-status status-{{ sop.status|lower|replace(' ','-') }}">{{ sop.status }}</span>
+        <span class="meta-ver">v{{ sop.version }}</span>
+      </div>
+      <h1 class="reader-title">{{ sop.title }}</h1>
+      <p class="reader-desc">{{ sop.description }}</p>
+      <div class="reader-tags">
+        {% for tag in sop.tags %}
+        <span class="tag">{{ tag }}</span>
+        {% endfor %}
+      </div>
+    </header>
+
+    <!-- Sections -->
+    {% for section in sop.sections %}
+    <section class="reader-section" id="{{ section.id }}" data-section="{{ loop.index0 }}">
+      <div class="section-toggle" onclick="toggleSection('{{ section.id }}')">
+        <h2 class="section-title">
+          <span class="section-num">{{ loop.index }}</span>
+          {{ section.title }}
+        </h2>
+        <svg class="section-chevron" id="chev-{{ section.id }}" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="section-body" id="body-{{ section.id }}">
+        <div class="section-content">{{ section.content | replace('\n', '<br>') }}</div>
+      </div>
+    </section>
+    {% endfor %}
+
+    <!-- Comments -->
+    <section class="reader-section" id="comments">
+      <div class="section-toggle" onclick="toggleSection('comments')">
+        <h2 class="section-title"><span class="section-num">💬</span> Comments & Feedback</h2>
+        <svg class="section-chevron" id="chev-comments" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="section-body" id="body-comments">
+        <div class="comments-area">
+          <div id="commentsList" class="comments-list"></div>
+          <div class="comment-form">
+            <input id="commentName" class="comment-input" placeholder="Your name" type="text">
+            <textarea id="commentText" class="comment-textarea" placeholder="Leave a comment or feedback about this SOP…" rows="3"></textarea>
+            <button class="comment-submit" onclick="submitComment()">Submit Feedback</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Bottom nav -->
+    <div class="reader-bottom-nav">
+      {% if ns.prev %}
+      <a class="page-nav-btn" href="{{ ns.prev.id }}.html">← Previous: {{ ns.prev.title }}</a>
+      {% else %}<span></span>{% endif %}
+      {% if ns.next %}
+      <a class="page-nav-btn" href="{{ ns.next.id }}.html">Next: {{ ns.next.title }} →</a>
+      {% endif %}
+    </div>
+
+  </div>
+
+  <!-- Mobile TOC toggle -->
+  <button class="toc-mobile-toggle" onclick="toggleMobileToc()" title="Table of Contents" aria-label="Toggle TOC">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+  </button>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+const SOP_ID = '{{ sop.id }}';
+
+// ── Section collapse ──
+function toggleSection(id) {
+  const body = document.getElementById('body-' + id);
+  const chev = document.getElementById('chev-' + id);
+  const open = body.style.display !== 'none';
+  body.style.display = open ? 'none' : '';
+  if (chev) chev.style.transform = open ? 'rotate(-90deg)' : '';
+}
+
+function scrollToSection(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  // Ensure section is open
+  const body = document.getElementById('body-' + id);
+  if (body) body.style.display = '';
+  el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ── Reading progress ──
+const main = document.getElementById('readerMain');
+const fill = document.getElementById('progressFill');
+const pct  = document.getElementById('progressPct');
+const sections = document.querySelectorAll('.reader-section[data-section]');
+const tocLinks = document.querySelectorAll('.toc-link');
+
+function updateProgress() {
+  const scrollTop  = window.scrollY;
+  const docH = document.documentElement.scrollHeight - window.innerHeight;
+  const p = docH > 0 ? Math.min(100, Math.round((scrollTop / docH) * 100)) : 0;
+  fill.style.width = p + '%';
+  pct.textContent  = p + '%';
+
+  // Highlight active TOC item
+  let activeIdx = 0;
+  sections.forEach((sec, i) => {
+    if (sec.getBoundingClientRect().top < 120) activeIdx = i;
+  });
+  tocLinks.forEach((l, i) => l.classList.toggle('toc-link-active', i === activeIdx));
+}
+window.addEventListener('scroll', updateProgress, { passive: true });
+
+// ── Bookmark ──
+function handleBookmark() {
+  toggleBookmark(SOP_ID);
+  const bm = isBookmarked(SOP_ID);
+  document.getElementById('bookmarkLabel').textContent = bm ? 'Bookmarked ✓' : 'Bookmark';
+  document.getElementById('bookmarkBtn').classList.toggle('bookmarked', bm);
+}
+(function() {
+  const bm = isBookmarked(SOP_ID);
+  document.getElementById('bookmarkLabel').textContent = bm ? 'Bookmarked ✓' : 'Bookmark';
+  document.getElementById('bookmarkBtn').classList.toggle('bookmarked', bm);
+})();
+
+// ── Comments (localStorage) ──
+const COMMENT_KEY = 'comments_' + SOP_ID;
+function loadComments() {
+  try { return JSON.parse(localStorage.getItem(COMMENT_KEY) || '[]'); } catch { return []; }
+}
+function renderComments() {
+  const list = document.getElementById('commentsList');
+  const comments = loadComments();
+  if (!comments.length) {
+    list.innerHTML = '<div class="no-comments">No comments yet. Be the first to leave feedback.</div>';
+    return;
+  }
+  list.innerHTML = comments.map(c => `
+    <div class="comment-item">
+      <div class="comment-header">
+        <strong>${c.name || 'Anonymous'}</strong>
+        <span class="comment-date">${c.date}</span>
+      </div>
+      <div class="comment-body">${c.text}</div>
+    </div>`).join('');
+}
+function submitComment() {
+  const name = document.getElementById('commentName').value.trim() || 'Anonymous';
+  const text = document.getElementById('commentText').value.trim();
+  if (!text) return;
+  const comments = loadComments();
+  comments.push({ name, text, date: new Date().toLocaleDateString() });
+  localStorage.setItem(COMMENT_KEY, JSON.stringify(comments));
+  document.getElementById('commentText').value = '';
+  renderComments();
+}
+renderComments();
+
+// ── Mobile TOC ──
+function toggleMobileToc() {
+  document.getElementById('readerToc').classList.toggle('toc-mobile-open');
+}
+</script>
+{% endblock %}

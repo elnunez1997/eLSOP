@@ -1,0 +1,210 @@
+{% extends "base.html.j2" %}
+{% block title %}Dashboard — eLSOP{% endblock %}
+{% block nav_dash %}active{% endblock %}
+
+{% block content %}
+<div class="dash-layout">
+  <div class="dash-header">
+    <h1 class="dash-title">Dashboard</h1>
+    <p class="dash-sub">SOP metrics and activity overview for GCIT Knowledge Portal</p>
+  </div>
+
+  <!-- ── KPI cards ────────────────────────────────────────────────────────── -->
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-icon kpi-blue">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+      </div>
+      <div class="kpi-body">
+        <div class="kpi-num">{{ stats.total }}</div>
+        <div class="kpi-lbl">Total SOPs</div>
+      </div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-icon kpi-green">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <div class="kpi-body">
+        <div class="kpi-num">{{ stats.status_counts.get('Active', 0) }}</div>
+        <div class="kpi-lbl">Active SOPs</div>
+      </div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-icon kpi-orange">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      </div>
+      <div class="kpi-body">
+        <div class="kpi-num">{{ stats.pending_count }}</div>
+        <div class="kpi-lbl">Pending Review</div>
+      </div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-icon kpi-purple">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      </div>
+      <div class="kpi-body">
+        <div class="kpi-num">{{ stats.dept_counts|length }}</div>
+        <div class="kpi-lbl">Departments</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Charts row ───────────────────────────────────────────────────────── -->
+  <div class="dash-charts-row">
+    <div class="dash-card dash-card-chart">
+      <div class="dash-card-header">SOPs by Department</div>
+      <canvas id="deptChart" height="220"></canvas>
+    </div>
+    <div class="dash-card dash-card-chart">
+      <div class="dash-card-header">Status Distribution</div>
+      <canvas id="statusChart" height="220"></canvas>
+    </div>
+  </div>
+
+  <!-- ── Tables row ───────────────────────────────────────────────────────── -->
+  <div class="dash-tables-row">
+
+    <!-- Most Viewed -->
+    <div class="dash-card">
+      <div class="dash-card-header">Most Viewed SOPs</div>
+      <table class="dash-table">
+        <thead><tr><th>SOP</th><th>Department</th><th>Views</th></tr></thead>
+        <tbody>
+          {% for sop in stats.top_viewed %}
+          <tr>
+            <td><a class="dash-sop-link" href="reader/{{ sop.id }}.html">{{ sop.title }}</a><br><span class="dash-sop-id">{{ sop.id }}</span></td>
+            <td>{{ sop.department }}</td>
+            <td><span class="views-badge">{{ sop.views }}</span></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Recently Updated -->
+    <div class="dash-card">
+      <div class="dash-card-header">Recently Updated</div>
+      <table class="dash-table">
+        <thead><tr><th>SOP</th><th>Version</th><th>Updated</th></tr></thead>
+        <tbody>
+          {% for sop in stats.recent %}
+          <tr>
+            <td><a class="dash-sop-link" href="reader/{{ sop.id }}.html">{{ sop.title }}</a><br><span class="dash-sop-id">{{ sop.id }}</span></td>
+            <td>v{{ sop.version }}</td>
+            <td>{{ sop.updated }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+  <!-- ── All SOPs by dept ──────────────────────────────────────────────────── -->
+  <div class="dash-card" style="margin-top:24px;">
+    <div class="dash-card-header">All SOPs by Department</div>
+    {% for dept in departments %}
+    {% set dept_sops = sops | selectattr('department','equalto',dept) | list %}
+    <div class="dept-group">
+      <div class="dept-group-header">{{ dept }} <span class="dept-group-count">{{ dept_sops|length }}</span></div>
+      <div class="dept-sop-list">
+        {% for sop in dept_sops %}
+        <a class="dept-sop-item" href="reader/{{ sop.id }}.html">
+          <span class="sop-id-badge">{{ sop.id }}</span>
+          <span class="dept-sop-title">{{ sop.title }}</span>
+          <span class="meta-status status-{{ sop.status|lower|replace(' ','-') }}">{{ sop.status }}</span>
+          <span class="dept-sop-date">{{ sop.updated }}</span>
+        </a>
+        {% endfor %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Minimal inline chart using SVG bars (no external library dependency)
+function drawBarChart(canvasId, labels, values, color) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.offsetWidth || 400;
+  const H = canvas.height || 220;
+  canvas.width = W;
+  const max = Math.max(...values, 1);
+  const padL = 80, padR = 16, padT = 16, padB = 40;
+  const barH = (H - padT - padB) / labels.length;
+  ctx.clearRect(0,0,W,H);
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  const textCol = isDark ? '#c9d1d9' : '#374151';
+  const gridCol = isDark ? '#30363d' : '#e5e7eb';
+
+  labels.forEach((lbl, i) => {
+    const y = padT + i * barH;
+    const barW = ((values[i] / max) * (W - padL - padR));
+    // Grid line
+    ctx.strokeStyle = gridCol; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(padL, y + barH/2); ctx.lineTo(W - padR, y + barH/2); ctx.stroke();
+    // Bar
+    ctx.fillStyle = color;
+    ctx.fillRect(padL, y + barH*0.2, barW, barH * 0.6);
+    // Label
+    ctx.fillStyle = textCol; ctx.font = '12px system-ui,sans-serif'; ctx.textAlign = 'right';
+    ctx.fillText(lbl, padL - 6, y + barH/2 + 4);
+    // Value
+    ctx.fillStyle = textCol; ctx.textAlign = 'left';
+    ctx.fillText(values[i], padL + barW + 6, y + barH/2 + 4);
+  });
+}
+
+function drawPieChart(canvasId, labels, values) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.offsetWidth || 400;
+  const H = canvas.height || 220;
+  canvas.width = W;
+  const total = values.reduce((a,b) => a+b, 0);
+  const cx = W / 2 - 60, cy = H / 2, r = Math.min(cx, cy) - 16;
+  const colors = ['#3b82d4','#10b981','#f59e0b','#ef4444','#8b5cf6','#06b6d4'];
+  let angle = -Math.PI / 2;
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  const textCol = isDark ? '#c9d1d9' : '#374151';
+  ctx.clearRect(0,0,W,H);
+  values.forEach((v, i) => {
+    const sweep = (v / total) * 2 * Math.PI;
+    ctx.beginPath(); ctx.moveTo(cx,cy);
+    ctx.arc(cx, cy, r, angle, angle + sweep);
+    ctx.closePath(); ctx.fillStyle = colors[i % colors.length]; ctx.fill();
+    angle += sweep;
+  });
+  // Legend
+  labels.forEach((lbl, i) => {
+    const lx = W - 120, ly = 20 + i * 24;
+    ctx.fillStyle = colors[i % colors.length];
+    ctx.fillRect(lx, ly, 12, 12);
+    ctx.fillStyle = textCol; ctx.font = '12px system-ui,sans-serif'; ctx.textAlign = 'left';
+    ctx.fillText(`${lbl} (${values[i]})`, lx + 18, ly + 11);
+  });
+}
+
+const deptLabels  = {{ stats.dept_labels }};
+const deptValues  = {{ stats.dept_values }};
+const statusLabels = {{ stats.status_counts.keys() | list | tojson }};
+const statusValues = {{ stats.status_counts.values() | list | tojson }};
+
+window.addEventListener('load', () => {
+  drawBarChart('deptChart',  deptLabels,  deptValues,  '#3b82d4');
+  drawPieChart('statusChart', statusLabels, statusValues);
+});
+document.getElementById('themeIcon')?.closest('button')?.addEventListener('click', () => {
+  setTimeout(() => {
+    drawBarChart('deptChart',  deptLabels,  deptValues,  '#3b82d4');
+    drawPieChart('statusChart', statusLabels, statusValues);
+  }, 50);
+});
+</script>
+{% endblock %}

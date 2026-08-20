@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>eLSOP — Formal SOPs</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  .alpha-section { margin-bottom: 28px; }
+  .alpha-header {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #9ca3af;
+    border-bottom: 2px solid #e5e7eb;
+    padding-bottom: 6px;
+    margin-bottom: 12px;
+  }
+  .alpha-header span {
+    display: inline-block;
+    background: #1c2d4f;
+    color: #fff;
+    width: 26px;
+    height: 26px;
+    line-height: 26px;
+    text-align: center;
+    border-radius: 5px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0;
+    margin-right: 8px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+      <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+    </svg>
+    eLSOP <span class="badge">GCIT</span>
+  </div>
+  <nav>
+    <a href="index.html">Customer Matrix</a>
+    <a href="sops.html" class="active">Formal SOP Documents</a>
+  </nav>
+</header>
+
+<div class="page">
+  <div class="page-title">
+    <h1>Formal SOP Documents</h1>
+    <p>ACOSTA customers only &nbsp;·&nbsp; Official Standard Operating Procedures managed in ACOSTA Relay</p>
+  </div>
+
+  <div id="sopContainer"></div>
+</div>
+
+<footer>
+  <p>eLSOP — GCIT Customer SOP Matrix &nbsp;·&nbsp; ACOSTA customers only</p>
+  <p class="footer-made">Made with IBM Bob</p>
+</footer>
+
+<script>
+const SOPS = [
+  { name: "ADUSA Distribution / Giant / Stop & Shop", file: "ADUSA_Distr_The_Giant_Company_Giant_Foods_Stop_Shop.docx" },
+  { name: "Associated Supermarket Group (ASG)",        file: "Associated_Supermarket_Group.docx" },
+  { name: "Brookshire Grocery Company",                file: "Brookshire_Grocery_Company.docx" },
+  { name: "Delhaize",                                  file: "Delhaize.docx" },
+  { name: "Demoulas Supermarkets Inc",                 file: "Demoulas_Supermarkets_Inc.docx" },
+  { name: "General Trading",                           file: "General_Trading.docx" },
+  { name: "Golub Corporation (Price Chopper)",         file: "Golub_Corporation.docx" },
+  { name: "Harris Teeter Supermarkets",                file: "Harris_Teeter_Supermarkets.docx" },
+  { name: "HyVee Corporate / Lomar / PDI",             file: "HyVee_Corporate_Lomar_Perishable_Dist_of_Iowa_PDI.docx" },
+  { name: "K-V-A-T Food Store Inc (Food City)",        file: "K_V_A_T_Food_Store_Inc.docx" },
+  { name: "Kroger / Ralphs / Jake's / Vitacost",       file: "Kroger_Ralphs_Grocery_Company_Jakes_Finer_Foods_Vitacostcom.docx" },
+  { name: "McLane Company Inc",                        file: "McLane_Company_Inc.docx" },
+  { name: "Mitchell Grocery Company",                  file: "Mitchell_Grocery_Company.docx" },
+  { name: "OK Grocery Co / Giant Eagle",               file: "OK_Grocery_Co_Giant_Eagle.docx" },
+  { name: "Save Mart / Yosemite / Food Maxx",          file: "Save_Mart_Yosemite_Save_Mart_Food_Maxx.docx" },
+  { name: "Schnucks Markets Inc",                      file: "Schnucks_Markets_Inc.docx" },
+  { name: "Smart and Final",                           file: "Smart_and_Final.docx" },
+  { name: "Stater Bros",                               file: "Stater_Bros.doc" },
+  { name: "UNFI Conventional (SuperValu)",             file: "UNFI_Conventional.docx" },
+  { name: "United Natural Foods West / UNFI AP",       file: "United_Natural_Foods_West_UNFI_Accounts_Payable.docx" },
+  { name: "WinCo Foods Inc",                           file: "Winco_Foods_Inc.docx" }
+];
+
+// Group by first letter
+const groups = {};
+SOPS.forEach(s => {
+  const letter = s.name[0].toUpperCase();
+  if (!groups[letter]) groups[letter] = [];
+  groups[letter].push(s);
+});
+
+const container = document.getElementById("sopContainer");
+Object.keys(groups).sort().forEach(letter => {
+  const section = document.createElement("div");
+  section.className = "alpha-section";
+  section.innerHTML = `
+    <div class="alpha-header"><span>${letter}</span></div>
+    <div class="sop-grid">${
+      groups[letter].map(s => `
+        <div class="sop-card">
+          <div class="sop-card-icon">📄</div>
+          <div class="sop-card-name">${s.name}</div>
+          <a class="sop-card-link" href="sops/${s.file}" download>Download</a>
+        </div>`).join("")
+    }</div>`;
+  container.appendChild(section);
+});
+</script>
+</body>
+</html>
