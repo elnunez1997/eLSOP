@@ -1,6 +1,6 @@
-# eLSOP — GCIT SOP Knowledge Portal
+# eLSOP — Acosta SOP Knowledge Portal
 
-A modern SOP Knowledge Portal for ACOSTA/GCIT, built as a Python-generated static site and hosted on GitHub Pages.
+A modern SOP Knowledge Portal for ACOSTA, built as a Python-generated static site and hosted on GitHub Pages.
 
 ## What it contains
 
@@ -31,8 +31,8 @@ eLSOP/
     library.html
     dashboard.html
     reader/
-      SOP-GCIT-001.html
-      SOP-GCIT-002.html
+      SOP-Acosta-001.html
+      SOP-Acosta-002.html
       ...
     portal.css
     sops.html          ← Legacy formal SOPs page (ACOSTA only)
@@ -62,11 +62,11 @@ Edit [`data/sops.json`](data/sops.json) — add a new object with these fields:
 
 ```json
 {
-  "id": "SOP-GCIT-013",
+  "id": "SOP-Acosta-013",
   "title": "Your SOP Title",
   "department": "Claims",
   "category": "Customer SOP",
-  "owner": "GCIT Team",
+  "owner": "Acosta Team",
   "version": "1.0",
   "status": "Active",
   "updated": "2025-01-01",

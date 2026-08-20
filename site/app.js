@@ -1,4 +1,4 @@
-// app.js — eLSOP GCIT Customer SOP Matrix
+// app.js — eLSOP Customer SOP Matrix
 
 let filtered = [];
 let sortCol = -1;

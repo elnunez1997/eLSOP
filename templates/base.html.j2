@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>{% block title %}eLSOP Knowledge Portal{% endblock %}</title>
 <link rel="stylesheet" href="{{ depth|default('') }}portal.css">
-<meta name="description" content="eLSOP — GCIT Standard Operating Procedure Knowledge Portal">
+<meta name="description" content="eLSOP — Standard Operating Procedure Knowledge Portal">
 </head>
 <body>
 
@@ -18,7 +18,7 @@
         <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
       </svg>
       <span class="brand-name">eLSOP</span>
-      <span class="brand-badge">GCIT</span>
+      <span class="brand-badge">SOP</span>
     </a>
     <div class="nav-links">
       <a href="{{ depth|default('') }}index.html" class="nav-link {% block nav_home %}{% endblock %}">Home</a>
@@ -52,7 +52,7 @@
 <!-- ── Footer ───────────────────────────────────────────────────────────── -->
 <footer class="site-footer">
   <div class="footer-inner">
-    <div class="footer-brand">eLSOP Knowledge Portal &nbsp;·&nbsp; GCIT</div>
+    <div class="footer-brand">eLSOP Knowledge Portal</div>
     <div class="footer-meta">Built {{ build_time }} &nbsp;·&nbsp; ACOSTA customers only</div>
     <div class="footer-made">Made with IBM Bob</div>
   </div>
