@@ -424,6 +424,329 @@ for ($i = 0; $i -lt $sops.Count; $i++) {
     Write-Host "  wrote: site/reader/$($sop.id).html"
 }
 
+# ── Generate library.html ─────────────────────────────────────────────────────
+Write-Host "`nGenerating library.html..."
+
+# Build filter sidebar options
+$departments = $sops | ForEach-Object { $_.department } | Sort-Object -Unique
+$categories  = $sops | ForEach-Object { $_.category  } | Sort-Object -Unique
+$statuses    = $sops | ForEach-Object { $_.status    } | Sort-Object -Unique
+$owners      = $sops | ForEach-Object { $_.owner     } | Sort-Object -Unique
+
+function Radio-Options($name, $items) {
+    $opts = "<label class=`"filter-opt`"><input type=`"radio`" name=`"$name`" value=`"`"> All</label>`n"
+    foreach ($item in $items) {
+        $v = EH $item
+        $opts += "      <label class=`"filter-opt`"><input type=`"radio`" name=`"$name`" value=`"$v`"> $v</label>`n"
+    }
+    return $opts
+}
+
+$libContent = @"
+<div class="lib-layout">
+  <aside class="lib-sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-heading">Department</div>
+      $(Radio-Options "dept" $departments)
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-heading">Category</div>
+      $(Radio-Options "cat" $categories)
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-heading">Status</div>
+      $(Radio-Options "status" $statuses)
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-heading">Owner</div>
+      $(Radio-Options "owner" $owners)
+    </div>
+    <button class="clear-filters-btn" onclick="clearFilters()">Clear Filters</button>
+  </aside>
+  <div class="lib-main">
+    <div class="lib-toolbar">
+      <div class="lib-search-wrap">
+        <svg class="lib-search-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input id="libSearch" class="lib-search" type="text" placeholder="Search SOPs..." oninput="applyFilters()">
+      </div>
+      <div class="lib-toolbar-right">
+        <span id="libCount" class="count-badge"></span>
+        <select id="sortSelect" onchange="applyFilters()" class="sort-select">
+          <option value="updated">Recently Updated</option>
+          <option value="title">Title A-Z</option>
+          <option value="views">Most Viewed</option>
+          <option value="id">SOP Number</option>
+        </select>
+        <div class="view-toggle">
+          <button id="btnGrid" class="view-btn active" onclick="setView('grid')" title="Grid view">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+          </button>
+          <button id="btnList" class="view-btn" onclick="setView('list')" title="List view">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div id="libGrid" class="card-grid lib-grid"></div>
+    <div id="libList" class="lib-list-view" style="display:none"></div>
+    <div id="libEmpty" class="lib-empty" style="display:none">
+      No SOPs match your filters. <button onclick="clearFilters()" class="link-btn">Clear filters</button>
+    </div>
+  </div>
+</div>
+"@
+
+$libScripts = @"
+<script>
+const SOPS_LIB = $sopsJson;
+let currentView = 'grid';
+function statusClass(st) { return 'status-' + st.toLowerCase().replace(/\s+/g,'-'); }
+function cardHTML(s) {
+  const bm = isBookmarked(s.id);
+  return '<div class="sop-card" data-id="' + s.id + '">' +
+    '<div class="sop-card-top"><span class="sop-id-badge">' + s.id + '</span>' +
+    '<button class="bookmark-btn' + (bm?' bookmarked':'') + '" data-bookmark="' + s.id + '" onclick="toggleBookmark(\'' + s.id + '\')" title="Bookmark" aria-label="Bookmark">' +
+    '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button></div>' +
+    '<h3 class="sop-card-title"><a href="reader/' + s.id + '.html">' + s.title + '</a></h3>' +
+    '<p class="sop-card-desc">' + s.description.slice(0,130) + (s.description.length>130?'\u2026':'') + '</p>' +
+    '<div class="sop-card-meta"><span class="meta-dept">' + s.department + '</span><span class="meta-ver">v' + s.version + '</span>' +
+    '<span class="meta-status ' + statusClass(s.status) + '">' + s.status + '</span></div>' +
+    '<div class="sop-card-footer"><span class="meta-date">Updated ' + s.updated + '</span>' +
+    '<a class="card-read-btn" href="reader/' + s.id + '.html">Read \u2192</a></div></div>';
+}
+function rowHTML(s) {
+  const bm = isBookmarked(s.id);
+  return '<div class="lib-row" data-id="' + s.id + '">' +
+    '<div class="lib-row-id"><span class="sop-id-badge">' + s.id + '</span></div>' +
+    '<div class="lib-row-main"><a class="lib-row-title" href="reader/' + s.id + '.html">' + s.title + '</a>' +
+    '<div class="lib-row-meta"><span class="meta-dept">' + s.department + '</span><span class="meta-ver">v' + s.version + '</span>' +
+    '<span class="meta-status ' + statusClass(s.status) + '">' + s.status + '</span>' +
+    '<span class="meta-date">Updated ' + s.updated + '</span><span class="meta-views">' + s.views + ' views</span></div></div>' +
+    '<div class="lib-row-actions"><button class="bookmark-btn' + (bm?' bookmarked':'') + '" data-bookmark="' + s.id + '" onclick="toggleBookmark(\'' + s.id + '\')" title="Bookmark" aria-label="Bookmark">' +
+    '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button>' +
+    '<a class="card-read-btn" href="reader/' + s.id + '.html">Read \u2192</a></div></div>';
+}
+function getFilters() {
+  return {
+    q:      document.getElementById('libSearch').value.trim().toLowerCase(),
+    dept:   document.querySelector('input[name="dept"]:checked')?.value || '',
+    cat:    document.querySelector('input[name="cat"]:checked')?.value || '',
+    status: document.querySelector('input[name="status"]:checked')?.value || '',
+    owner:  document.querySelector('input[name="owner"]:checked')?.value || '',
+    sort:   document.getElementById('sortSelect').value,
+  };
+}
+function applyFilters() {
+  const f = getFilters();
+  let items = SOPS_LIB.filter(s => {
+    if (f.dept   && s.department !== f.dept)   return false;
+    if (f.cat    && s.category   !== f.cat)    return false;
+    if (f.status && s.status     !== f.status) return false;
+    if (f.owner  && s.owner      !== f.owner)  return false;
+    if (f.q) {
+      const hay = [s.id,s.title,s.department,s.description,...(s.tags||[])].join(' ').toLowerCase();
+      if (!hay.includes(f.q)) return false;
+    }
+    return true;
+  });
+  if (f.sort === 'title')  items.sort((a,b) => a.title.localeCompare(b.title));
+  else if (f.sort === 'views') items.sort((a,b) => b.views - a.views);
+  else if (f.sort === 'id')   items.sort((a,b) => a.id.localeCompare(b.id));
+  else items.sort((a,b) => b.updated.localeCompare(a.updated));
+  document.getElementById('libCount').textContent = items.length + ' of ' + SOPS_LIB.length + ' SOPs';
+  document.getElementById('libEmpty').style.display = items.length ? 'none' : '';
+  document.getElementById('libGrid').innerHTML = items.map(cardHTML).join('');
+  document.getElementById('libList').innerHTML = items.map(rowHTML).join('');
+}
+function setView(v) {
+  currentView = v;
+  document.getElementById('libGrid').style.display = v === 'grid' ? '' : 'none';
+  document.getElementById('libList').style.display = v === 'list' ? '' : 'none';
+  document.getElementById('btnGrid').classList.toggle('active', v === 'grid');
+  document.getElementById('btnList').classList.toggle('active', v === 'list');
+}
+function clearFilters() {
+  document.getElementById('libSearch').value = '';
+  document.querySelectorAll('input[type="radio"]').forEach(r => { r.checked = r.value === ''; });
+  document.getElementById('sortSelect').value = 'updated';
+  applyFilters();
+}
+const params = new URLSearchParams(location.search);
+if (params.has('dept')) {
+  const d = params.get('dept');
+  const r = document.querySelector('input[name="dept"][value="' + d + '"]');
+  if (r) r.checked = true;
+}
+applyFilters();
+</script>
+"@
+
+$libHtml = Get-PageHtml -title "SOP Library -- eLSOP" -depth "" -navActive "library" -content $libContent -scripts $libScripts
+$libPath = Join-Path $SiteDir "library.html"
+[System.IO.File]::WriteAllText($libPath, $libHtml, [System.Text.Encoding]::UTF8)
+Write-Host "  wrote: site/library.html ($($sops.Count) SOPs)"
+
+# ── Generate dashboard.html ───────────────────────────────────────────────────
+Write-Host "Generating dashboard.html..."
+
+# Compute stats
+$deptCounts   = @{}
+$statusCounts = @{}
+$sops | ForEach-Object {
+    $d = $_.department; if (-not $deptCounts[$d])   { $deptCounts[$d] = 0 };   $deptCounts[$d]++
+    $s = $_.status;     if (-not $statusCounts[$s]) { $statusCounts[$s] = 0 }; $statusCounts[$s]++
+}
+$totalSOPs    = $sops.Count
+$activeCount  = if ($statusCounts["Active"]) { $statusCounts["Active"] } else { 0 }
+$pendingCount = if ($statusCounts["Pending Review"]) { $statusCounts["Pending Review"] } else { 0 }
+$deptCount    = $deptCounts.Count
+
+$topViewed = $sops | Sort-Object { [int]$_.views } -Descending | Select-Object -First 5
+$recentUpd = $sops | Sort-Object { $_.updated } -Descending | Select-Object -First 5
+
+$topViewedRows = ($topViewed | ForEach-Object {
+    $t = EH $_.title
+    "          <tr><td><a class=`"dash-sop-link`" href=`"reader/$($_.id).html`">$t</a><br><span class=`"dash-sop-id`">$($_.id)</span></td><td>$($_.department)</td><td><span class=`"views-badge`">$($_.views)</span></td></tr>"
+}) -join "`n"
+
+$recentRows = ($recentUpd | ForEach-Object {
+    $t = EH $_.title
+    "          <tr><td><a class=`"dash-sop-link`" href=`"reader/$($_.id).html`">$t</a><br><span class=`"dash-sop-id`">$($_.id)</span></td><td>v$($_.version)</td><td>$($_.updated)</td></tr>"
+}) -join "`n"
+
+$deptGroupsHtml = ""
+foreach ($dept in ($deptCounts.Keys | Sort-Object)) {
+    $deptSops = $sops | Where-Object { $_.department -eq $dept }
+    $deptItems = ($deptSops | ForEach-Object {
+        $t = EH $_.title
+        $sc = StatusClass $_.status
+        "        <a class=`"dept-sop-item`" href=`"reader/$($_.id).html`"><span class=`"sop-id-badge`">$($_.id)</span><span class=`"dept-sop-title`">$t</span><span class=`"meta-status $sc`">$($_.status)</span><span class=`"dept-sop-date`">$($_.updated)</span></a>"
+    }) -join "`n"
+    $deptGroupsHtml += @"
+
+    <div class="dept-group">
+      <div class="dept-group-header">$dept <span class="dept-group-count">$($deptSops.Count)</span></div>
+      <div class="dept-sop-list">
+$deptItems
+      </div>
+    </div>
+"@
+}
+
+$deptLabelsJson = ($deptCounts.Keys | Sort-Object | ForEach-Object { '"' + $_ + '"' }) -join ","
+$deptValuesJson = ($deptCounts.Keys | Sort-Object | ForEach-Object { $deptCounts[$_] }) -join ","
+$statusLabelsJson = ($statusCounts.Keys | Sort-Object | ForEach-Object { '"' + $_ + '"' }) -join ","
+$statusValuesJson = ($statusCounts.Keys | Sort-Object | ForEach-Object { $statusCounts[$_] }) -join ","
+
+$dashContent = @"
+<div class="dash-layout">
+  <div class="dash-header">
+    <h1 class="dash-title">Dashboard</h1>
+    <p class="dash-sub">SOP metrics and activity overview</p>
+  </div>
+  <div class="kpi-grid">
+    <div class="kpi-card"><div class="kpi-icon kpi-blue"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div><div class="kpi-body"><div class="kpi-num">$totalSOPs</div><div class="kpi-lbl">Total SOPs</div></div></div>
+    <div class="kpi-card"><div class="kpi-icon kpi-green"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></div><div class="kpi-body"><div class="kpi-num">$activeCount</div><div class="kpi-lbl">Active SOPs</div></div></div>
+    <div class="kpi-card"><div class="kpi-icon kpi-orange"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div class="kpi-body"><div class="kpi-num">$pendingCount</div><div class="kpi-lbl">Pending Review</div></div></div>
+    <div class="kpi-card"><div class="kpi-icon kpi-purple"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></div><div class="kpi-body"><div class="kpi-num">$deptCount</div><div class="kpi-lbl">Departments</div></div></div>
+  </div>
+  <div class="dash-charts-row">
+    <div class="dash-card dash-card-chart"><div class="dash-card-header">SOPs by Department</div><canvas id="deptChart" height="220"></canvas></div>
+    <div class="dash-card dash-card-chart"><div class="dash-card-header">Status Distribution</div><canvas id="statusChart" height="220"></canvas></div>
+  </div>
+  <div class="dash-tables-row">
+    <div class="dash-card">
+      <div class="dash-card-header">Most Viewed SOPs</div>
+      <table class="dash-table"><thead><tr><th>SOP</th><th>Department</th><th>Views</th></tr></thead>
+      <tbody>$topViewedRows</tbody></table>
+    </div>
+    <div class="dash-card">
+      <div class="dash-card-header">Recently Updated</div>
+      <table class="dash-table"><thead><tr><th>SOP</th><th>Version</th><th>Updated</th></tr></thead>
+      <tbody>$recentRows</tbody></table>
+    </div>
+  </div>
+  <div class="dash-card" style="margin-top:24px;">
+    <div class="dash-card-header">All SOPs by Department</div>
+$deptGroupsHtml
+  </div>
+</div>
+"@
+
+$dashScripts = @"
+<script>
+function drawBarChart(canvasId, labels, values, color) {
+  const canvas = document.getElementById(canvasId); if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.offsetWidth || 400, H = canvas.height || 220;
+  canvas.width = W;
+  const max = Math.max(...values, 1);
+  const padL = 80, padR = 16, padT = 16, padB = 40;
+  const barH = (H - padT - padB) / labels.length;
+  ctx.clearRect(0,0,W,H);
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  const textCol = isDark ? '#c9d1d9' : '#374151';
+  const gridCol = isDark ? '#30363d' : '#e5e7eb';
+  labels.forEach((lbl, i) => {
+    const y = padT + i * barH;
+    const barW = (values[i] / max) * (W - padL - padR);
+    ctx.strokeStyle = gridCol; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(padL, y + barH/2); ctx.lineTo(W-padR, y+barH/2); ctx.stroke();
+    ctx.fillStyle = color; ctx.fillRect(padL, y+barH*0.2, barW, barH*0.6);
+    ctx.fillStyle = textCol; ctx.font = '12px system-ui,sans-serif'; ctx.textAlign = 'right';
+    ctx.fillText(lbl, padL-6, y+barH/2+4);
+    ctx.fillStyle = textCol; ctx.textAlign = 'left';
+    ctx.fillText(values[i], padL+barW+6, y+barH/2+4);
+  });
+}
+function drawPieChart(canvasId, labels, values) {
+  const canvas = document.getElementById(canvasId); if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.offsetWidth || 400, H = canvas.height || 220;
+  canvas.width = W;
+  const total = values.reduce((a,b)=>a+b,0);
+  const cx = W/2-60, cy = H/2, r = Math.min(cx,cy)-16;
+  const colors = ['#3b82d4','#10b981','#f59e0b','#ef4444','#8b5cf6','#06b6d4'];
+  let angle = -Math.PI/2;
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  const textCol = isDark ? '#c9d1d9' : '#374151';
+  ctx.clearRect(0,0,W,H);
+  values.forEach((v,i) => {
+    const sweep = (v/total)*2*Math.PI;
+    ctx.beginPath(); ctx.moveTo(cx,cy); ctx.arc(cx,cy,r,angle,angle+sweep);
+    ctx.closePath(); ctx.fillStyle = colors[i%colors.length]; ctx.fill();
+    angle += sweep;
+  });
+  labels.forEach((lbl,i) => {
+    const lx = W-120, ly = 20+i*24;
+    ctx.fillStyle = colors[i%colors.length]; ctx.fillRect(lx,ly,12,12);
+    ctx.fillStyle = textCol; ctx.font = '12px system-ui,sans-serif'; ctx.textAlign = 'left';
+    ctx.fillText(lbl+' ('+values[i]+')', lx+18, ly+11);
+  });
+}
+const deptLabels   = [$deptLabelsJson];
+const deptValues   = [$deptValuesJson];
+const statusLabels = [$statusLabelsJson];
+const statusValues = [$statusValuesJson];
+window.addEventListener('load', () => {
+  drawBarChart('deptChart',   deptLabels,   deptValues,   '#3b82d4');
+  drawPieChart('statusChart', statusLabels, statusValues);
+});
+document.getElementById('themeIcon')?.closest('button')?.addEventListener('click', () => {
+  setTimeout(() => {
+    drawBarChart('deptChart',   deptLabels,   deptValues,   '#3b82d4');
+    drawPieChart('statusChart', statusLabels, statusValues);
+  }, 50);
+});
+</script>
+"@
+
+$dashHtml = Get-PageHtml -title "Dashboard -- eLSOP" -depth "" -navActive "dash" -content $dashContent -scripts $dashScripts
+$dashPath = Join-Path $SiteDir "dashboard.html"
+[System.IO.File]::WriteAllText($dashPath, $dashHtml, [System.Text.Encoding]::UTF8)
+Write-Host "  wrote: site/dashboard.html"
+
 Write-Host ""
 Write-Host "Build complete!" -ForegroundColor Green
 Write-Host "  $($sops.Count) reader pages written to site/reader/"
+Write-Host "  library.html and dashboard.html regenerated"
