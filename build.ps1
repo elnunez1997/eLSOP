@@ -746,7 +746,127 @@ $dashPath = Join-Path $SiteDir "dashboard.html"
 [System.IO.File]::WriteAllText($dashPath, $dashHtml, [System.Text.Encoding]::UTF8)
 Write-Host "  wrote: site/dashboard.html"
 
+# ── Generate portal homepage (index.html) ────────────────────────────────────
+Write-Host "Generating index.html (portal homepage)..."
+
+$recentSops  = $sops | Sort-Object { $_.updated } -Descending | Select-Object -First 6
+$homeDepts   = $sops | ForEach-Object { $_.department } | Sort-Object -Unique
+$deptCountsHome = @{}
+$sops | ForEach-Object { $d = $_.department; if (-not $deptCountsHome[$d]) { $deptCountsHome[$d]=0 }; $deptCountsHome[$d]++ }
+$pendingCountHome = ($sops | Where-Object { $_.status -eq "Pending Review" }).Count
+$deptIcons = @{ "Claims"="&#x1F4CB;"; "Compliance"="&#x2705;"; "Finance"="&#x1F4B0;"; "Operations"="&#x2699;&#xFE0F;"; "IT"="&#x1F4BB;"; "HR"="&#x1F465;" }
+
+$deptCardsHtml = ($homeDepts | ForEach-Object {
+    $dept = $_
+    $icon = if ($deptIcons[$dept]) { $deptIcons[$dept] } else { "&#x1F4C1;" }
+    $cnt  = $deptCountsHome[$dept]
+    $dv   = [System.Uri]::EscapeDataString($dept)
+    "      <a class=`"dept-card`" href=`"library.html?dept=$dv`"><span class=`"dept-icon`">$icon</span><span class=`"dept-name`">$dept</span><span class=`"dept-count`">$cnt SOPs</span></a>"
+}) -join "`n"
+
+$recentCardsHtml = ($recentSops | ForEach-Object {
+    $s  = $_
+    $st = EH $s.title
+    $sd = EH $s.description
+    $sc = StatusClass $s.status
+    $changeHtml = ""
+    if ($s.last_change) {
+        $cd = EH $s.last_change.description
+        $cdShort = if ($cd.Length -gt 80) { $cd.Substring(0,80) + "&#x2026;" } else { $cd }
+        $changeHtml = "        <div class=`"sop-card-change`"><span class=`"change-dot`"></span><span class=`"change-desc`">$cdShort</span></div>"
+    }
+    $descShort = if ($sd.Length -gt 120) { $sd.Substring(0,120) + "&#x2026;" } else { $sd }
+    "      <div class=`"sop-card`">`n        <div class=`"sop-card-top`"><span class=`"sop-id-badge`">$($s.id)</span><button class=`"bookmark-btn`" data-bookmark=`"$($s.id)`" onclick=`"toggleBookmark('$($s.id)')`" title=`"Bookmark`" aria-label=`"Bookmark`"><svg width=`"14`" height=`"14`" viewBox=`"0 0 24 24`" fill=`"currentColor`" stroke=`"currentColor`" stroke-width=`"2`"><path d=`"M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z`"/></svg></button></div>`n        <h3 class=`"sop-card-title`"><a href=`"reader/$($s.id).html`">$st</a></h3>`n        <p class=`"sop-card-desc`">$descShort</p>`n$changeHtml`n        <div class=`"sop-card-meta`"><span class=`"meta-dept`">$($s.department)</span><span class=`"meta-ver`">v$($s.version)</span><span class=`"meta-status $sc`">$($s.status)</span></div>`n        <div class=`"sop-card-footer`"><span class=`"meta-date`">Updated $($s.updated) &middot; $(EH $s.owner)</span><a class=`"card-read-btn`" href=`"reader/$($s.id).html`">Read &#x2192;</a></div>`n      </div>"
+}) -join "`n"
+
+$homeContent = @"
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-text">
+      <h1 class="hero-title">eLSOP Knowledge Portal</h1>
+      <p class="hero-sub">Your single source of truth for Standard Operating Procedures &#x2014; searchable, bookmarkable, always up to date.</p>
+      <div class="hero-search-wrap">
+        <svg class="hero-search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input id="heroSearch" class="hero-search" type="text" placeholder="Search by title, SOP number, department&#x2026;" autocomplete="off">
+        <div id="heroResults" class="hero-results" style="display:none"></div>
+      </div>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-card"><span class="stat-num">$($sops.Count)</span><span class="stat-lbl">Total SOPs</span></div>
+      <div class="stat-card"><span class="stat-num">$($homeDepts.Count)</span><span class="stat-lbl">Departments</span></div>
+      <div class="stat-card"><span class="stat-num">$pendingCountHome</span><span class="stat-lbl">Pending Review</span></div>
+      <div class="stat-card"><span class="stat-num">$($recentSops.Count)</span><span class="stat-lbl">Updated This Quarter</span></div>
+    </div>
+  </div>
+</section>
+<section class="home-section">
+  <div class="home-section-inner">
+    <h2 class="section-heading">Departments</h2>
+    <div class="dept-grid">
+$deptCardsHtml
+    </div>
+  </div>
+</section>
+<section class="home-section home-section-alt">
+  <div class="home-section-inner">
+    <div class="section-header-row">
+      <h2 class="section-heading">Recently Updated</h2>
+      <a class="section-link" href="library.html">View all &#x2192;</a>
+    </div>
+    <div class="card-grid">
+$recentCardsHtml
+    </div>
+  </div>
+</section>
+<section class="home-section" id="bookmarksSection" style="display:none">
+  <div class="home-section-inner">
+    <div class="section-header-row">
+      <h2 class="section-heading">&#x2B50; Your Bookmarks</h2>
+      <button class="section-link" onclick="clearAllBookmarks()">Clear all</button>
+    </div>
+    <div class="card-grid" id="bookmarkGrid"></div>
+  </div>
+</section>
+"@
+
+$homeScripts = @"
+<script>
+const SOPS_DATA = $sopsJson;
+const hs = document.getElementById('heroSearch');
+const hr = document.getElementById('heroResults');
+hs.addEventListener('input', function() {
+  const q = this.value.trim().toLowerCase();
+  if (!q) { hr.style.display='none'; return; }
+  const hits = SOPS_DATA.filter(s =>
+    s.title.toLowerCase().includes(q) || s.id.toLowerCase().includes(q) ||
+    s.department.toLowerCase().includes(q) || (s.tags||[]).join(' ').toLowerCase().includes(q) ||
+    s.description.toLowerCase().includes(q)
+  ).slice(0,10);
+  if (!hits.length) { hr.style.display='none'; return; }
+  hr.innerHTML = hits.map(s => '<a class="hr-item" href="reader/'+s.id+'.html"><div class="hr-main"><span class="gr-id">'+s.id+'</span><span class="gr-title">'+s.title+'</span></div><span class="gr-dept">'+s.department+' &middot; v'+s.version+'</span></a>').join('');
+  hr.style.display='block';
+});
+document.addEventListener('click', e => { if (!hs.contains(e.target) && !hr.contains(e.target)) hr.style.display='none'; });
+function renderBookmarks() {
+  const bm = getBookmarks();
+  const section = document.getElementById('bookmarksSection');
+  const grid = document.getElementById('bookmarkGrid');
+  if (!bm.length) { section.style.display='none'; return; }
+  section.style.display='';
+  const items = SOPS_DATA.filter(s => bm.includes(s.id));
+  grid.innerHTML = items.map(s =>
+    '<div class="sop-card"><div class="sop-card-top"><span class="sop-id-badge">'+s.id+'</span><button class="bookmark-btn bookmarked" data-bookmark="'+s.id+'" onclick="toggleBookmark(\''+s.id+'\');renderBookmarks()" title="Remove bookmark" aria-label="Remove bookmark"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button></div><h3 class="sop-card-title"><a href="reader/'+s.id+'.html">'+s.title+'</a></h3><p class="sop-card-desc">'+s.description.slice(0,120)+(s.description.length>120?'\u2026':'')+'</p><div class="sop-card-footer"><span class="meta-date">Updated '+s.updated+'</span><a class="card-read-btn" href="reader/'+s.id+'.html">Read \u2192</a></div></div>'
+  ).join('');
+}
+function clearAllBookmarks() { localStorage.removeItem('bookmarks'); renderBookmarks(); }
+renderBookmarks();
+</script>
+"@
+
+$homeHtml = Get-PageHtml -title "eLSOP Knowledge Portal" -depth "" -navActive "home" -content $homeContent -scripts $homeScripts
+[System.IO.File]::WriteAllText((Join-Path $SiteDir "index.html"), $homeHtml, [System.Text.Encoding]::UTF8)
+Write-Host "  wrote: site/index.html (portal homepage, $($sops.Count) SOPs)"
+
 Write-Host ""
 Write-Host "Build complete!" -ForegroundColor Green
-Write-Host "  $($sops.Count) reader pages written to site/reader/"
-Write-Host "  library.html and dashboard.html regenerated"
+Write-Host "  Pages: index.html, library.html, dashboard.html + $($sops.Count) reader pages"

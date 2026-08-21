@@ -1,102 +1,223 @@
-<!DOCTYPE html>
-<html lang="en">
+﻿<!DOCTYPE html>
+<html lang="en" data-theme="light">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>eLSOP — Customer SOP Matrix</title>
-<link rel="stylesheet" href="style.css">
+<title>eLSOP Knowledge Portal</title>
+<link rel="stylesheet" href="portal.css">
+<meta name="description" content="eLSOP Standard Operating Procedure Knowledge Portal">
 </head>
 <body>
-
-<header>
-  <div class="brand">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-      <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
-      <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
-    </svg>
-    eLSOP <span class="badge">SOP</span>
-  </div>
-  <nav>
-    <a href="index.html" class="active">Customer Matrix</a>
-    <a href="sops.html">Formal SOPs</a>
-  </nav>
-</header>
-
-<div class="page">
-  <div class="page-title">
-    <h1>Customer SOP Matrix</h1>
-    <p>Backup retrieval &amp; claims processing reference</p>
-  </div>
-
-  <!-- Toolbar -->
-  <div class="toolbar">
-    <div class="search-wrap">
-      <svg class="search-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      <input id="searchInput" type="text" placeholder="Search customer name, signon code, or client…" oninput="filterTable()">
+<nav class="topnav">
+  <div class="topnav-inner">
+    <a class="brand" href="index.html">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+      </svg>
+      <span class="brand-name">eLSOP</span><span class="brand-badge">SOP</span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html" class="nav-link active">Home</a>
+      <a href="library.html" class="nav-link ">SOP Library</a>
+      <a href="dashboard.html" class="nav-link ">Dashboard</a>
+      <a href="customers.html" class="nav-link ">Customer Matrix</a>
+      <a href="sops.html" class="nav-link ">Formal SOPs</a>
     </div>
-    <select id="typeFilter" onchange="filterTable()">
-      <option value="">All Types</option>
-      <option value="direct">Direct</option>
-      <option value="wholesaler">Wholesaler / Distributor</option>
-      <option value="indirect">Indirect</option>
-      <option value="third">Third Party</option>
-    </select>
-    <select id="portalFilter" onchange="filterTable()">
-      <option value="">Any Portal Status</option>
-      <option value="yes">Portal: Yes</option>
-      <option value="no">Portal: No</option>
-    </select>
-    <select id="sopFilter" onchange="filterTable()">
-      <option value="">All Customers</option>
-      <option value="yes">Has Formal SOP</option>
-    </select>
-    <span id="countBadge" class="count-badge"></span>
+    <div class="nav-actions">
+      <div class="nav-search-wrap">
+        <svg class="nav-search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input id="globalSearch" class="nav-search" type="text" placeholder="Search SOPs..." autocomplete="off">
+        <div id="globalResults" class="global-results" style="display:none"></div>
+      </div>
+      <button class="theme-toggle" onclick="toggleTheme()" title="Toggle dark mode" aria-label="Toggle dark mode">
+        <svg id="themeIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+        </svg>
+      </button>
+    </div>
   </div>
-
-  <!-- Table -->
-  <div class="table-wrap">
-    <table id="mainTable">
-      <thead>
-        <tr>
-          <th class="col-name" onclick="sortTable(0)">Customer Name <span class="sort-arrow" data-col="0">↕</span></th>
-          <th class="col-signon">Customer Signon</th>
-          <th class="col-type" onclick="sortTable(2)">Type <span class="sort-arrow" data-col="2">↕</span></th>
-          <th class="col-claims">Claims Processing Information</th>
-          <th class="col-client">Client Specific Info</th>
-          <th class="col-linelvl" title="Is line level detail indexed on the customer's documentation?">Line Level Indexed?</th>
-          <th class="col-backup">Backup Retrieval Information</th>
-          <th class="col-portal">Portal?</th>
-          <th class="col-sop">Formal SOP</th>
-          <th class="col-updated" onclick="sortTable(9)">Updated <span class="sort-arrow" data-col="9">↕</span></th>
-        </tr>
-      </thead>
-      <tbody id="tableBody">
-        <tr><td colspan="10" style="text-align:center;padding:32px;color:#57606a;">Loading customers…</td></tr>
-      </tbody>
-    </table>
+</nav>
+<main>
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-text">
+      <h1 class="hero-title">eLSOP Knowledge Portal</h1>
+      <p class="hero-sub">Your single source of truth for Standard Operating Procedures &#x2014; searchable, bookmarkable, always up to date.</p>
+      <div class="hero-search-wrap">
+        <svg class="hero-search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input id="heroSearch" class="hero-search" type="text" placeholder="Search by title, SOP number, department&#x2026;" autocomplete="off">
+        <div id="heroResults" class="hero-results" style="display:none"></div>
+      </div>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-card"><span class="stat-num">40</span><span class="stat-lbl">Total SOPs</span></div>
+      <div class="stat-card"><span class="stat-num">1</span><span class="stat-lbl">Departments</span></div>
+      <div class="stat-card"><span class="stat-num">0</span><span class="stat-lbl">Pending Review</span></div>
+      <div class="stat-card"><span class="stat-num">6</span><span class="stat-lbl">Updated This Quarter</span></div>
+    </div>
   </div>
-
-  <div id="noResults" class="no-results" style="display:none;">
-    No customers match your filters. <a href="#" onclick="clearFilters();return false;">Clear filters</a>
+</section>
+<section class="home-section">
+  <div class="home-section-inner">
+    <h2 class="section-heading">Departments</h2>
+    <div class="dept-grid">
+      <a class="dept-card" href="library.html?dept=Claims"><span class="dept-icon">&#x1F4CB;</span><span class="dept-name">Claims</span><span class="dept-count">40 SOPs</span></a>
+    </div>
   </div>
-</div>
-
-<!-- Detail Drawer -->
-<div id="drawer" class="drawer" style="display:none;">
-  <div class="drawer-inner">
-    <button class="drawer-close" onclick="closeDrawer()">✕ Close</button>
-    <h2 id="drawerName"></h2>
-    <div id="drawerContent"></div>
+</section>
+<section class="home-section home-section-alt">
+  <div class="home-section-inner">
+    <div class="section-header-row">
+      <h2 class="section-heading">Recently Updated</h2>
+      <a class="section-link" href="library.html">View all &#x2192;</a>
+    </div>
+    <div class="card-grid">
+      <div class="sop-card">
+        <div class="sop-card-top"><span class="sop-id-badge">SOP-Acosta-002</span><button class="bookmark-btn" data-bookmark="SOP-Acosta-002" onclick="toggleBookmark('SOP-Acosta-002')" title="Bookmark" aria-label="Bookmark"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button></div>
+        <h3 class="sop-card-title"><a href="reader/SOP-Acosta-002.html">Associated Supermarket Group Claims</a></h3>
+        <p class="sop-card-desc">Procedure for managing claims and backup retrieval for Associated Supermarket Group (ASG) accounts.</p>
+        <div class="sop-card-change"><span class="change-dot"></span><span class="change-desc">Added Ocean Spray to the Client Specific Validation Information section. (477516&#x2026;</span></div>
+        <div class="sop-card-meta"><span class="meta-dept">Claims</span><span class="meta-ver">v2.1</span><span class="meta-status status-active">Active</span></div>
+        <div class="sop-card-footer"><span class="meta-date">Updated 2026-08-03 &middot; Lindsay McGinnis</span><a class="card-read-btn" href="reader/SOP-Acosta-002.html">Read &#x2192;</a></div>
+      </div>
+      <div class="sop-card">
+        <div class="sop-card-top"><span class="sop-id-badge">SOP-Acosta-007</span><button class="bookmark-btn" data-bookmark="SOP-Acosta-007" onclick="toggleBookmark('SOP-Acosta-007')" title="Bookmark" aria-label="Bookmark"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button></div>
+        <h3 class="sop-card-title"><a href="reader/SOP-Acosta-007.html">Kroger / Ralphs / Vitacost Claims</a></h3>
+        <p class="sop-card-desc">Enterprise-level claims SOP for Kroger Co., Ralphs Grocery, Jake's Finer Foods, and Vitacost.com.</p>
+        <div class="sop-card-change"><span class="change-dot"></span><span class="change-desc">Eagle client-specific: Added under tolerance events to FY27 EVENTS spreadsheet. &#x2026;</span></div>
+        <div class="sop-card-meta"><span class="meta-dept">Claims</span><span class="meta-ver">v4.1</span><span class="meta-status status-active">Active</span></div>
+        <div class="sop-card-footer"><span class="meta-date">Updated 2026-08-03 &middot; Michael Huml</span><a class="card-read-btn" href="reader/SOP-Acosta-007.html">Read &#x2192;</a></div>
+      </div>
+      <div class="sop-card">
+        <div class="sop-card-top"><span class="sop-id-badge">SOP-Acosta-001</span><button class="bookmark-btn" data-bookmark="SOP-Acosta-001" onclick="toggleBookmark('SOP-Acosta-001')" title="Bookmark" aria-label="Bookmark"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button></div>
+        <h3 class="sop-card-title"><a href="reader/SOP-Acosta-001.html">ADUSA Distribution Claims Processing</a></h3>
+        <p class="sop-card-desc">Work instructions for processing all deduction types for ADUSA Distribution — The Giant Company, Giant Foods, and Stop &&#x2026;</p>
+        <div class="sop-card-change"><span class="change-dot"></span><span class="change-desc">Ken's client-specific: updated 2026 2% Ecomm event number. (477299)</span></div>
+        <div class="sop-card-meta"><span class="meta-dept">Claims</span><span class="meta-ver">v3.2</span><span class="meta-status status-active">Active</span></div>
+        <div class="sop-card-footer"><span class="meta-date">Updated 2026-07-27 &middot; Michael Huml</span><a class="card-read-btn" href="reader/SOP-Acosta-001.html">Read &#x2192;</a></div>
+      </div>
+      <div class="sop-card">
+        <div class="sop-card-top"><span class="sop-id-badge">SOP-Acosta-004</span><button class="bookmark-btn" data-bookmark="SOP-Acosta-004" onclick="toggleBookmark('SOP-Acosta-004')" title="Bookmark" aria-label="Bookmark"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button></div>
+        <h3 class="sop-card-title"><a href="reader/SOP-Acosta-004.html">Delhaize Claims Processing</a></h3>
+        <p class="sop-card-desc">Comprehensive SOP for Delhaize America deduction management and claims resolution.</p>
+        <div class="sop-card-change"><span class="change-dot"></span><span class="change-desc">Updated all instances of Ready to Clear with Ready to Clear – CCA.</span></div>
+        <div class="sop-card-meta"><span class="meta-dept">Claims</span><span class="meta-ver">v2.0</span><span class="meta-status status-active">Active</span></div>
+        <div class="sop-card-footer"><span class="meta-date">Updated 2026-07-27 &middot; Lindsay McGinnis</span><a class="card-read-btn" href="reader/SOP-Acosta-004.html">Read &#x2192;</a></div>
+      </div>
+      <div class="sop-card">
+        <div class="sop-card-top"><span class="sop-id-badge">SOP-Acosta-009</span><button class="bookmark-btn" data-bookmark="SOP-Acosta-009" onclick="toggleBookmark('SOP-Acosta-009')" title="Bookmark" aria-label="Bookmark"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button></div>
+        <h3 class="sop-card-title"><a href="reader/SOP-Acosta-009.html">McLane Company Claims SOP</a></h3>
+        <p class="sop-card-desc">Deduction management and backup retrieval procedures for McLane Company Inc., a wholesale grocery distributor.</p>
+        <div class="sop-card-change"><span class="change-dot"></span><span class="change-desc">Removed customer check requests information for Campbells in Client Specific Sec&#x2026;</span></div>
+        <div class="sop-card-meta"><span class="meta-dept">Claims</span><span class="meta-ver">v2.5</span><span class="meta-status status-active">Active</span></div>
+        <div class="sop-card-footer"><span class="meta-date">Updated 2026-07-06 &middot; Dawn Regan</span><a class="card-read-btn" href="reader/SOP-Acosta-009.html">Read &#x2192;</a></div>
+      </div>
+      <div class="sop-card">
+        <div class="sop-card-top"><span class="sop-id-badge">SOP-Acosta-005</span><button class="bookmark-btn" data-bookmark="SOP-Acosta-005" onclick="toggleBookmark('SOP-Acosta-005')" title="Bookmark" aria-label="Bookmark"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button></div>
+        <h3 class="sop-card-title"><a href="reader/SOP-Acosta-005.html">Harris Teeter Supermarkets SOP</a></h3>
+        <p class="sop-card-desc">Deduction and claims processing procedures for Harris Teeter Supermarkets, a Kroger banner.</p>
+        <div class="sop-card-change"><span class="change-dot"></span><span class="change-desc">Added 2026 Fee Schedule letter. (475505)</span></div>
+        <div class="sop-card-meta"><span class="meta-dept">Claims</span><span class="meta-ver">v2.3</span><span class="meta-status status-active">Active</span></div>
+        <div class="sop-card-footer"><span class="meta-date">Updated 2026-07-06 &middot; Michael Huml</span><a class="card-read-btn" href="reader/SOP-Acosta-005.html">Read &#x2192;</a></div>
+      </div>
+    </div>
   </div>
-</div>
-<div id="drawerOverlay" class="drawer-overlay" style="display:none;" onclick="closeDrawer()"></div>
-
-<footer>
-  <p>eLSOP — Customer SOP Matrix &nbsp;·&nbsp; ACOSTA customers only &nbsp;·&nbsp; Non-ACOSTA entries removed</p>
-  <p class="footer-made">Made with IBM Bob</p>
+</section>
+<section class="home-section" id="bookmarksSection" style="display:none">
+  <div class="home-section-inner">
+    <div class="section-header-row">
+      <h2 class="section-heading">&#x2B50; Your Bookmarks</h2>
+      <button class="section-link" onclick="clearAllBookmarks()">Clear all</button>
+    </div>
+    <div class="card-grid" id="bookmarkGrid"></div>
+  </div>
+</section>
+</main>
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-brand">eLSOP Knowledge Portal</div>
+    <div class="footer-meta">Built 2026-08-21 23:31 UTC &nbsp;&middot;&nbsp; ACOSTA customers only</div>
+    <div class="footer-made">Made with IBM Bob</div>
+  </div>
 </footer>
-
-<script src="customers.js"></script>
-<script src="app.js"></script>
+<script>
+const ALL_SOPS = [{"id":"SOP-Acosta-001","title":"ADUSA Distribution Claims Processing","department":"Claims","category":"Customer SOP","owner":"Michael Huml","version":"3.2","status":"Active","updated":"2026-07-27","views":412,"description":"Work instructions for processing all deduction types for ADUSA Distribution — The Giant Company, Giant Foods, and Stop \u0026 Shop. Covers customer general info, signon job aid, deduction types (Off Invoice, Billback, Scan, TPR, Post Audit, Advantage Billing, and more), contract/POP validation, and client-specific instructions for 30+ clients.","tags":["ADUSA","Giant Company","Giant Foods","Stop \u0026 Shop","AHOLPH","SSAHNE","GIANBW","Post Audit","TPR","Advantage Billing","Scan","Billback","Off Invoice"],"file":"sops/ADUSA_Distr_The_Giant_Company_Giant_Foods_Stop_Shop.docx"},{"id":"SOP-Acosta-002","title":"Associated Supermarket Group Claims","department":"Claims","category":"Customer SOP","owner":"Lindsay McGinnis","version":"2.1","status":"Active","updated":"2026-08-03","views":287,"description":"Procedure for managing claims and backup retrieval for Associated Supermarket Group (ASG) accounts.","tags":["ASG","Associated","supermarket","deductions"],"file":"sops/Associated_Supermarket_Group.docx"},{"id":"SOP-Acosta-003","title":"Brookshire Grocery Company SOP","department":"Claims","category":"Customer SOP","owner":"Dawn Regan","version":"1.4","status":"Active","updated":"2026-05-04","views":198,"description":"Claims processing and backup retrieval procedures for Brookshire Grocery Company accounts.","tags":["Brookshire","grocery","Texas","claims"],"file":"sops/Brookshire_Grocery_Company.docx"},{"id":"SOP-Acosta-004","title":"Delhaize Claims Processing","department":"Claims","category":"Customer SOP","owner":"Lindsay McGinnis","version":"2.0","status":"Active","updated":"2026-07-27","views":334,"description":"Comprehensive SOP for Delhaize America deduction management and claims resolution.","tags":["Delhaize","Food Lion","Hannaford","claims"],"file":"sops/Delhaize.docx"},{"id":"SOP-Acosta-005","title":"Harris Teeter Supermarkets SOP","department":"Claims","category":"Customer SOP","owner":"Michael Huml","version":"2.3","status":"Active","updated":"2026-07-06","views":445,"description":"Deduction and claims processing procedures for Harris Teeter Supermarkets, a Kroger banner.","tags":["Harris Teeter","Kroger","Southeast","claims"],"file":"sops/Harris_Teeter_Supermarkets.docx"},{"id":"SOP-Acosta-006","title":"HyVee / Lomar / PDI Claims SOP","department":"Claims","category":"Customer SOP","owner":"Michael Huml","version":"1.6","status":"Active","updated":"2026-04-27","views":223,"description":"Claims and backup procedures for HyVee Corporate, Lomar, and Perishable Distributors of Iowa (PDI).","tags":["HyVee","Lomar","PDI","Midwest","claims"],"file":"sops/HyVee_Corporate_Lomar_Perishable_Dist_of_Iowa_PDI.docx"},{"id":"SOP-Acosta-007","title":"Kroger / Ralphs / Vitacost Claims","department":"Claims","category":"Customer SOP","owner":"Michael Huml","version":"4.1","status":"Active","updated":"2026-08-03","views":892,"description":"Enterprise-level claims SOP for Kroger Co., Ralphs Grocery, Jake\u0027s Finer Foods, and Vitacost.com.","tags":["Kroger","Ralphs","Vitacost","enterprise","claims"],"file":"sops/Kroger_Ralphs_Grocery_Company_Jakes_Finer_Foods_Vitacostcom.docx"},{"id":"SOP-Acosta-008","title":"K-V-A-T Food Store (Food City) SOP","department":"Claims","category":"Customer SOP","owner":"Dawn Regan","version":"1.2","status":"Active","updated":"2026-06-08","views":156,"description":"Claims processing procedure for K-V-A-T Food Store Inc., operating as Food City.","tags":["KVAT","Food City","Appalachian","claims"],"file":"sops/K_V_A_T_Food_Store_Inc.docx"},{"id":"SOP-Acosta-009","title":"McLane Company Claims SOP","department":"Claims","category":"Customer SOP","owner":"Dawn Regan","version":"2.5","status":"Active","updated":"2026-07-06","views":378,"description":"Deduction management and backup retrieval procedures for McLane Company Inc., a wholesale grocery distributor.","tags":["McLane","wholesale","distributor","claims"],"file":"sops/McLane_Company_Inc.docx"},{"id":"SOP-Acosta-010","title":"Mitchell Grocery Company SOP","department":"Claims","category":"Customer SOP","owner":"Michael Huml","version":"1.1","status":"Active","updated":"2025-04-06","views":134,"description":"Claims and backup procedures for Mitchell Grocery Company accounts.","tags":["Mitchell","grocery","Southeast","wholesale"],"file":"sops/Mitchell_Grocery_Company.docx"},{"id":"SOP-Acosta-011","title":"Schnucks Markets Claims SOP","department":"Claims","category":"Customer SOP","owner":"Dawn Regan","version":"1.8","status":"Active","updated":"2026-06-22","views":267,"description":"Deduction and claims processing SOP for Schnucks Markets Inc., a Midwest regional grocer.","tags":["Schnucks","Midwest","St Louis","claims"],"file":"sops/Schnucks_Markets_Inc.docx"},{"id":"SOP-Acosta-012","title":"WinCo Foods Claims SOP","department":"Claims","category":"Customer SOP","owner":"Dawn Regan","version":"2.0","status":"Active","updated":"2026-06-22","views":311,"description":"Claims processing and backup retrieval procedures for WinCo Foods Inc., a warehouse-style grocer.","tags":["WinCo","warehouse","West","claims"],"file":"sops/Winco_Foods_Inc.docx"},{"id":"SOP-Acosta-013","title":"Associated Food Stores (AFS) SOP","department":"Claims","category":"Customer SOP","owner":"Michael Huml","version":"1.0","status":"Active","updated":"2025-01-01","views":0,"description":"Claims processing and backup retrieval procedures for Associated Food Stores (AFS).","tags":["AFS","Associated Food Stores","cooperative","claims"],"file":"sops/Associated_Food_Stores_AFS.docx"},{"id":"SOP-Acosta-014","title":"Associated Wholesale Grocers / AWG / Valu Merchandisers SOP","department":"Claims","category":"Customer SOP","owner":"Michael Huml","version":"1.0","status":"Active","updated":"2025-01-01","views":0,"description":"Claims processing and backup retrieval procedures for Associated Wholesale Grocers (AWG) and Valu Merchandisers Company (VMC).","tags":["AWG","Associated Wholesale Grocers","Valu Merchandisers","VMC","wholesale","claims"],"file":"sops/Associated_Wholesale_Grocers_AWG_Valu_Merchandisers_VMC.docx"},{"id":"SOP-Acosta-015","title":"Certco Inc. / Woodman\u0027s Janesville SOP","department":"Claims","category":"Customer SOP","owner":"Dawn Regan","version":"1.0","status":"Active","updated":"2025-01-01","views":0,"description":"Claims processing and backup retrieval procedures for Certco Inc. and Woodman\u0027s Janesville accounts.","tags":["Certco","Woodman\u0027s","Janesville","Midwest","claims"],"file":"sops/Certco_Inc_Woodmans_Janesville.docx"},{"id":"SOP-Acosta-016","title":"Core-Mark International SOP","department":"Claims","category":"Customer SOP","owner":"Michael Huml","version":"1.0","status":"Active","updated":"2025-01-01","views":0,"description":"Claims processing and backup retrieval procedures for Core-Mark International accounts.","tags":["Core-Mark","convenience","wholesale","claims"],"file":"sops/Core_Mark.docx"},{"id":"SOP-Acosta-017","title":"CS / Winn-Dixie / BI-LO Holdings SOP","department":"Claims","category":"Customer SOP","owner":"Lindsay McGinnis","version":"1.0","status":"Active","updated":"2025-01-01","views":0,"description":"Claims processing and backup retrieval procedures for Winn-Dixie and BI-LO Holdings accounts via C\u0026S.","tags":["Winn-Dixie","BI-LO","C\u0026S","Southeast","claims"],"file":"sops/CS-Winn_Dixie-BiLo_Holdings.docx"},{"id":"SOP-Acosta-018","title":"CS Wholesale Grocers Inc. SOP","department":"Claims","category":"Customer SOP","owner":"Lindsay McGinnis","version":"1.0","status":"Active","updated":"2025-01-01","views":0,"description":"Claims processing and backup retrieval procedures for C\u0026S Wholesale Grocers Inc. accounts.","tags":["C\u0026S","CS Wholesale","wholesale","distributor","claims"],"file":"sops/CS_Wholesale_Grocers_Inc.docx"},{"id":"SOP-Acosta-019","title":"CVS Distribution / Peoples Drug SOP","department":"Claims","category":"Customer SOP","owner":"Michael Huml","version":"1.0","status":"Active","updated":"2025-01-01","views":0,"description":"Claims processing and backup retrieval procedures for CVS Distribution and Peoples Drug accounts.","tags":["CVS","Peoples Drug","pharmacy","drug store","claims"],"file":"sops/CVS_Distribution_Peoples_Drug.docx"},{"id":"SOP-Acosta-020","title":"DeMoulas Supermarkets Inc. (Market Basket) SOP","department":"Claims","category":"Customer SOP","owner":"Lindsay McGinnis","version":"1.0","status":"Active","updated":"2025-01-01","views":0,"description":"Claims processing and backup retrieval procedures for DeMoulas Supermarkets Inc. (Market Basket) accounts.","tags":["DeMoulas","Market Basket","New England","claims"],"file":"sops/Demoulas_Supermarkets_Inc.docx"},{"id":"SOP-Acosta-021","title":"Fareway Stores Inc. SOP","department":"Claims","category":"Customer SOP","owner":"Dawn Regan","version":"1.0","status":"Active","updated":"2025-01-01","views":0,"description":"Claims processing and backup retrieval procedures for Fareway Stores Inc. accounts.","tags":["Fareway","Iowa","Midwest","grocery","claims"],"file":"sops/Fareway_Stores_Inc.docx"},{"id":"SOP-Acosta-022","title":"General Trading SOP","department":"Claims","category":"Customer SOP","owner":"Michael Huml","version":"1.0","status":"Active","updated":"2025-01-01","views":0,"description":"Claims processing and backup retrieval procedures for General Trading accounts.","tags":["General Trading","wholesale","claims"],"file":"sops/General_Trading.docx"},{"id":"SOP-Acosta-023","title":"Golub Corporation (Price Chopper / Market 32) SOP","department":"Claims","category":"Customer SOP","owner":"Lindsay McGinnis","version":"1.0","status":"Active","updated":"2025-01-01","views":0,"description":"Claims processing and backup retrieval procedures for Golub Corporation (Price Chopper / Market 32) accounts.","tags":["Golub","Price Chopper","Market 32","Northeast","claims"],"file":"sops/Golub_Corporation.docx"},{"id":"SOP-Acosta-024","title":"H-E-B Grocery Company SOP","department":"Claims","category":"Customer SOP","owner":"Dawn Regan","version":"1.0","status":"Active","updated":"2025-01-01","views":0,"description":"Claims processing and backup retrieval procedures for H-E-B Grocery Company accounts.","tags":["H-E-B","HEB","Texas","grocery","claims"],"file":"sops/H_E_Butt_Grocery_Company.docx"},{"id":"SOP-Acosta-025","title":"Ingles Supermarkets SOP","department":"Claims","category":"Customer SOP","owner":"Dawn Regan","version":"1.0","status":"Active","updated":"2025-01-01","views":0,"description":"Claims processing and backup retrieval procedures for Ingles Supermarkets accounts.","tags":["Ingles","Southeast","grocery","claims"],"file":"sops/Ingles_Supermarkets.docx"},{"id":"SOP-Acosta-026","title":"Jetro / Restaurant Depot SOP","department":"Claims","category":"Customer SOP","owner":"Michael Huml","version":"1.0","status":"Active","updated":"2025-01-01","views":0,"description":"Claims processing and backup retrieval procedures for Jetro Cash \u0026 Carry and Restaurant Depot accounts.","tags":["Jetro","Restaurant Depot","foodservice","wholesale","claims"],"file":"sops/Jetro_Restaurant_Depot.docx"},{"id":"SOP-Acosta-027","title":"Merchants Distributors LLC (MDI) SOP","department":"Claims","category":"Customer SOP","owner":"Lindsay McGinnis","version":"1.0","status":"Active","updated":"2025-01-01","views":0,"description":"Claims processing and backup retrieval procedures for Merchants Distributors LLC (MDI) accounts.","tags":["MDI","Merchants Distributors","wholesale","distributor","claims"],"file":"sops/Merchants_Distributors_LLC.docx"},{"id":"SOP-Acosta-028","title":"OK Grocery Co. / Giant Eagle SOP","department":"Claims","category":"Customer SOP","owner":"Dawn Regan","version":"1.0","status":"Active","updated":"2025-01-01","views":0,"description":"Claims processing and backup retrieval procedures for OK Grocery Co. and Giant Eagle accounts.","tags":["OK Grocery","Giant Eagle","Midwest","grocery","claims"],"file":"sops/OK_Grocery_Co_Giant_Eagle.docx"},{"id":"SOP-Acosta-029","title":"Publix Super Markets Inc. SOP","department":"Claims","category":"Customer SOP","owner":"Lindsay McGinnis","version":"1.0","status":"Active","updated":"2025-01-01","views":0,"description":"Claims processing and backup retrieval procedures for Publix Super Markets Inc. accounts.","tags":["Publix","Southeast","grocery","claims"],"file":"sops/Publix_Super_Markets_Inc.docx"},{"id":"SOP-Acosta-030","title":"Retail Marketing Group (RMG) SOP","department":"Claims","category":"Customer SOP","owner":"Michael Huml","version":"1.0","status":"Active","updated":"2025-01-01","views":0,"description":"Claims processing and backup retrieval procedures for Retail Marketing Group (RMG) accounts.","tags":["RMG","Retail Marketing Group","wholesale","claims"],"file":"sops/Retail_Marketing_Group.docx"},{"id":"SOP-Acosta-031","title":"Save Mart / Yosemite / Food Maxx SOP","department":"Claims","category":"Customer SOP","owner":"Dawn Regan","version":"1.0","status":"Active","updated":"2025-01-01","views":0,"description":"Claims processing and backup retrieval procedures for Save Mart, Yosemite Farm Credit, and Food Maxx accounts.","tags":["Save Mart","Yosemite","Food Maxx","California","grocery","claims"],"file":"sops/Save_Mart_Yosemite_Save_Mart_Food_Maxx.docx"},{"id":"SOP-Acosta-032","title":"Smart \u0026 Final SOP","department":"Claims","category":"Customer SOP","owner":"Dawn Regan","version":"1.0","status":"Active","updated":"2025-01-01","views":0,"description":"Claims processing and backup retrieval procedures for Smart \u0026 Final accounts.","tags":["Smart \u0026 Final","California","warehouse","grocery","claims"],"file":"sops/Smart_and_Final.docx"},{"id":"SOP-Acosta-033","title":"Spartan Stores Inc. / Nash Finch SOP","department":"Claims","category":"Customer SOP","owner":"Dawn Regan","version":"1.0","status":"Active","updated":"2025-01-01","views":0,"description":"Claims processing and backup retrieval procedures for Spartan Stores Inc. and Nash Finch accounts.","tags":["Spartan Stores","Nash Finch","Midwest","wholesale","claims"],"file":"sops/Spartan_Stores_Inc_Nash_Finch.docx"},{"id":"SOP-Acosta-034","title":"Stater Bros. Markets SOP","department":"Claims","category":"Customer SOP","owner":"Dawn Regan","version":"1.0","status":"Active","updated":"2025-01-01","views":0,"description":"Claims processing and backup retrieval procedures for Stater Bros. Markets accounts.","tags":["Stater Bros","California","grocery","claims"],"file":"sops/Stater_Bros.doc"},{"id":"SOP-Acosta-035","title":"Tops Markets SOP","department":"Claims","category":"Customer SOP","owner":"Lindsay McGinnis","version":"1.0","status":"Active","updated":"2025-01-01","views":0,"description":"Claims processing and backup retrieval procedures for Tops Markets LLC accounts.","tags":["Tops Markets","Northeast","grocery","claims"],"file":"sops/Tops_Markets.docx"},{"id":"SOP-Acosta-036","title":"UNFI Conventional SOP","department":"Claims","category":"Customer SOP","owner":"Michael Huml","version":"1.0","status":"Active","updated":"2025-01-01","views":0,"description":"Claims processing and backup retrieval procedures for UNFI Conventional (conventional grocery) accounts.","tags":["UNFI","United Natural Foods","conventional","wholesale","distributor","claims"],"file":"sops/UNFI_Conventional.docx"},{"id":"SOP-Acosta-037","title":"United Natural Foods West (UNFI) Accounts Payable SOP","department":"Claims","category":"Customer SOP","owner":"Michael Huml","version":"1.0","status":"Active","updated":"2025-01-01","views":0,"description":"Claims processing and backup retrieval procedures for United Natural Foods West (UNFI West) accounts payable.","tags":["UNFI","UNFI West","United Natural Foods","natural","organic","wholesale","claims"],"file":"sops/United_Natural_Foods_West_UNFI_Accounts_Payable.docx"},{"id":"SOP-Acosta-038","title":"URM Stores / Spokane SOP","department":"Claims","category":"Customer SOP","owner":"Dawn Regan","version":"1.0","status":"Active","updated":"2025-01-01","views":0,"description":"Claims processing and backup retrieval procedures for URM Stores (Spokane) accounts.","tags":["URM","Spokane","Pacific Northwest","wholesale","claims"],"file":"sops/URM_Spokane.docx"},{"id":"SOP-Acosta-039","title":"Wakefern Corporation (ShopRite) SOP","department":"Claims","category":"Customer SOP","owner":"Lindsay McGinnis","version":"1.0","status":"Active","updated":"2025-01-01","views":0,"description":"Claims processing and backup retrieval procedures for Wakefern Corporation (ShopRite) accounts.","tags":["Wakefern","ShopRite","Northeast","cooperative","claims"],"file":"sops/Wakefern_Corporation.docx"},{"id":"SOP-Acosta-040","title":"Weis Markets SOP","department":"Claims","category":"Customer SOP","owner":"Lindsay McGinnis","version":"1.0","status":"Active","updated":"2025-01-01","views":0,"description":"Claims processing and backup retrieval procedures for Weis Markets Inc. accounts.","tags":["Weis Markets","Mid-Atlantic","grocery","claims"],"file":"sops/Weis_Markets.docx"}];
+function toggleTheme() {
+  const html = document.documentElement;
+  const isDark = html.getAttribute('data-theme') === 'dark';
+  html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+  localStorage.setItem('theme', isDark ? 'light' : 'dark');
+  updateThemeIcon(!isDark);
+}
+function updateThemeIcon(dark) {
+  const icon = document.getElementById('themeIcon');
+  if (!icon) return;
+  icon.innerHTML = dark ? '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>' : '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>';
+}
+(function() {
+  const saved = localStorage.getItem('theme') || 'light';
+  document.documentElement.setAttribute('data-theme', saved);
+  updateThemeIcon(saved === 'dark');
+})();
+function getBookmarks() { try { return JSON.parse(localStorage.getItem('bookmarks') || '[]'); } catch { return []; } }
+function toggleBookmark(id) {
+  let bm = getBookmarks();
+  if (bm.includes(id)) bm = bm.filter(x => x !== id); else bm.push(id);
+  localStorage.setItem('bookmarks', JSON.stringify(bm));
+  document.querySelectorAll('[data-bookmark="' + id + '"]').forEach(el => {
+    el.classList.toggle('bookmarked', bm.includes(id));
+    el.title = bm.includes(id) ? 'Remove bookmark' : 'Bookmark this SOP';
+  });
+}
+function isBookmarked(id) { return getBookmarks().includes(id); }
+const gs = document.getElementById('globalSearch');
+const gr = document.getElementById('globalResults');
+if (gs) {
+  gs.addEventListener('input', function() {
+    const q = this.value.trim().toLowerCase();
+    if (!q) { gr.style.display = 'none'; return; }
+    const hits = ALL_SOPS.filter(s =>
+      s.title.toLowerCase().includes(q) || s.id.toLowerCase().includes(q) ||
+      s.department.toLowerCase().includes(q) || (s.tags||[]).join(' ').toLowerCase().includes(q)
+    ).slice(0, 8);
+    if (!hits.length) { gr.style.display = 'none'; return; }
+    const base = '';
+    gr.innerHTML = hits.map(s => '<a class="gr-item" href="' + base + 'reader/' + s.id + '.html"><span class="gr-id">' + s.id + '</span><span class="gr-title">' + s.title + '</span><span class="gr-dept">' + s.department + '</span></a>').join('');
+    gr.style.display = 'block';
+  });
+  document.addEventListener('click', e => { if (!gs.contains(e.target) && !gr.contains(e.target)) gr.style.display = 'none'; });
+}
+</script>
+<script>
+const SOPS_DATA = [{"id":"SOP-Acosta-001","title":"ADUSA Distribution Claims Processing","department":"Claims","category":"Customer SOP","owner":"Michael Huml","version":"3.2","status":"Active","updated":"2026-07-27","views":412,"description":"Work instructions for processing all deduction types for ADUSA Distribution — The Giant Company, Giant Foods, and Stop \u0026 Shop. Covers customer general info, signon job aid, deduction types (Off Invoice, Billback, Scan, TPR, Post Audit, Advantage Billing, and more), contract/POP validation, and client-specific instructions for 30+ clients.","tags":["ADUSA","Giant Company","Giant Foods","Stop \u0026 Shop","AHOLPH","SSAHNE","GIANBW","Post Audit","TPR","Advantage Billing","Scan","Billback","Off Invoice"],"file":"sops/ADUSA_Distr_The_Giant_Company_Giant_Foods_Stop_Shop.docx"},{"id":"SOP-Acosta-002","title":"Associated Supermarket Group Claims","department":"Claims","category":"Customer SOP","owner":"Lindsay McGinnis","version":"2.1","status":"Active","updated":"2026-08-03","views":287,"description":"Procedure for managing claims and backup retrieval for Associated Supermarket Group (ASG) accounts.","tags":["ASG","Associated","supermarket","deductions"],"file":"sops/Associated_Supermarket_Group.docx"},{"id":"SOP-Acosta-003","title":"Brookshire Grocery Company SOP","department":"Claims","category":"Customer SOP","owner":"Dawn Regan","version":"1.4","status":"Active","updated":"2026-05-04","views":198,"description":"Claims processing and backup retrieval procedures for Brookshire Grocery Company accounts.","tags":["Brookshire","grocery","Texas","claims"],"file":"sops/Brookshire_Grocery_Company.docx"},{"id":"SOP-Acosta-004","title":"Delhaize Claims Processing","department":"Claims","category":"Customer SOP","owner":"Lindsay McGinnis","version":"2.0","status":"Active","updated":"2026-07-27","views":334,"description":"Comprehensive SOP for Delhaize America deduction management and claims resolution.","tags":["Delhaize","Food Lion","Hannaford","claims"],"file":"sops/Delhaize.docx"},{"id":"SOP-Acosta-005","title":"Harris Teeter Supermarkets SOP","department":"Claims","category":"Customer SOP","owner":"Michael Huml","version":"2.3","status":"Active","updated":"2026-07-06","views":445,"description":"Deduction and claims processing procedures for Harris Teeter Supermarkets, a Kroger banner.","tags":["Harris Teeter","Kroger","Southeast","claims"],"file":"sops/Harris_Teeter_Supermarkets.docx"},{"id":"SOP-Acosta-006","title":"HyVee / Lomar / PDI Claims SOP","department":"Claims","category":"Customer SOP","owner":"Michael Huml","version":"1.6","status":"Active","updated":"2026-04-27","views":223,"description":"Claims and backup procedures for HyVee Corporate, Lomar, and Perishable Distributors of Iowa (PDI).","tags":["HyVee","Lomar","PDI","Midwest","claims"],"file":"sops/HyVee_Corporate_Lomar_Perishable_Dist_of_Iowa_PDI.docx"},{"id":"SOP-Acosta-007","title":"Kroger / Ralphs / Vitacost Claims","department":"Claims","category":"Customer SOP","owner":"Michael Huml","version":"4.1","status":"Active","updated":"2026-08-03","views":892,"description":"Enterprise-level claims SOP for Kroger Co., Ralphs Grocery, Jake\u0027s Finer Foods, and Vitacost.com.","tags":["Kroger","Ralphs","Vitacost","enterprise","claims"],"file":"sops/Kroger_Ralphs_Grocery_Company_Jakes_Finer_Foods_Vitacostcom.docx"},{"id":"SOP-Acosta-008","title":"K-V-A-T Food Store (Food City) SOP","department":"Claims","category":"Customer SOP","owner":"Dawn Regan","version":"1.2","status":"Active","updated":"2026-06-08","views":156,"description":"Claims processing procedure for K-V-A-T Food Store Inc., operating as Food City.","tags":["KVAT","Food City","Appalachian","claims"],"file":"sops/K_V_A_T_Food_Store_Inc.docx"},{"id":"SOP-Acosta-009","title":"McLane Company Claims SOP","department":"Claims","category":"Customer SOP","owner":"Dawn Regan","version":"2.5","status":"Active","updated":"2026-07-06","views":378,"description":"Deduction management and backup retrieval procedures for McLane Company Inc., a wholesale grocery distributor.","tags":["McLane","wholesale","distributor","claims"],"file":"sops/McLane_Company_Inc.docx"},{"id":"SOP-Acosta-010","title":"Mitchell Grocery Company SOP","department":"Claims","category":"Customer SOP","owner":"Michael Huml","version":"1.1","status":"Active","updated":"2025-04-06","views":134,"description":"Claims and backup procedures for Mitchell Grocery Company accounts.","tags":["Mitchell","grocery","Southeast","wholesale"],"file":"sops/Mitchell_Grocery_Company.docx"},{"id":"SOP-Acosta-011","title":"Schnucks Markets Claims SOP","department":"Claims","category":"Customer SOP","owner":"Dawn Regan","version":"1.8","status":"Active","updated":"2026-06-22","views":267,"description":"Deduction and claims processing SOP for Schnucks Markets Inc., a Midwest regional grocer.","tags":["Schnucks","Midwest","St Louis","claims"],"file":"sops/Schnucks_Markets_Inc.docx"},{"id":"SOP-Acosta-012","title":"WinCo Foods Claims SOP","department":"Claims","category":"Customer SOP","owner":"Dawn Regan","version":"2.0","status":"Active","updated":"2026-06-22","views":311,"description":"Claims processing and backup retrieval procedures for WinCo Foods Inc., a warehouse-style grocer.","tags":["WinCo","warehouse","West","claims"],"file":"sops/Winco_Foods_Inc.docx"},{"id":"SOP-Acosta-013","title":"Associated Food Stores (AFS) SOP","department":"Claims","category":"Customer SOP","owner":"Michael Huml","version":"1.0","status":"Active","updated":"2025-01-01","views":0,"description":"Claims processing and backup retrieval procedures for Associated Food Stores (AFS).","tags":["AFS","Associated Food Stores","cooperative","claims"],"file":"sops/Associated_Food_Stores_AFS.docx"},{"id":"SOP-Acosta-014","title":"Associated Wholesale Grocers / AWG / Valu Merchandisers SOP","department":"Claims","category":"Customer SOP","owner":"Michael Huml","version":"1.0","status":"Active","updated":"2025-01-01","views":0,"description":"Claims processing and backup retrieval procedures for Associated Wholesale Grocers (AWG) and Valu Merchandisers Company (VMC).","tags":["AWG","Associated Wholesale Grocers","Valu Merchandisers","VMC","wholesale","claims"],"file":"sops/Associated_Wholesale_Grocers_AWG_Valu_Merchandisers_VMC.docx"},{"id":"SOP-Acosta-015","title":"Certco Inc. / Woodman\u0027s Janesville SOP","department":"Claims","category":"Customer SOP","owner":"Dawn Regan","version":"1.0","status":"Active","updated":"2025-01-01","views":0,"description":"Claims processing and backup retrieval procedures for Certco Inc. and Woodman\u0027s Janesville accounts.","tags":["Certco","Woodman\u0027s","Janesville","Midwest","claims"],"file":"sops/Certco_Inc_Woodmans_Janesville.docx"},{"id":"SOP-Acosta-016","title":"Core-Mark International SOP","department":"Claims","category":"Customer SOP","owner":"Michael Huml","version":"1.0","status":"Active","updated":"2025-01-01","views":0,"description":"Claims processing and backup retrieval procedures for Core-Mark International accounts.","tags":["Core-Mark","convenience","wholesale","claims"],"file":"sops/Core_Mark.docx"},{"id":"SOP-Acosta-017","title":"CS / Winn-Dixie / BI-LO Holdings SOP","department":"Claims","category":"Customer SOP","owner":"Lindsay McGinnis","version":"1.0","status":"Active","updated":"2025-01-01","views":0,"description":"Claims processing and backup retrieval procedures for Winn-Dixie and BI-LO Holdings accounts via C\u0026S.","tags":["Winn-Dixie","BI-LO","C\u0026S","Southeast","claims"],"file":"sops/CS-Winn_Dixie-BiLo_Holdings.docx"},{"id":"SOP-Acosta-018","title":"CS Wholesale Grocers Inc. SOP","department":"Claims","category":"Customer SOP","owner":"Lindsay McGinnis","version":"1.0","status":"Active","updated":"2025-01-01","views":0,"description":"Claims processing and backup retrieval procedures for C\u0026S Wholesale Grocers Inc. accounts.","tags":["C\u0026S","CS Wholesale","wholesale","distributor","claims"],"file":"sops/CS_Wholesale_Grocers_Inc.docx"},{"id":"SOP-Acosta-019","title":"CVS Distribution / Peoples Drug SOP","department":"Claims","category":"Customer SOP","owner":"Michael Huml","version":"1.0","status":"Active","updated":"2025-01-01","views":0,"description":"Claims processing and backup retrieval procedures for CVS Distribution and Peoples Drug accounts.","tags":["CVS","Peoples Drug","pharmacy","drug store","claims"],"file":"sops/CVS_Distribution_Peoples_Drug.docx"},{"id":"SOP-Acosta-020","title":"DeMoulas Supermarkets Inc. (Market Basket) SOP","department":"Claims","category":"Customer SOP","owner":"Lindsay McGinnis","version":"1.0","status":"Active","updated":"2025-01-01","views":0,"description":"Claims processing and backup retrieval procedures for DeMoulas Supermarkets Inc. (Market Basket) accounts.","tags":["DeMoulas","Market Basket","New England","claims"],"file":"sops/Demoulas_Supermarkets_Inc.docx"},{"id":"SOP-Acosta-021","title":"Fareway Stores Inc. SOP","department":"Claims","category":"Customer SOP","owner":"Dawn Regan","version":"1.0","status":"Active","updated":"2025-01-01","views":0,"description":"Claims processing and backup retrieval procedures for Fareway Stores Inc. accounts.","tags":["Fareway","Iowa","Midwest","grocery","claims"],"file":"sops/Fareway_Stores_Inc.docx"},{"id":"SOP-Acosta-022","title":"General Trading SOP","department":"Claims","category":"Customer SOP","owner":"Michael Huml","version":"1.0","status":"Active","updated":"2025-01-01","views":0,"description":"Claims processing and backup retrieval procedures for General Trading accounts.","tags":["General Trading","wholesale","claims"],"file":"sops/General_Trading.docx"},{"id":"SOP-Acosta-023","title":"Golub Corporation (Price Chopper / Market 32) SOP","department":"Claims","category":"Customer SOP","owner":"Lindsay McGinnis","version":"1.0","status":"Active","updated":"2025-01-01","views":0,"description":"Claims processing and backup retrieval procedures for Golub Corporation (Price Chopper / Market 32) accounts.","tags":["Golub","Price Chopper","Market 32","Northeast","claims"],"file":"sops/Golub_Corporation.docx"},{"id":"SOP-Acosta-024","title":"H-E-B Grocery Company SOP","department":"Claims","category":"Customer SOP","owner":"Dawn Regan","version":"1.0","status":"Active","updated":"2025-01-01","views":0,"description":"Claims processing and backup retrieval procedures for H-E-B Grocery Company accounts.","tags":["H-E-B","HEB","Texas","grocery","claims"],"file":"sops/H_E_Butt_Grocery_Company.docx"},{"id":"SOP-Acosta-025","title":"Ingles Supermarkets SOP","department":"Claims","category":"Customer SOP","owner":"Dawn Regan","version":"1.0","status":"Active","updated":"2025-01-01","views":0,"description":"Claims processing and backup retrieval procedures for Ingles Supermarkets accounts.","tags":["Ingles","Southeast","grocery","claims"],"file":"sops/Ingles_Supermarkets.docx"},{"id":"SOP-Acosta-026","title":"Jetro / Restaurant Depot SOP","department":"Claims","category":"Customer SOP","owner":"Michael Huml","version":"1.0","status":"Active","updated":"2025-01-01","views":0,"description":"Claims processing and backup retrieval procedures for Jetro Cash \u0026 Carry and Restaurant Depot accounts.","tags":["Jetro","Restaurant Depot","foodservice","wholesale","claims"],"file":"sops/Jetro_Restaurant_Depot.docx"},{"id":"SOP-Acosta-027","title":"Merchants Distributors LLC (MDI) SOP","department":"Claims","category":"Customer SOP","owner":"Lindsay McGinnis","version":"1.0","status":"Active","updated":"2025-01-01","views":0,"description":"Claims processing and backup retrieval procedures for Merchants Distributors LLC (MDI) accounts.","tags":["MDI","Merchants Distributors","wholesale","distributor","claims"],"file":"sops/Merchants_Distributors_LLC.docx"},{"id":"SOP-Acosta-028","title":"OK Grocery Co. / Giant Eagle SOP","department":"Claims","category":"Customer SOP","owner":"Dawn Regan","version":"1.0","status":"Active","updated":"2025-01-01","views":0,"description":"Claims processing and backup retrieval procedures for OK Grocery Co. and Giant Eagle accounts.","tags":["OK Grocery","Giant Eagle","Midwest","grocery","claims"],"file":"sops/OK_Grocery_Co_Giant_Eagle.docx"},{"id":"SOP-Acosta-029","title":"Publix Super Markets Inc. SOP","department":"Claims","category":"Customer SOP","owner":"Lindsay McGinnis","version":"1.0","status":"Active","updated":"2025-01-01","views":0,"description":"Claims processing and backup retrieval procedures for Publix Super Markets Inc. accounts.","tags":["Publix","Southeast","grocery","claims"],"file":"sops/Publix_Super_Markets_Inc.docx"},{"id":"SOP-Acosta-030","title":"Retail Marketing Group (RMG) SOP","department":"Claims","category":"Customer SOP","owner":"Michael Huml","version":"1.0","status":"Active","updated":"2025-01-01","views":0,"description":"Claims processing and backup retrieval procedures for Retail Marketing Group (RMG) accounts.","tags":["RMG","Retail Marketing Group","wholesale","claims"],"file":"sops/Retail_Marketing_Group.docx"},{"id":"SOP-Acosta-031","title":"Save Mart / Yosemite / Food Maxx SOP","department":"Claims","category":"Customer SOP","owner":"Dawn Regan","version":"1.0","status":"Active","updated":"2025-01-01","views":0,"description":"Claims processing and backup retrieval procedures for Save Mart, Yosemite Farm Credit, and Food Maxx accounts.","tags":["Save Mart","Yosemite","Food Maxx","California","grocery","claims"],"file":"sops/Save_Mart_Yosemite_Save_Mart_Food_Maxx.docx"},{"id":"SOP-Acosta-032","title":"Smart \u0026 Final SOP","department":"Claims","category":"Customer SOP","owner":"Dawn Regan","version":"1.0","status":"Active","updated":"2025-01-01","views":0,"description":"Claims processing and backup retrieval procedures for Smart \u0026 Final accounts.","tags":["Smart \u0026 Final","California","warehouse","grocery","claims"],"file":"sops/Smart_and_Final.docx"},{"id":"SOP-Acosta-033","title":"Spartan Stores Inc. / Nash Finch SOP","department":"Claims","category":"Customer SOP","owner":"Dawn Regan","version":"1.0","status":"Active","updated":"2025-01-01","views":0,"description":"Claims processing and backup retrieval procedures for Spartan Stores Inc. and Nash Finch accounts.","tags":["Spartan Stores","Nash Finch","Midwest","wholesale","claims"],"file":"sops/Spartan_Stores_Inc_Nash_Finch.docx"},{"id":"SOP-Acosta-034","title":"Stater Bros. Markets SOP","department":"Claims","category":"Customer SOP","owner":"Dawn Regan","version":"1.0","status":"Active","updated":"2025-01-01","views":0,"description":"Claims processing and backup retrieval procedures for Stater Bros. Markets accounts.","tags":["Stater Bros","California","grocery","claims"],"file":"sops/Stater_Bros.doc"},{"id":"SOP-Acosta-035","title":"Tops Markets SOP","department":"Claims","category":"Customer SOP","owner":"Lindsay McGinnis","version":"1.0","status":"Active","updated":"2025-01-01","views":0,"description":"Claims processing and backup retrieval procedures for Tops Markets LLC accounts.","tags":["Tops Markets","Northeast","grocery","claims"],"file":"sops/Tops_Markets.docx"},{"id":"SOP-Acosta-036","title":"UNFI Conventional SOP","department":"Claims","category":"Customer SOP","owner":"Michael Huml","version":"1.0","status":"Active","updated":"2025-01-01","views":0,"description":"Claims processing and backup retrieval procedures for UNFI Conventional (conventional grocery) accounts.","tags":["UNFI","United Natural Foods","conventional","wholesale","distributor","claims"],"file":"sops/UNFI_Conventional.docx"},{"id":"SOP-Acosta-037","title":"United Natural Foods West (UNFI) Accounts Payable SOP","department":"Claims","category":"Customer SOP","owner":"Michael Huml","version":"1.0","status":"Active","updated":"2025-01-01","views":0,"description":"Claims processing and backup retrieval procedures for United Natural Foods West (UNFI West) accounts payable.","tags":["UNFI","UNFI West","United Natural Foods","natural","organic","wholesale","claims"],"file":"sops/United_Natural_Foods_West_UNFI_Accounts_Payable.docx"},{"id":"SOP-Acosta-038","title":"URM Stores / Spokane SOP","department":"Claims","category":"Customer SOP","owner":"Dawn Regan","version":"1.0","status":"Active","updated":"2025-01-01","views":0,"description":"Claims processing and backup retrieval procedures for URM Stores (Spokane) accounts.","tags":["URM","Spokane","Pacific Northwest","wholesale","claims"],"file":"sops/URM_Spokane.docx"},{"id":"SOP-Acosta-039","title":"Wakefern Corporation (ShopRite) SOP","department":"Claims","category":"Customer SOP","owner":"Lindsay McGinnis","version":"1.0","status":"Active","updated":"2025-01-01","views":0,"description":"Claims processing and backup retrieval procedures for Wakefern Corporation (ShopRite) accounts.","tags":["Wakefern","ShopRite","Northeast","cooperative","claims"],"file":"sops/Wakefern_Corporation.docx"},{"id":"SOP-Acosta-040","title":"Weis Markets SOP","department":"Claims","category":"Customer SOP","owner":"Lindsay McGinnis","version":"1.0","status":"Active","updated":"2025-01-01","views":0,"description":"Claims processing and backup retrieval procedures for Weis Markets Inc. accounts.","tags":["Weis Markets","Mid-Atlantic","grocery","claims"],"file":"sops/Weis_Markets.docx"}];
+const hs = document.getElementById('heroSearch');
+const hr = document.getElementById('heroResults');
+hs.addEventListener('input', function() {
+  const q = this.value.trim().toLowerCase();
+  if (!q) { hr.style.display='none'; return; }
+  const hits = SOPS_DATA.filter(s =>
+    s.title.toLowerCase().includes(q) || s.id.toLowerCase().includes(q) ||
+    s.department.toLowerCase().includes(q) || (s.tags||[]).join(' ').toLowerCase().includes(q) ||
+    s.description.toLowerCase().includes(q)
+  ).slice(0,10);
+  if (!hits.length) { hr.style.display='none'; return; }
+  hr.innerHTML = hits.map(s => '<a class="hr-item" href="reader/'+s.id+'.html"><div class="hr-main"><span class="gr-id">'+s.id+'</span><span class="gr-title">'+s.title+'</span></div><span class="gr-dept">'+s.department+' &middot; v'+s.version+'</span></a>').join('');
+  hr.style.display='block';
+});
+document.addEventListener('click', e => { if (!hs.contains(e.target) && !hr.contains(e.target)) hr.style.display='none'; });
+function renderBookmarks() {
+  const bm = getBookmarks();
+  const section = document.getElementById('bookmarksSection');
+  const grid = document.getElementById('bookmarkGrid');
+  if (!bm.length) { section.style.display='none'; return; }
+  section.style.display='';
+  const items = SOPS_DATA.filter(s => bm.includes(s.id));
+  grid.innerHTML = items.map(s =>
+    '<div class="sop-card"><div class="sop-card-top"><span class="sop-id-badge">'+s.id+'</span><button class="bookmark-btn bookmarked" data-bookmark="'+s.id+'" onclick="toggleBookmark(\''+s.id+'\');renderBookmarks()" title="Remove bookmark" aria-label="Remove bookmark"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button></div><h3 class="sop-card-title"><a href="reader/'+s.id+'.html">'+s.title+'</a></h3><p class="sop-card-desc">'+s.description.slice(0,120)+(s.description.length>120?'\u2026':'')+'</p><div class="sop-card-footer"><span class="meta-date">Updated '+s.updated+'</span><a class="card-read-btn" href="reader/'+s.id+'.html">Read \u2192</a></div></div>'
+  ).join('');
+}
+function clearAllBookmarks() { localStorage.removeItem('bookmarks'); renderBookmarks(); }
+renderBookmarks();
+</script>
 </body>
 </html>
