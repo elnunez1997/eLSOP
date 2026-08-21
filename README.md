@@ -9,7 +9,7 @@ A centralized knowledge and operations portal for ACOSTA support agents, built a
 - **SOP Reader** (`reader/*.html`) — book-style reading experience with TOC, section collapse, progress bar, download, print
 - **Dashboard** (`dashboard.html`) — KPI cards, department/status charts, most viewed, recently updated
 - **Customer Matrix** (`customers.html`) — searchable, filterable table of all customers from `Customer_Matrix.xlsx` with signon codes, customer type, claims processing info, backup retrieval, portal status, and formal SOP links. Click any row for a full detail drawer.
-- **Formal SOPs** (`sops.html`) — 22 ACOSTA-only `.docx` downloads grouped alphabetically
+- **Formal SOPs** (`sops.html`) — 40 ACOSTA-only `.docx` downloads grouped alphabetically
 
 ## Architecture
 
@@ -40,7 +40,8 @@ eLSOP/
       SOP-Acosta-001.html
       SOP-Acosta-002.html
       ...
-    sops/              ← Formal SOP .docx files (22 customers)
+    sops/              ← Formal SOP .docx files (40 customers)
+    build.ps1          ← PowerShell site builder (Windows, no Python required)
   .github/workflows/
     deploy.yml         ← GitHub Actions: runs build.py then deploys site/
 ```
@@ -100,6 +101,12 @@ Then commit and push — the site rebuilds and deploys automatically.
 
 ## Running the build locally
 
+**Option A — PowerShell (Windows, no Python required):**
+```powershell
+powershell -ExecutionPolicy Bypass -File build.ps1
+```
+
+**Option B — Python:**
 ```bash
 pip install jinja2
 python build.py
