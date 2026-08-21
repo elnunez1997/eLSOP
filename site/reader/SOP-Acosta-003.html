@@ -1,0 +1,318 @@
+﻿<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brookshire Grocery Company SOP -- eLSOP</title>
+<link rel="stylesheet" href="../portal.css">
+<meta name="description" content="eLSOP Standard Operating Procedure Knowledge Portal">
+</head>
+<body>
+<nav class="topnav">
+  <div class="topnav-inner">
+    <a class="brand" href="../index.html">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+      </svg>
+      <span class="brand-name">eLSOP</span><span class="brand-badge">SOP</span>
+    </a>
+    <div class="nav-links">
+      <a href="../index.html" class="nav-link ">Home</a>
+      <a href="../library.html" class="nav-link ">SOP Library</a>
+      <a href="../dashboard.html" class="nav-link ">Dashboard</a>
+      <a href="../customers.html" class="nav-link ">Customer Matrix</a>
+      <a href="../sops.html" class="nav-link ">Formal SOPs</a>
+    </div>
+    <div class="nav-actions">
+      <div class="nav-search-wrap">
+        <svg class="nav-search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input id="globalSearch" class="nav-search" type="text" placeholder="Search SOPs..." autocomplete="off">
+        <div id="globalResults" class="global-results" style="display:none"></div>
+      </div>
+      <button class="theme-toggle" onclick="toggleTheme()" title="Toggle dark mode" aria-label="Toggle dark mode">
+        <svg id="themeIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</nav>
+<main>
+<div class="reader-layout">
+  <aside class="reader-toc" id="readerToc">
+    <div class="toc-header">
+      <div class="toc-sop-id">SOP-Acosta-003</div>
+      <div class="toc-sop-title">Brookshire Grocery Company SOP</div>
+    </div>
+    <div class="toc-meta">
+      <div class="toc-meta-row"><span class="toc-meta-lbl">Version</span><span>v1.4</span></div>
+      <div class="toc-meta-row"><span class="toc-meta-lbl">Dept</span><span>Claims</span></div>
+      <div class="toc-meta-row"><span class="toc-meta-lbl">Owner</span><span>Dawn Regan</span></div>
+      <div class="toc-meta-row"><span class="toc-meta-lbl">Updated</span><span>2026-05-04</span></div>
+      <div class="toc-meta-row"><span class="toc-meta-lbl">Status</span><span class="meta-status status-active">Active</span></div>
+    </div>
+    <nav class="toc-nav">
+      <div class="toc-nav-heading">Table of Contents</div>
+      <a class="toc-link" href="#purpose" onclick="scrollToSection('purpose')"><span class="toc-num">1</span> Purpose</a>
+      <a class="toc-link" href="#scope" onclick="scrollToSection('scope')"><span class="toc-num">2</span> Scope</a>
+      <a class="toc-link" href="#definitions" onclick="scrollToSection('definitions')"><span class="toc-num">3</span> Definitions</a>
+      <a class="toc-link" href="#roles" onclick="scrollToSection('roles')"><span class="toc-num">4</span> Roles &amp; Responsibilities</a>
+      <a class="toc-link" href="#procedure" onclick="scrollToSection('procedure')"><span class="toc-num">5</span> Procedure Steps</a>
+      <a class="toc-link" href="#references" onclick="scrollToSection('references')"><span class="toc-num">6</span> References</a>
+      <a class="toc-link" href="#revisions" onclick="scrollToSection('revisions')"><span class="toc-num">7</span> Revision History</a>
+      <a class="toc-link" href="#related" onclick="scrollToSection('related')"><span class="toc-num">8</span> Related Documents</a>
+    </nav>
+    <div class="toc-progress">
+      <div class="toc-progress-lbl">Reading Progress</div>
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+      <div class="progress-pct" id="progressPct">0%</div>
+    </div>
+    <div class="toc-actions">
+      <a class="toc-action-btn" href="../sops/Brookshire_Grocery_Company.docx" download>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download DOCX
+      </a>
+      <button class="toc-action-btn" onclick="window.print()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        Print
+      </button>
+      <button class="toc-action-btn" id="bookmarkBtn" onclick="handleBookmark()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+        <span id="bookmarkLabel">Bookmark</span>
+      </button>
+    </div>
+  </aside>
+  <div class="reader-main" id="readerMain">
+    <div class="reader-page-header">
+      <a href="../library.html" class="reader-back">&#8592; Back to Library</a>
+      <div class="reader-page-nav"><a class="page-nav-btn" href="SOP-Acosta-002.html">â† SOP-Acosta-002</a><a class="page-nav-btn" href="SOP-Acosta-004.html">SOP-Acosta-004 â†’</a></div>
+    </div>
+    <header class="reader-header">
+      <div class="reader-header-top">
+        <span class="sop-id-badge sop-id-lg">SOP-Acosta-003</span>
+        <span class="meta-status status-active">Active</span>
+        <span class="meta-ver">v1.4</span>
+      </div>
+      <h1 class="reader-title">Brookshire Grocery Company SOP</h1>
+      <p class="reader-desc">Claims processing and backup retrieval procedures for Brookshire Grocery Company accounts.</p>
+      <div class="reader-tags"><span class="tag">Brookshire</span> <span class="tag">grocery</span> <span class="tag">Texas</span> <span class="tag">claims</span></div>
+    </header>
+    <div class="version-history-banner">
+      <div class="vh-label">CURRENT VERSION HISTORY</div>
+      <div class="vh-table">
+        <div class="vh-col vh-col-desc"><div class="vh-head">UPDATE DESCRIPTION</div><div class="vh-val">Added Retail Merchandising Info for Beiersdorf in Client Specific Section (467295).</div></div>
+        <div class="vh-col vh-col-date"><div class="vh-head">DATE</div><div class="vh-val">5/4/2026</div></div>
+        <div class="vh-col vh-col-author"><div class="vh-head">AUTHOR</div><div class="vh-val">Dawn Regan</div></div>
+      </div>
+    </div>
+    <section class="reader-section" id="purpose" data-section="0">
+      <div class="section-toggle" onclick="toggleSection('purpose')">
+        <h2 class="section-title"><span class="section-num">1</span> Purpose</h2>
+        <svg class="section-chevron" id="chev-purpose" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="section-body" id="body-purpose">
+        <div class="section-content">Establish consistent procedures for processing Brookshire Grocery Company deductions and obtaining necessary backup documentation.</div>
+      </div>
+    </section>    <section class="reader-section" id="scope" data-section="1">
+      <div class="section-toggle" onclick="toggleSection('scope')">
+        <h2 class="section-title"><span class="section-num">2</span> Scope</h2>
+        <svg class="section-chevron" id="chev-scope" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="section-body" id="body-scope">
+        <div class="section-content">Applies to Acosta associates assigned to Brookshire Grocery accounts across all operating divisions.</div>
+      </div>
+    </section>    <section class="reader-section" id="definitions" data-section="2">
+      <div class="section-toggle" onclick="toggleSection('definitions')">
+        <h2 class="section-title"><span class="section-num">3</span> Definitions</h2>
+        <svg class="section-chevron" id="chev-definitions" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="section-body" id="body-definitions">
+        <div class="section-content">**Brookshire**: Brookshire Grocery Company and its affiliated banners (Super 1 Foods, Spring Market).<br>**Automated Backup**: System-generated documentation automatically retrieved from customer EDI.</div>
+      </div>
+    </section>    <section class="reader-section" id="roles" data-section="3">
+      <div class="section-toggle" onclick="toggleSection('roles')">
+        <h2 class="section-title"><span class="section-num">4</span> Roles &amp; Responsibilities</h2>
+        <svg class="section-chevron" id="chev-roles" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="section-body" id="body-roles">
+        <div class="section-content">**Acosta Associate**: Processes all incoming Brookshire deductions.<br>**EDI Coordinator**: Manages automated backup retrieval from Brookshire EDI system.</div>
+      </div>
+    </section>    <section class="reader-section" id="procedure" data-section="4">
+      <div class="section-toggle" onclick="toggleSection('procedure')">
+        <h2 class="section-title"><span class="section-num">5</span> Procedure Steps</h2>
+        <svg class="section-chevron" id="chev-procedure" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="section-body" id="body-procedure">
+        <div class="section-content">1. Pull Brookshire deduction report weekly from deduction system.<br>2. Retrieve automated backup via EDI connection.<br>3. Validate each deduction against current promotional authorizations.<br>4. Process approved claims; prepare dispute packages for invalid items.<br>5. Submit dispute response within 30 days of deduction date.<br>6. Archive resolved items monthly.</div>
+      </div>
+    </section>    <section class="reader-section" id="references" data-section="5">
+      <div class="section-toggle" onclick="toggleSection('references')">
+        <h2 class="section-title"><span class="section-num">6</span> References</h2>
+        <svg class="section-chevron" id="chev-references" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="section-body" id="body-references">
+        <div class="section-content">Brookshire Vendor Portal Guide · Acosta EDI Procedures</div>
+      </div>
+    </section>    <section class="reader-section" id="revisions" data-section="6">
+      <div class="section-toggle" onclick="toggleSection('revisions')">
+        <h2 class="section-title"><span class="section-num">7</span> Revision History</h2>
+        <svg class="section-chevron" id="chev-revisions" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="section-body" id="body-revisions">
+        <div class="section-content">v1.4 (2024-07-10): Updated EDI endpoint details.<br>v1.3 (2023-11-05): Added Super 1 Foods handling.<br>v1.0 (2022-02-20): Initial release.</div>
+      </div>
+    </section>    <section class="reader-section" id="related" data-section="7">
+      <div class="section-toggle" onclick="toggleSection('related')">
+        <h2 class="section-title"><span class="section-num">8</span> Related Documents</h2>
+        <svg class="section-chevron" id="chev-related" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="section-body" id="body-related">
+        <div class="section-content">Acosta EDI Procedures · SOP-Acosta-004 (Delhaize)</div>
+      </div>
+    </section>
+    <section class="reader-section" id="comments">
+      <div class="section-toggle" onclick="toggleSection('comments')">
+        <h2 class="section-title"><span class="section-num">&#x1F4AC;</span> Comments &amp; Feedback</h2>
+        <svg class="section-chevron" id="chev-comments" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="section-body" id="body-comments">
+        <div class="comments-area">
+          <div id="commentsList" class="comments-list"></div>
+          <div class="comment-form">
+            <input id="commentName" class="comment-input" placeholder="Your name" type="text">
+            <textarea id="commentText" class="comment-textarea" placeholder="Leave a comment or feedback about this SOPâ€¦" rows="3"></textarea>
+            <button class="comment-submit" onclick="submitComment()">Submit Feedback</button>
+          </div>
+        </div>
+      </div>
+    </section>
+    <div class="reader-bottom-nav">
+      <a class="page-nav-btn" href="SOP-Acosta-002.html">â† Previous: Associated Supermarket Group Claims</a>
+      <a class="page-nav-btn" href="SOP-Acosta-004.html">Next: Delhaize Claims Processing â†’</a>
+    </div>
+  </div>
+  <button class="toc-mobile-toggle" onclick="toggleMobileToc()" title="Table of Contents" aria-label="Toggle TOC">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+  </button>
+</div>
+</main>
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-brand">eLSOP Knowledge Portal</div>
+    <div class="footer-meta">Built 2026-08-21 22:21 UTC &nbsp;&middot;&nbsp; ACOSTA customers only</div>
+    <div class="footer-made">Made with IBM Bob</div>
+  </div>
+</footer>
+<script>
+const ALL_SOPS = [{"id":"SOP-Acosta-001","title":"ADUSA Distribution Claims Processing","department":"Claims","category":"Customer SOP","owner":"Michael Huml","version":"3.2","status":"Active","updated":"2026-07-27","views":412,"description":"Work instructions for processing all deduction types for ADUSA Distribution — The Giant Company, Giant Foods, and Stop \u0026 Shop. Covers customer general info, signon job aid, deduction types (Off Invoice, Billback, Scan, TPR, Post Audit, Advantage Billing, and more), contract/POP validation, and client-specific instructions for 30+ clients.","tags":["ADUSA","Giant Company","Giant Foods","Stop \u0026 Shop","AHOLPH","SSAHNE","GIANBW","Post Audit","TPR","Advantage Billing","Scan","Billback","Off Invoice"],"file":"sops/ADUSA_Distr_The_Giant_Company_Giant_Foods_Stop_Shop.docx"},{"id":"SOP-Acosta-002","title":"Associated Supermarket Group Claims","department":"Claims","category":"Customer SOP","owner":"Lindsay McGinnis","version":"2.1","status":"Active","updated":"2026-08-03","views":287,"description":"Procedure for managing claims and backup retrieval for Associated Supermarket Group (ASG) accounts.","tags":["ASG","Associated","supermarket","deductions"],"file":"sops/Associated_Supermarket_Group.docx"},{"id":"SOP-Acosta-003","title":"Brookshire Grocery Company SOP","department":"Claims","category":"Customer SOP","owner":"Dawn Regan","version":"1.4","status":"Active","updated":"2026-05-04","views":198,"description":"Claims processing and backup retrieval procedures for Brookshire Grocery Company accounts.","tags":["Brookshire","grocery","Texas","claims"],"file":"sops/Brookshire_Grocery_Company.docx"},{"id":"SOP-Acosta-004","title":"Delhaize Claims Processing","department":"Claims","category":"Customer SOP","owner":"Lindsay McGinnis","version":"2.0","status":"Active","updated":"2026-07-27","views":334,"description":"Comprehensive SOP for Delhaize America deduction management and claims resolution.","tags":["Delhaize","Food Lion","Hannaford","claims"],"file":"sops/Delhaize.docx"},{"id":"SOP-Acosta-005","title":"Harris Teeter Supermarkets SOP","department":"Claims","category":"Customer SOP","owner":"Michael Huml","version":"2.3","status":"Active","updated":"2026-07-06","views":445,"description":"Deduction and claims processing procedures for Harris Teeter Supermarkets, a Kroger banner.","tags":["Harris Teeter","Kroger","Southeast","claims"],"file":"sops/Harris_Teeter_Supermarkets.docx"},{"id":"SOP-Acosta-006","title":"HyVee / Lomar / PDI Claims SOP","department":"Claims","category":"Customer SOP","owner":"Michael Huml","version":"1.6","status":"Active","updated":"2026-04-27","views":223,"description":"Claims and backup procedures for HyVee Corporate, Lomar, and Perishable Distributors of Iowa (PDI).","tags":["HyVee","Lomar","PDI","Midwest","claims"],"file":"sops/HyVee_Corporate_Lomar_Perishable_Dist_of_Iowa_PDI.docx"},{"id":"SOP-Acosta-007","title":"Kroger / Ralphs / Vitacost Claims","department":"Claims","category":"Customer SOP","owner":"Michael Huml","version":"4.1","status":"Active","updated":"2026-08-03","views":892,"description":"Enterprise-level claims SOP for Kroger Co., Ralphs Grocery, Jake\u0027s Finer Foods, and Vitacost.com.","tags":["Kroger","Ralphs","Vitacost","enterprise","claims"],"file":"sops/Kroger_Ralphs_Grocery_Company_Jakes_Finer_Foods_Vitacostcom.docx"},{"id":"SOP-Acosta-008","title":"K-V-A-T Food Store (Food City) SOP","department":"Claims","category":"Customer SOP","owner":"Dawn Regan","version":"1.2","status":"Active","updated":"2026-06-08","views":156,"description":"Claims processing procedure for K-V-A-T Food Store Inc., operating as Food City.","tags":["KVAT","Food City","Appalachian","claims"],"file":"sops/K_V_A_T_Food_Store_Inc.docx"},{"id":"SOP-Acosta-009","title":"McLane Company Claims SOP","department":"Claims","category":"Customer SOP","owner":"Dawn Regan","version":"2.5","status":"Active","updated":"2026-07-06","views":378,"description":"Deduction management and backup retrieval procedures for McLane Company Inc., a wholesale grocery distributor.","tags":["McLane","wholesale","distributor","claims"],"file":"sops/McLane_Company_Inc.docx"},{"id":"SOP-Acosta-010","title":"Mitchell Grocery Company SOP","department":"Claims","category":"Customer SOP","owner":"Michael Huml","version":"1.1","status":"Active","updated":"2025-04-06","views":134,"description":"Claims and backup procedures for Mitchell Grocery Company accounts.","tags":["Mitchell","grocery","Southeast","wholesale"],"file":"sops/Mitchell_Grocery_Company.docx"},{"id":"SOP-Acosta-011","title":"Schnucks Markets Claims SOP","department":"Claims","category":"Customer SOP","owner":"Dawn Regan","version":"1.8","status":"Active","updated":"2026-06-22","views":267,"description":"Deduction and claims processing SOP for Schnucks Markets Inc., a Midwest regional grocer.","tags":["Schnucks","Midwest","St Louis","claims"],"file":"sops/Schnucks_Markets_Inc.docx"},{"id":"SOP-Acosta-012","title":"WinCo Foods Claims SOP","department":"Claims","category":"Customer SOP","owner":"Dawn Regan","version":"2.0","status":"Active","updated":"2026-06-22","views":311,"description":"Claims processing and backup retrieval procedures for WinCo Foods Inc., a warehouse-style grocer.","tags":["WinCo","warehouse","West","claims"],"file":"sops/Winco_Foods_Inc.docx"},{"id":"SOP-Acosta-013","title":"Associated Food Stores (AFS) SOP","department":"Claims","category":"Customer SOP","owner":"Michael Huml","version":"1.0","status":"Active","updated":"2025-01-01","views":0,"description":"Claims processing and backup retrieval procedures for Associated Food Stores (AFS).","tags":["AFS","Associated Food Stores","cooperative","claims"],"file":"sops/Associated_Food_Stores_AFS.docx"},{"id":"SOP-Acosta-014","title":"Associated Wholesale Grocers / AWG / Valu Merchandisers SOP","department":"Claims","category":"Customer SOP","owner":"Michael Huml","version":"1.0","status":"Active","updated":"2025-01-01","views":0,"description":"Claims processing and backup retrieval procedures for Associated Wholesale Grocers (AWG) and Valu Merchandisers Company (VMC).","tags":["AWG","Associated Wholesale Grocers","Valu Merchandisers","VMC","wholesale","claims"],"file":"sops/Associated_Wholesale_Grocers_AWG_Valu_Merchandisers_VMC.docx"},{"id":"SOP-Acosta-015","title":"Certco Inc. / Woodman\u0027s Janesville SOP","department":"Claims","category":"Customer SOP","owner":"Dawn Regan","version":"1.0","status":"Active","updated":"2025-01-01","views":0,"description":"Claims processing and backup retrieval procedures for Certco Inc. and Woodman\u0027s Janesville accounts.","tags":["Certco","Woodman\u0027s","Janesville","Midwest","claims"],"file":"sops/Certco_Inc_Woodmans_Janesville.docx"},{"id":"SOP-Acosta-016","title":"Core-Mark International SOP","department":"Claims","category":"Customer SOP","owner":"Michael Huml","version":"1.0","status":"Active","updated":"2025-01-01","views":0,"description":"Claims processing and backup retrieval procedures for Core-Mark International accounts.","tags":["Core-Mark","convenience","wholesale","claims"],"file":"sops/Core_Mark.docx"},{"id":"SOP-Acosta-017","title":"CS / Winn-Dixie / BI-LO Holdings SOP","department":"Claims","category":"Customer SOP","owner":"Lindsay McGinnis","version":"1.0","status":"Active","updated":"2025-01-01","views":0,"description":"Claims processing and backup retrieval procedures for Winn-Dixie and BI-LO Holdings accounts via C\u0026S.","tags":["Winn-Dixie","BI-LO","C\u0026S","Southeast","claims"],"file":"sops/CS-Winn_Dixie-BiLo_Holdings.docx"},{"id":"SOP-Acosta-018","title":"CS Wholesale Grocers Inc. SOP","department":"Claims","category":"Customer SOP","owner":"Lindsay McGinnis","version":"1.0","status":"Active","updated":"2025-01-01","views":0,"description":"Claims processing and backup retrieval procedures for C\u0026S Wholesale Grocers Inc. accounts.","tags":["C\u0026S","CS Wholesale","wholesale","distributor","claims"],"file":"sops/CS_Wholesale_Grocers_Inc.docx"},{"id":"SOP-Acosta-019","title":"CVS Distribution / Peoples Drug SOP","department":"Claims","category":"Customer SOP","owner":"Michael Huml","version":"1.0","status":"Active","updated":"2025-01-01","views":0,"description":"Claims processing and backup retrieval procedures for CVS Distribution and Peoples Drug accounts.","tags":["CVS","Peoples Drug","pharmacy","drug store","claims"],"file":"sops/CVS_Distribution_Peoples_Drug.docx"},{"id":"SOP-Acosta-020","title":"DeMoulas Supermarkets Inc. (Market Basket) SOP","department":"Claims","category":"Customer SOP","owner":"Lindsay McGinnis","version":"1.0","status":"Active","updated":"2025-01-01","views":0,"description":"Claims processing and backup retrieval procedures for DeMoulas Supermarkets Inc. (Market Basket) accounts.","tags":["DeMoulas","Market Basket","New England","claims"],"file":"sops/Demoulas_Supermarkets_Inc.docx"},{"id":"SOP-Acosta-021","title":"Fareway Stores Inc. SOP","department":"Claims","category":"Customer SOP","owner":"Dawn Regan","version":"1.0","status":"Active","updated":"2025-01-01","views":0,"description":"Claims processing and backup retrieval procedures for Fareway Stores Inc. accounts.","tags":["Fareway","Iowa","Midwest","grocery","claims"],"file":"sops/Fareway_Stores_Inc.docx"},{"id":"SOP-Acosta-022","title":"General Trading SOP","department":"Claims","category":"Customer SOP","owner":"Michael Huml","version":"1.0","status":"Active","updated":"2025-01-01","views":0,"description":"Claims processing and backup retrieval procedures for General Trading accounts.","tags":["General Trading","wholesale","claims"],"file":"sops/General_Trading.docx"},{"id":"SOP-Acosta-023","title":"Golub Corporation (Price Chopper / Market 32) SOP","department":"Claims","category":"Customer SOP","owner":"Lindsay McGinnis","version":"1.0","status":"Active","updated":"2025-01-01","views":0,"description":"Claims processing and backup retrieval procedures for Golub Corporation (Price Chopper / Market 32) accounts.","tags":["Golub","Price Chopper","Market 32","Northeast","claims"],"file":"sops/Golub_Corporation.docx"},{"id":"SOP-Acosta-024","title":"H-E-B Grocery Company SOP","department":"Claims","category":"Customer SOP","owner":"Dawn Regan","version":"1.0","status":"Active","updated":"2025-01-01","views":0,"description":"Claims processing and backup retrieval procedures for H-E-B Grocery Company accounts.","tags":["H-E-B","HEB","Texas","grocery","claims"],"file":"sops/H_E_Butt_Grocery_Company.docx"},{"id":"SOP-Acosta-025","title":"Ingles Supermarkets SOP","department":"Claims","category":"Customer SOP","owner":"Dawn Regan","version":"1.0","status":"Active","updated":"2025-01-01","views":0,"description":"Claims processing and backup retrieval procedures for Ingles Supermarkets accounts.","tags":["Ingles","Southeast","grocery","claims"],"file":"sops/Ingles_Supermarkets.docx"},{"id":"SOP-Acosta-026","title":"Jetro / Restaurant Depot SOP","department":"Claims","category":"Customer SOP","owner":"Michael Huml","version":"1.0","status":"Active","updated":"2025-01-01","views":0,"description":"Claims processing and backup retrieval procedures for Jetro Cash \u0026 Carry and Restaurant Depot accounts.","tags":["Jetro","Restaurant Depot","foodservice","wholesale","claims"],"file":"sops/Jetro_Restaurant_Depot.docx"},{"id":"SOP-Acosta-027","title":"Merchants Distributors LLC (MDI) SOP","department":"Claims","category":"Customer SOP","owner":"Lindsay McGinnis","version":"1.0","status":"Active","updated":"2025-01-01","views":0,"description":"Claims processing and backup retrieval procedures for Merchants Distributors LLC (MDI) accounts.","tags":["MDI","Merchants Distributors","wholesale","distributor","claims"],"file":"sops/Merchants_Distributors_LLC.docx"},{"id":"SOP-Acosta-028","title":"OK Grocery Co. / Giant Eagle SOP","department":"Claims","category":"Customer SOP","owner":"Dawn Regan","version":"1.0","status":"Active","updated":"2025-01-01","views":0,"description":"Claims processing and backup retrieval procedures for OK Grocery Co. and Giant Eagle accounts.","tags":["OK Grocery","Giant Eagle","Midwest","grocery","claims"],"file":"sops/OK_Grocery_Co_Giant_Eagle.docx"},{"id":"SOP-Acosta-029","title":"Publix Super Markets Inc. SOP","department":"Claims","category":"Customer SOP","owner":"Lindsay McGinnis","version":"1.0","status":"Active","updated":"2025-01-01","views":0,"description":"Claims processing and backup retrieval procedures for Publix Super Markets Inc. accounts.","tags":["Publix","Southeast","grocery","claims"],"file":"sops/Publix_Super_Markets_Inc.docx"},{"id":"SOP-Acosta-030","title":"Retail Marketing Group (RMG) SOP","department":"Claims","category":"Customer SOP","owner":"Michael Huml","version":"1.0","status":"Active","updated":"2025-01-01","views":0,"description":"Claims processing and backup retrieval procedures for Retail Marketing Group (RMG) accounts.","tags":["RMG","Retail Marketing Group","wholesale","claims"],"file":"sops/Retail_Marketing_Group.docx"},{"id":"SOP-Acosta-031","title":"Save Mart / Yosemite / Food Maxx SOP","department":"Claims","category":"Customer SOP","owner":"Dawn Regan","version":"1.0","status":"Active","updated":"2025-01-01","views":0,"description":"Claims processing and backup retrieval procedures for Save Mart, Yosemite Farm Credit, and Food Maxx accounts.","tags":["Save Mart","Yosemite","Food Maxx","California","grocery","claims"],"file":"sops/Save_Mart_Yosemite_Save_Mart_Food_Maxx.docx"},{"id":"SOP-Acosta-032","title":"Smart \u0026 Final SOP","department":"Claims","category":"Customer SOP","owner":"Dawn Regan","version":"1.0","status":"Active","updated":"2025-01-01","views":0,"description":"Claims processing and backup retrieval procedures for Smart \u0026 Final accounts.","tags":["Smart \u0026 Final","California","warehouse","grocery","claims"],"file":"sops/Smart_and_Final.docx"},{"id":"SOP-Acosta-033","title":"Spartan Stores Inc. / Nash Finch SOP","department":"Claims","category":"Customer SOP","owner":"Dawn Regan","version":"1.0","status":"Active","updated":"2025-01-01","views":0,"description":"Claims processing and backup retrieval procedures for Spartan Stores Inc. and Nash Finch accounts.","tags":["Spartan Stores","Nash Finch","Midwest","wholesale","claims"],"file":"sops/Spartan_Stores_Inc_Nash_Finch.docx"},{"id":"SOP-Acosta-034","title":"Stater Bros. Markets SOP","department":"Claims","category":"Customer SOP","owner":"Dawn Regan","version":"1.0","status":"Active","updated":"2025-01-01","views":0,"description":"Claims processing and backup retrieval procedures for Stater Bros. Markets accounts.","tags":["Stater Bros","California","grocery","claims"],"file":"sops/Stater_Bros.doc"},{"id":"SOP-Acosta-035","title":"Tops Markets SOP","department":"Claims","category":"Customer SOP","owner":"Lindsay McGinnis","version":"1.0","status":"Active","updated":"2025-01-01","views":0,"description":"Claims processing and backup retrieval procedures for Tops Markets LLC accounts.","tags":["Tops Markets","Northeast","grocery","claims"],"file":"sops/Tops_Markets.docx"},{"id":"SOP-Acosta-036","title":"UNFI Conventional SOP","department":"Claims","category":"Customer SOP","owner":"Michael Huml","version":"1.0","status":"Active","updated":"2025-01-01","views":0,"description":"Claims processing and backup retrieval procedures for UNFI Conventional (conventional grocery) accounts.","tags":["UNFI","United Natural Foods","conventional","wholesale","distributor","claims"],"file":"sops/UNFI_Conventional.docx"},{"id":"SOP-Acosta-037","title":"United Natural Foods West (UNFI) Accounts Payable SOP","department":"Claims","category":"Customer SOP","owner":"Michael Huml","version":"1.0","status":"Active","updated":"2025-01-01","views":0,"description":"Claims processing and backup retrieval procedures for United Natural Foods West (UNFI West) accounts payable.","tags":["UNFI","UNFI West","United Natural Foods","natural","organic","wholesale","claims"],"file":"sops/United_Natural_Foods_West_UNFI_Accounts_Payable.docx"},{"id":"SOP-Acosta-038","title":"URM Stores / Spokane SOP","department":"Claims","category":"Customer SOP","owner":"Dawn Regan","version":"1.0","status":"Active","updated":"2025-01-01","views":0,"description":"Claims processing and backup retrieval procedures for URM Stores (Spokane) accounts.","tags":["URM","Spokane","Pacific Northwest","wholesale","claims"],"file":"sops/URM_Spokane.docx"},{"id":"SOP-Acosta-039","title":"Wakefern Corporation (ShopRite) SOP","department":"Claims","category":"Customer SOP","owner":"Lindsay McGinnis","version":"1.0","status":"Active","updated":"2025-01-01","views":0,"description":"Claims processing and backup retrieval procedures for Wakefern Corporation (ShopRite) accounts.","tags":["Wakefern","ShopRite","Northeast","cooperative","claims"],"file":"sops/Wakefern_Corporation.docx"},{"id":"SOP-Acosta-040","title":"Weis Markets SOP","department":"Claims","category":"Customer SOP","owner":"Lindsay McGinnis","version":"1.0","status":"Active","updated":"2025-01-01","views":0,"description":"Claims processing and backup retrieval procedures for Weis Markets Inc. accounts.","tags":["Weis Markets","Mid-Atlantic","grocery","claims"],"file":"sops/Weis_Markets.docx"}];
+function toggleTheme() {
+  const html = document.documentElement;
+  const isDark = html.getAttribute('data-theme') === 'dark';
+  html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+  localStorage.setItem('theme', isDark ? 'light' : 'dark');
+  updateThemeIcon(!isDark);
+}
+function updateThemeIcon(dark) {
+  const icon = document.getElementById('themeIcon');
+  if (!icon) return;
+  icon.innerHTML = dark ? '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>' : '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>';
+}
+(function() {
+  const saved = localStorage.getItem('theme') || 'light';
+  document.documentElement.setAttribute('data-theme', saved);
+  updateThemeIcon(saved === 'dark');
+})();
+function getBookmarks() { try { return JSON.parse(localStorage.getItem('bookmarks') || '[]'); } catch { return []; } }
+function toggleBookmark(id) {
+  let bm = getBookmarks();
+  if (bm.includes(id)) bm = bm.filter(x => x !== id); else bm.push(id);
+  localStorage.setItem('bookmarks', JSON.stringify(bm));
+  document.querySelectorAll('[data-bookmark="' + id + '"]').forEach(el => {
+    el.classList.toggle('bookmarked', bm.includes(id));
+    el.title = bm.includes(id) ? 'Remove bookmark' : 'Bookmark this SOP';
+  });
+}
+function isBookmarked(id) { return getBookmarks().includes(id); }
+const gs = document.getElementById('globalSearch');
+const gr = document.getElementById('globalResults');
+if (gs) {
+  gs.addEventListener('input', function() {
+    const q = this.value.trim().toLowerCase();
+    if (!q) { gr.style.display = 'none'; return; }
+    const hits = ALL_SOPS.filter(s =>
+      s.title.toLowerCase().includes(q) || s.id.toLowerCase().includes(q) ||
+      s.department.toLowerCase().includes(q) || (s.tags||[]).join(' ').toLowerCase().includes(q)
+    ).slice(0, 8);
+    if (!hits.length) { gr.style.display = 'none'; return; }
+    const base = '../';
+    gr.innerHTML = hits.map(s => '<a class="gr-item" href="' + base + 'reader/' + s.id + '.html"><span class="gr-id">' + s.id + '</span><span class="gr-title">' + s.title + '</span><span class="gr-dept">' + s.department + '</span></a>').join('');
+    gr.style.display = 'block';
+  });
+  document.addEventListener('click', e => { if (!gs.contains(e.target) && !gr.contains(e.target)) gr.style.display = 'none'; });
+}
+</script>
+<script>
+const SOP_ID = 'SOP-Acosta-003';
+function toggleSection(id) {
+  const body = document.getElementById('body-' + id);
+  const chev = document.getElementById('chev-' + id);
+  const open = body.style.display !== 'none';
+  body.style.display = open ? 'none' : '';
+  if (chev) chev.style.transform = open ? 'rotate(-90deg)' : '';
+}
+function scrollToSection(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const body = document.getElementById('body-' + id);
+  if (body) body.style.display = '';
+  el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+const fill = document.getElementById('progressFill');
+const pct  = document.getElementById('progressPct');
+const secs = document.querySelectorAll('.reader-section[data-section]');
+const tocL = document.querySelectorAll('.toc-link');
+function updateProgress() {
+  const scrollTop = window.scrollY;
+  const docH = document.documentElement.scrollHeight - window.innerHeight;
+  const p = docH > 0 ? Math.min(100, Math.round((scrollTop / docH) * 100)) : 0;
+  fill.style.width = p + '%';
+  pct.textContent = p + '%';
+  let activeIdx = 0;
+  secs.forEach((s, i) => { if (s.getBoundingClientRect().top < 120) activeIdx = i; });
+  tocL.forEach((l, i) => l.classList.toggle('toc-link-active', i === activeIdx));
+}
+window.addEventListener('scroll', updateProgress, { passive: true });
+function handleBookmark() {
+  toggleBookmark(SOP_ID);
+  const bm = isBookmarked(SOP_ID);
+  document.getElementById('bookmarkLabel').textContent = bm ? 'Bookmarked \u2713' : 'Bookmark';
+  document.getElementById('bookmarkBtn').classList.toggle('bookmarked', bm);
+}
+(function() {
+  const bm = isBookmarked(SOP_ID);
+  document.getElementById('bookmarkLabel').textContent = bm ? 'Bookmarked \u2713' : 'Bookmark';
+  document.getElementById('bookmarkBtn').classList.toggle('bookmarked', bm);
+})();
+const COMMENT_KEY = 'comments_' + SOP_ID;
+function loadComments() { try { return JSON.parse(localStorage.getItem(COMMENT_KEY) || '[]'); } catch { return []; } }
+function renderComments() {
+  const list = document.getElementById('commentsList');
+  const comments = loadComments();
+  if (!comments.length) { list.innerHTML = '<div class="no-comments">No comments yet.</div>'; return; }
+  list.innerHTML = comments.map(c => '<div class="comment-item"><div class="comment-header"><strong>' + (c.name||'Anonymous') + '</strong><span class="comment-date">' + c.date + '</span></div><div class="comment-body">' + c.text + '</div></div>').join('');
+}
+function submitComment() {
+  const name = document.getElementById('commentName').value.trim() || 'Anonymous';
+  const text = document.getElementById('commentText').value.trim();
+  if (!text) return;
+  const comments = loadComments();
+  comments.push({ name, text, date: new Date().toLocaleDateString() });
+  localStorage.setItem(COMMENT_KEY, JSON.stringify(comments));
+  document.getElementById('commentText').value = '';
+  renderComments();
+}
+renderComments();
+function toggleMobileToc() { document.getElementById('readerToc').classList.toggle('toc-mobile-open'); }
+</script>
+</body>
+</html>

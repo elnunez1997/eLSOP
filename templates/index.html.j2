@@ -62,13 +62,19 @@
         </div>
         <h3 class="sop-card-title"><a href="reader/{{ sop.id }}.html">{{ sop.title }}</a></h3>
         <p class="sop-card-desc">{{ sop.description[:120] }}{% if sop.description|length > 120 %}…{% endif %}</p>
+        {% if sop.last_change is defined %}
+        <div class="sop-card-change">
+          <span class="change-dot"></span>
+          <span class="change-desc">{{ sop.last_change.description[:80] }}{% if sop.last_change.description|length > 80 %}…{% endif %}</span>
+        </div>
+        {% endif %}
         <div class="sop-card-meta">
           <span class="meta-dept">{{ sop.department }}</span>
           <span class="meta-ver">v{{ sop.version }}</span>
           <span class="meta-status status-{{ sop.status|lower|replace(' ', '-') }}">{{ sop.status }}</span>
         </div>
         <div class="sop-card-footer">
-          <span class="meta-date">Updated {{ sop.updated }}</span>
+          <span class="meta-date">Updated {{ sop.updated }} · {{ sop.owner }}</span>
           <a class="card-read-btn" href="reader/{{ sop.id }}.html">Read →</a>
         </div>
       </div>

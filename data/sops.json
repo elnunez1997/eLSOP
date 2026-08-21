@@ -4,11 +4,16 @@
     "title": "ADUSA Distribution Claims Processing",
     "department": "Claims",
     "category": "Customer SOP",
-    "owner": "Acosta Team",
+    "owner": "Michael Huml",
     "version": "3.2",
     "status": "Active",
     "updated": "2026-07-27",
     "created": "2021-03-01",
+    "last_change": {
+      "description": "Ken's client-specific: updated 2026 2% Ecomm event number. (477299)",
+      "date": "7/27/2026",
+      "author": "Michael Huml"
+    },
     "views": 412,
     "description": "Work instructions for processing all deduction types for ADUSA Distribution — The Giant Company, Giant Foods, and Stop & Shop. Covers customer general info, signon job aid, deduction types (Off Invoice, Billback, Scan, TPR, Post Audit, Advantage Billing, and more), contract/POP validation, and client-specific instructions for 30+ clients.",
     "file": "sops/ADUSA_Distr_The_Giant_Company_Giant_Foods_Stop_Shop.docx",
@@ -66,11 +71,16 @@
     "title": "Associated Supermarket Group Claims",
     "department": "Claims",
     "category": "Customer SOP",
-    "owner": "Acosta Team",
+    "owner": "Lindsay McGinnis",
     "version": "2.1",
     "status": "Active",
-    "updated": "2024-09-20",
+    "updated": "2026-08-03",
     "created": "2021-06-15",
+    "last_change": {
+      "description": "Added Ocean Spray to the Client Specific Validation Information section. (477516)",
+      "date": "8/3/2026",
+      "author": "Lindsay McGinnis"
+    },
     "views": 287,
     "description": "Procedure for managing claims and backup retrieval for Associated Supermarket Group (ASG) accounts.",
     "file": "sops/Associated_Supermarket_Group.docx",
@@ -91,11 +101,16 @@
     "title": "Brookshire Grocery Company SOP",
     "department": "Claims",
     "category": "Customer SOP",
-    "owner": "Acosta Team",
+    "owner": "Dawn Regan",
     "version": "1.4",
     "status": "Active",
-    "updated": "2024-07-10",
+    "updated": "2026-05-04",
     "created": "2022-02-20",
+    "last_change": {
+      "description": "Added Retail Merchandising Info for Beiersdorf in Client Specific Section (467295).",
+      "date": "5/4/2026",
+      "author": "Dawn Regan"
+    },
     "views": 198,
     "description": "Claims processing and backup retrieval procedures for Brookshire Grocery Company accounts.",
     "file": "sops/Brookshire_Grocery_Company.docx",
@@ -116,11 +131,16 @@
     "title": "Delhaize Claims Processing",
     "department": "Claims",
     "category": "Customer SOP",
-    "owner": "Acosta Team",
+    "owner": "Lindsay McGinnis",
     "version": "2.0",
     "status": "Active",
-    "updated": "2024-10-05",
+    "updated": "2026-07-27",
     "created": "2021-09-01",
+    "last_change": {
+      "description": "Updated all instances of Ready to Clear with Ready to Clear – CCA.",
+      "date": "7/27/2026",
+      "author": "Lindsay McGinnis"
+    },
     "views": 334,
     "description": "Comprehensive SOP for Delhaize America deduction management and claims resolution.",
     "file": "sops/Delhaize.docx",
@@ -141,11 +161,16 @@
     "title": "Harris Teeter Supermarkets SOP",
     "department": "Claims",
     "category": "Customer SOP",
-    "owner": "Acosta Team",
+    "owner": "Michael Huml",
     "version": "2.3",
     "status": "Active",
-    "updated": "2024-08-22",
+    "updated": "2026-07-06",
     "created": "2021-04-15",
+    "last_change": {
+      "description": "Added 2026 Fee Schedule letter. (475505)",
+      "date": "7/6/2026",
+      "author": "Michael Huml"
+    },
     "views": 445,
     "description": "Deduction and claims processing procedures for Harris Teeter Supermarkets, a Kroger banner.",
     "file": "sops/Harris_Teeter_Supermarkets.docx",
@@ -166,11 +191,16 @@
     "title": "HyVee / Lomar / PDI Claims SOP",
     "department": "Claims",
     "category": "Customer SOP",
-    "owner": "Acosta Team",
+    "owner": "Michael Huml",
     "version": "1.6",
     "status": "Active",
-    "updated": "2024-06-30",
+    "updated": "2026-04-27",
     "created": "2022-01-10",
+    "last_change": {
+      "description": "Updated backup request contact for RBC invoices. (467610)",
+      "date": "4/27/2026",
+      "author": "Michael Huml"
+    },
     "views": 223,
     "description": "Claims and backup procedures for HyVee Corporate, Lomar, and Perishable Distributors of Iowa (PDI).",
     "file": "sops/HyVee_Corporate_Lomar_Perishable_Dist_of_Iowa_PDI.docx",
@@ -191,11 +221,16 @@
     "title": "Kroger / Ralphs / Vitacost Claims",
     "department": "Claims",
     "category": "Customer SOP",
-    "owner": "Acosta Team",
+    "owner": "Michael Huml",
     "version": "4.1",
     "status": "Active",
-    "updated": "2024-12-01",
+    "updated": "2026-08-03",
     "created": "2020-11-01",
+    "last_change": {
+      "description": "Eagle client-specific: Added under tolerance events to FY27 EVENTS spreadsheet. (478046)",
+      "date": "8/3/2026",
+      "author": "Michael Huml"
+    },
     "views": 892,
     "description": "Enterprise-level claims SOP for Kroger Co., Ralphs Grocery, Jake's Finer Foods, and Vitacost.com.",
     "file": "sops/Kroger_Ralphs_Grocery_Company_Jakes_Finer_Foods_Vitacostcom.docx",
@@ -216,11 +251,16 @@
     "title": "K-V-A-T Food Store (Food City) SOP",
     "department": "Claims",
     "category": "Customer SOP",
-    "owner": "Acosta Team",
+    "owner": "Dawn Regan",
     "version": "1.2",
     "status": "Active",
-    "updated": "2024-05-18",
+    "updated": "2026-06-08",
     "created": "2022-07-01",
+    "last_change": {
+      "description": "Added Customer Invoice information regarding KVAT splitting claims due to Netting Down Payments.",
+      "date": "6/8/2026",
+      "author": "Dawn Regan"
+    },
     "views": 156,
     "description": "Claims processing procedure for K-V-A-T Food Store Inc., operating as Food City.",
     "file": "sops/K_V_A_T_Food_Store_Inc.docx",
@@ -241,11 +281,16 @@
     "title": "McLane Company Claims SOP",
     "department": "Claims",
     "category": "Customer SOP",
-    "owner": "Acosta Team",
+    "owner": "Dawn Regan",
     "version": "2.5",
     "status": "Active",
-    "updated": "2024-11-01",
+    "updated": "2026-07-06",
     "created": "2021-01-15",
+    "last_change": {
+      "description": "Removed customer check requests information for Campbells in Client Specific Section (475050).",
+      "date": "7/6/2026",
+      "author": "Dawn Regan"
+    },
     "views": 378,
     "description": "Deduction management and backup retrieval procedures for McLane Company Inc., a wholesale grocery distributor.",
     "file": "sops/McLane_Company_Inc.docx",
@@ -266,11 +311,16 @@
     "title": "Mitchell Grocery Company SOP",
     "department": "Claims",
     "category": "Customer SOP",
-    "owner": "Acosta Team",
+    "owner": "Michael Huml",
     "version": "1.1",
     "status": "Active",
-    "updated": "2024-03-14",
+    "updated": "2025-04-06",
     "created": "2022-09-01",
+    "last_change": {
+      "description": "Added SAS Retail Letter. (464243)",
+      "date": "4/6/2025",
+      "author": "Michael Huml"
+    },
     "views": 134,
     "description": "Claims and backup procedures for Mitchell Grocery Company accounts.",
     "file": "sops/Mitchell_Grocery_Company.docx",
@@ -291,11 +341,16 @@
     "title": "Schnucks Markets Claims SOP",
     "department": "Claims",
     "category": "Customer SOP",
-    "owner": "Acosta Team",
+    "owner": "Dawn Regan",
     "version": "1.8",
     "status": "Active",
-    "updated": "2024-10-22",
+    "updated": "2026-06-22",
     "created": "2021-11-01",
+    "last_change": {
+      "description": "Added Client Mars Foods US and information in Client Specific Information Section (471661).",
+      "date": "6/22/2026",
+      "author": "Dawn Regan"
+    },
     "views": 267,
     "description": "Deduction and claims processing SOP for Schnucks Markets Inc., a Midwest regional grocer.",
     "file": "sops/Schnucks_Markets_Inc.docx",
@@ -316,11 +371,16 @@
     "title": "WinCo Foods Claims SOP",
     "department": "Claims",
     "category": "Customer SOP",
-    "owner": "Acosta Team",
+    "owner": "Dawn Regan",
     "version": "2.0",
     "status": "Active",
-    "updated": "2024-09-05",
+    "updated": "2026-06-22",
     "created": "2021-08-01",
+    "last_change": {
+      "description": "Updated information for Kikkoman in Client Specific Validation Information Section (472991)",
+      "date": "6/22/2026",
+      "author": "Dawn Regan"
+    },
     "views": 311,
     "description": "Claims processing and backup retrieval procedures for WinCo Foods Inc., a warehouse-style grocer.",
     "file": "sops/Winco_Foods_Inc.docx",
@@ -334,6 +394,762 @@
       { "id": "references",   "title": "References",              "content": "WinCo Vendor Guide · Acosta Western Region Policy" },
       { "id": "revisions",    "title": "Revision History",        "content": "v2.0 (2024-09-05): Full refresh to align with new vendor guide.\nv1.0 (2021-08-01): Initial release." },
       { "id": "related",      "title": "Related Documents",       "content": "Acosta Western Policy · SOP-Acosta-011 (Schnucks)" }
+    ]
+  },
+  {
+    "id": "SOP-Acosta-013",
+    "title": "Associated Food Stores (AFS) SOP",
+    "department": "Claims",
+    "category": "Customer SOP",
+    "owner": "Michael Huml",
+    "version": "1.0",
+    "status": "Active",
+    "updated": "2025-01-01",
+    "created": "2023-01-01",
+    "last_change": {
+      "description": "Initial entry added to portal.",
+      "date": "1/1/2025",
+      "author": "Michael Huml"
+    },
+    "views": 0,
+    "description": "Claims processing and backup retrieval procedures for Associated Food Stores (AFS).",
+    "file": "sops/Associated_Food_Stores_AFS.docx",
+    "tags": ["AFS", "Associated Food Stores", "cooperative", "claims"],
+    "sections": [
+      { "id": "purpose",   "title": "Purpose",          "content": "Define the end-to-end claims process for Associated Food Stores (AFS) accounts." },
+      { "id": "scope",     "title": "Scope",             "content": "All Acosta associates managing AFS accounts." },
+      { "id": "procedure", "title": "Procedure Steps",  "content": "Refer to the formal SOP document for full procedure details." },
+      { "id": "revisions", "title": "Revision History", "content": "v1.0: Initial release." },
+      { "id": "related",   "title": "Related Documents", "content": "Acosta Backup Retrieval Policy" }
+    ]
+  },
+  {
+    "id": "SOP-Acosta-014",
+    "title": "Associated Wholesale Grocers / AWG / Valu Merchandisers SOP",
+    "department": "Claims",
+    "category": "Customer SOP",
+    "owner": "Michael Huml",
+    "version": "1.0",
+    "status": "Active",
+    "updated": "2025-01-01",
+    "created": "2023-01-01",
+    "last_change": {
+      "description": "Initial entry added to portal.",
+      "date": "1/1/2025",
+      "author": "Michael Huml"
+    },
+    "views": 0,
+    "description": "Claims processing and backup retrieval procedures for Associated Wholesale Grocers (AWG) and Valu Merchandisers Company (VMC).",
+    "file": "sops/Associated_Wholesale_Grocers_AWG_Valu_Merchandisers_VMC.docx",
+    "tags": ["AWG", "Associated Wholesale Grocers", "Valu Merchandisers", "VMC", "wholesale", "claims"],
+    "sections": [
+      { "id": "purpose",   "title": "Purpose",          "content": "Define claims handling for AWG and Valu Merchandisers accounts." },
+      { "id": "scope",     "title": "Scope",             "content": "All Acosta associates managing AWG and VMC accounts." },
+      { "id": "procedure", "title": "Procedure Steps",  "content": "Refer to the formal SOP document for full procedure details." },
+      { "id": "revisions", "title": "Revision History", "content": "v1.0: Initial release." },
+      { "id": "related",   "title": "Related Documents", "content": "Acosta Backup Retrieval Policy" }
+    ]
+  },
+  {
+    "id": "SOP-Acosta-015",
+    "title": "Certco Inc. / Woodman's Janesville SOP",
+    "department": "Claims",
+    "category": "Customer SOP",
+    "owner": "Dawn Regan",
+    "version": "1.0",
+    "status": "Active",
+    "updated": "2025-01-01",
+    "created": "2023-01-01",
+    "last_change": {
+      "description": "Initial entry added to portal.",
+      "date": "1/1/2025",
+      "author": "Dawn Regan"
+    },
+    "views": 0,
+    "description": "Claims processing and backup retrieval procedures for Certco Inc. and Woodman's Janesville accounts.",
+    "file": "sops/Certco_Inc_Woodmans_Janesville.docx",
+    "tags": ["Certco", "Woodman's", "Janesville", "Midwest", "claims"],
+    "sections": [
+      { "id": "purpose",   "title": "Purpose",          "content": "Establish procedures for Certco Inc. and Woodman's Janesville deduction management." },
+      { "id": "scope",     "title": "Scope",             "content": "Acosta associates managing Certco and Woodman's accounts." },
+      { "id": "procedure", "title": "Procedure Steps",  "content": "Refer to the formal SOP document for full procedure details." },
+      { "id": "revisions", "title": "Revision History", "content": "v1.0: Initial release." },
+      { "id": "related",   "title": "Related Documents", "content": "Acosta Backup Retrieval Policy" }
+    ]
+  },
+  {
+    "id": "SOP-Acosta-016",
+    "title": "Core-Mark International SOP",
+    "department": "Claims",
+    "category": "Customer SOP",
+    "owner": "Michael Huml",
+    "version": "1.0",
+    "status": "Active",
+    "updated": "2025-01-01",
+    "created": "2023-01-01",
+    "last_change": {
+      "description": "Initial entry added to portal.",
+      "date": "1/1/2025",
+      "author": "Michael Huml"
+    },
+    "views": 0,
+    "description": "Claims processing and backup retrieval procedures for Core-Mark International accounts.",
+    "file": "sops/Core_Mark.docx",
+    "tags": ["Core-Mark", "convenience", "wholesale", "claims"],
+    "sections": [
+      { "id": "purpose",   "title": "Purpose",          "content": "Define the deduction process for Core-Mark International wholesale accounts." },
+      { "id": "scope",     "title": "Scope",             "content": "All Acosta associates managing Core-Mark accounts." },
+      { "id": "procedure", "title": "Procedure Steps",  "content": "Refer to the formal SOP document for full procedure details." },
+      { "id": "revisions", "title": "Revision History", "content": "v1.0: Initial release." },
+      { "id": "related",   "title": "Related Documents", "content": "Acosta Wholesale Policy" }
+    ]
+  },
+  {
+    "id": "SOP-Acosta-017",
+    "title": "CS / Winn-Dixie / BI-LO Holdings SOP",
+    "department": "Claims",
+    "category": "Customer SOP",
+    "owner": "Lindsay McGinnis",
+    "version": "1.0",
+    "status": "Active",
+    "updated": "2025-01-01",
+    "created": "2023-01-01",
+    "last_change": {
+      "description": "Initial entry added to portal.",
+      "date": "1/1/2025",
+      "author": "Lindsay McGinnis"
+    },
+    "views": 0,
+    "description": "Claims processing and backup retrieval procedures for Winn-Dixie and BI-LO Holdings accounts via C&S.",
+    "file": "sops/CS-Winn_Dixie-BiLo_Holdings.docx",
+    "tags": ["Winn-Dixie", "BI-LO", "C&S", "Southeast", "claims"],
+    "sections": [
+      { "id": "purpose",   "title": "Purpose",          "content": "Standardize claims processing for Winn-Dixie and BI-LO Holdings accounts." },
+      { "id": "scope",     "title": "Scope",             "content": "All Acosta associates managing Winn-Dixie and BI-LO accounts." },
+      { "id": "procedure", "title": "Procedure Steps",  "content": "Refer to the formal SOP document for full procedure details." },
+      { "id": "revisions", "title": "Revision History", "content": "v1.0: Initial release." },
+      { "id": "related",   "title": "Related Documents", "content": "Acosta Backup Retrieval Policy" }
+    ]
+  },
+  {
+    "id": "SOP-Acosta-018",
+    "title": "CS Wholesale Grocers Inc. SOP",
+    "department": "Claims",
+    "category": "Customer SOP",
+    "owner": "Lindsay McGinnis",
+    "version": "1.0",
+    "status": "Active",
+    "updated": "2025-01-01",
+    "created": "2023-01-01",
+    "last_change": {
+      "description": "Initial entry added to portal.",
+      "date": "1/1/2025",
+      "author": "Lindsay McGinnis"
+    },
+    "views": 0,
+    "description": "Claims processing and backup retrieval procedures for C&S Wholesale Grocers Inc. accounts.",
+    "file": "sops/CS_Wholesale_Grocers_Inc.docx",
+    "tags": ["C&S", "CS Wholesale", "wholesale", "distributor", "claims"],
+    "sections": [
+      { "id": "purpose",   "title": "Purpose",          "content": "Define claims handling for C&S Wholesale Grocers Inc. distribution accounts." },
+      { "id": "scope",     "title": "Scope",             "content": "All Acosta associates managing C&S Wholesale accounts." },
+      { "id": "procedure", "title": "Procedure Steps",  "content": "Refer to the formal SOP document for full procedure details." },
+      { "id": "revisions", "title": "Revision History", "content": "v1.0: Initial release." },
+      { "id": "related",   "title": "Related Documents", "content": "Acosta Backup Retrieval Policy" }
+    ]
+  },
+  {
+    "id": "SOP-Acosta-019",
+    "title": "CVS Distribution / Peoples Drug SOP",
+    "department": "Claims",
+    "category": "Customer SOP",
+    "owner": "Michael Huml",
+    "version": "1.0",
+    "status": "Active",
+    "updated": "2025-01-01",
+    "created": "2023-01-01",
+    "last_change": {
+      "description": "Initial entry added to portal.",
+      "date": "1/1/2025",
+      "author": "Michael Huml"
+    },
+    "views": 0,
+    "description": "Claims processing and backup retrieval procedures for CVS Distribution and Peoples Drug accounts.",
+    "file": "sops/CVS_Distribution_Peoples_Drug.docx",
+    "tags": ["CVS", "Peoples Drug", "pharmacy", "drug store", "claims"],
+    "sections": [
+      { "id": "purpose",   "title": "Purpose",          "content": "Define the deduction process for CVS Distribution and Peoples Drug accounts." },
+      { "id": "scope",     "title": "Scope",             "content": "All Acosta associates managing CVS and Peoples Drug accounts." },
+      { "id": "procedure", "title": "Procedure Steps",  "content": "Refer to the formal SOP document for full procedure details." },
+      { "id": "revisions", "title": "Revision History", "content": "v1.0: Initial release." },
+      { "id": "related",   "title": "Related Documents", "content": "Acosta Backup Retrieval Policy" }
+    ]
+  },
+  {
+    "id": "SOP-Acosta-020",
+    "title": "DeMoulas Supermarkets Inc. (Market Basket) SOP",
+    "department": "Claims",
+    "category": "Customer SOP",
+    "owner": "Lindsay McGinnis",
+    "version": "1.0",
+    "status": "Active",
+    "updated": "2025-01-01",
+    "created": "2023-01-01",
+    "last_change": {
+      "description": "Initial entry added to portal.",
+      "date": "1/1/2025",
+      "author": "Lindsay McGinnis"
+    },
+    "views": 0,
+    "description": "Claims processing and backup retrieval procedures for DeMoulas Supermarkets Inc. (Market Basket) accounts.",
+    "file": "sops/Demoulas_Supermarkets_Inc.docx",
+    "tags": ["DeMoulas", "Market Basket", "New England", "claims"],
+    "sections": [
+      { "id": "purpose",   "title": "Purpose",          "content": "Standardize deduction handling for DeMoulas Supermarkets (Market Basket) accounts." },
+      { "id": "scope",     "title": "Scope",             "content": "All Acosta associates managing DeMoulas accounts in New England." },
+      { "id": "procedure", "title": "Procedure Steps",  "content": "Refer to the formal SOP document for full procedure details." },
+      { "id": "revisions", "title": "Revision History", "content": "v1.0: Initial release." },
+      { "id": "related",   "title": "Related Documents", "content": "Acosta Backup Retrieval Policy" }
+    ]
+  },
+  {
+    "id": "SOP-Acosta-021",
+    "title": "Fareway Stores Inc. SOP",
+    "department": "Claims",
+    "category": "Customer SOP",
+    "owner": "Dawn Regan",
+    "version": "1.0",
+    "status": "Active",
+    "updated": "2025-01-01",
+    "created": "2023-01-01",
+    "last_change": {
+      "description": "Initial entry added to portal.",
+      "date": "1/1/2025",
+      "author": "Dawn Regan"
+    },
+    "views": 0,
+    "description": "Claims processing and backup retrieval procedures for Fareway Stores Inc. accounts.",
+    "file": "sops/Fareway_Stores_Inc.docx",
+    "tags": ["Fareway", "Iowa", "Midwest", "grocery", "claims"],
+    "sections": [
+      { "id": "purpose",   "title": "Purpose",          "content": "Establish procedures for Fareway Stores deduction management." },
+      { "id": "scope",     "title": "Scope",             "content": "All Acosta associates managing Fareway Stores accounts." },
+      { "id": "procedure", "title": "Procedure Steps",  "content": "Refer to the formal SOP document for full procedure details." },
+      { "id": "revisions", "title": "Revision History", "content": "v1.0: Initial release." },
+      { "id": "related",   "title": "Related Documents", "content": "Acosta Backup Retrieval Policy" }
+    ]
+  },
+  {
+    "id": "SOP-Acosta-022",
+    "title": "General Trading SOP",
+    "department": "Claims",
+    "category": "Customer SOP",
+    "owner": "Michael Huml",
+    "version": "1.0",
+    "status": "Active",
+    "updated": "2025-01-01",
+    "created": "2023-01-01",
+    "last_change": {
+      "description": "Initial entry added to portal.",
+      "date": "1/1/2025",
+      "author": "Michael Huml"
+    },
+    "views": 0,
+    "description": "Claims processing and backup retrieval procedures for General Trading accounts.",
+    "file": "sops/General_Trading.docx",
+    "tags": ["General Trading", "wholesale", "claims"],
+    "sections": [
+      { "id": "purpose",   "title": "Purpose",          "content": "Define the deduction process for General Trading accounts." },
+      { "id": "scope",     "title": "Scope",             "content": "All Acosta associates managing General Trading accounts." },
+      { "id": "procedure", "title": "Procedure Steps",  "content": "Refer to the formal SOP document for full procedure details." },
+      { "id": "revisions", "title": "Revision History", "content": "v1.0: Initial release." },
+      { "id": "related",   "title": "Related Documents", "content": "Acosta Backup Retrieval Policy" }
+    ]
+  },
+  {
+    "id": "SOP-Acosta-023",
+    "title": "Golub Corporation (Price Chopper / Market 32) SOP",
+    "department": "Claims",
+    "category": "Customer SOP",
+    "owner": "Lindsay McGinnis",
+    "version": "1.0",
+    "status": "Active",
+    "updated": "2025-01-01",
+    "created": "2023-01-01",
+    "last_change": {
+      "description": "Initial entry added to portal.",
+      "date": "1/1/2025",
+      "author": "Lindsay McGinnis"
+    },
+    "views": 0,
+    "description": "Claims processing and backup retrieval procedures for Golub Corporation (Price Chopper / Market 32) accounts.",
+    "file": "sops/Golub_Corporation.docx",
+    "tags": ["Golub", "Price Chopper", "Market 32", "Northeast", "claims"],
+    "sections": [
+      { "id": "purpose",   "title": "Purpose",          "content": "Standardize deduction management for Golub Corporation including Price Chopper and Market 32 banners." },
+      { "id": "scope",     "title": "Scope",             "content": "All Acosta associates managing Golub accounts in the Northeast." },
+      { "id": "procedure", "title": "Procedure Steps",  "content": "Refer to the formal SOP document for full procedure details." },
+      { "id": "revisions", "title": "Revision History", "content": "v1.0: Initial release." },
+      { "id": "related",   "title": "Related Documents", "content": "Acosta Backup Retrieval Policy" }
+    ]
+  },
+  {
+    "id": "SOP-Acosta-024",
+    "title": "H-E-B Grocery Company SOP",
+    "department": "Claims",
+    "category": "Customer SOP",
+    "owner": "Dawn Regan",
+    "version": "1.0",
+    "status": "Active",
+    "updated": "2025-01-01",
+    "created": "2023-01-01",
+    "last_change": {
+      "description": "Initial entry added to portal.",
+      "date": "1/1/2025",
+      "author": "Dawn Regan"
+    },
+    "views": 0,
+    "description": "Claims processing and backup retrieval procedures for H-E-B Grocery Company accounts.",
+    "file": "sops/H_E_Butt_Grocery_Company.docx",
+    "tags": ["H-E-B", "HEB", "Texas", "grocery", "claims"],
+    "sections": [
+      { "id": "purpose",   "title": "Purpose",          "content": "Define the claims process for H-E-B Grocery Company accounts." },
+      { "id": "scope",     "title": "Scope",             "content": "All Acosta associates managing H-E-B accounts in Texas." },
+      { "id": "procedure", "title": "Procedure Steps",  "content": "Refer to the formal SOP document for full procedure details." },
+      { "id": "revisions", "title": "Revision History", "content": "v1.0: Initial release." },
+      { "id": "related",   "title": "Related Documents", "content": "Acosta Backup Retrieval Policy" }
+    ]
+  },
+  {
+    "id": "SOP-Acosta-025",
+    "title": "Ingles Supermarkets SOP",
+    "department": "Claims",
+    "category": "Customer SOP",
+    "owner": "Dawn Regan",
+    "version": "1.0",
+    "status": "Active",
+    "updated": "2025-01-01",
+    "created": "2023-01-01",
+    "last_change": {
+      "description": "Initial entry added to portal.",
+      "date": "1/1/2025",
+      "author": "Dawn Regan"
+    },
+    "views": 0,
+    "description": "Claims processing and backup retrieval procedures for Ingles Supermarkets accounts.",
+    "file": "sops/Ingles_Supermarkets.docx",
+    "tags": ["Ingles", "Southeast", "grocery", "claims"],
+    "sections": [
+      { "id": "purpose",   "title": "Purpose",          "content": "Establish procedures for Ingles Supermarkets deduction management." },
+      { "id": "scope",     "title": "Scope",             "content": "All Acosta associates managing Ingles accounts in the Southeast." },
+      { "id": "procedure", "title": "Procedure Steps",  "content": "Refer to the formal SOP document for full procedure details." },
+      { "id": "revisions", "title": "Revision History", "content": "v1.0: Initial release." },
+      { "id": "related",   "title": "Related Documents", "content": "Acosta Backup Retrieval Policy" }
+    ]
+  },
+  {
+    "id": "SOP-Acosta-026",
+    "title": "Jetro / Restaurant Depot SOP",
+    "department": "Claims",
+    "category": "Customer SOP",
+    "owner": "Michael Huml",
+    "version": "1.0",
+    "status": "Active",
+    "updated": "2025-01-01",
+    "created": "2023-01-01",
+    "last_change": {
+      "description": "Initial entry added to portal.",
+      "date": "1/1/2025",
+      "author": "Michael Huml"
+    },
+    "views": 0,
+    "description": "Claims processing and backup retrieval procedures for Jetro Cash & Carry and Restaurant Depot accounts.",
+    "file": "sops/Jetro_Restaurant_Depot.docx",
+    "tags": ["Jetro", "Restaurant Depot", "foodservice", "wholesale", "claims"],
+    "sections": [
+      { "id": "purpose",   "title": "Purpose",          "content": "Define deduction procedures for Jetro Cash & Carry and Restaurant Depot accounts." },
+      { "id": "scope",     "title": "Scope",             "content": "All Acosta associates managing Jetro and Restaurant Depot accounts." },
+      { "id": "procedure", "title": "Procedure Steps",  "content": "Refer to the formal SOP document for full procedure details." },
+      { "id": "revisions", "title": "Revision History", "content": "v1.0: Initial release." },
+      { "id": "related",   "title": "Related Documents", "content": "Acosta Backup Retrieval Policy" }
+    ]
+  },
+  {
+    "id": "SOP-Acosta-027",
+    "title": "Merchants Distributors LLC (MDI) SOP",
+    "department": "Claims",
+    "category": "Customer SOP",
+    "owner": "Lindsay McGinnis",
+    "version": "1.0",
+    "status": "Active",
+    "updated": "2025-01-01",
+    "created": "2023-01-01",
+    "last_change": {
+      "description": "Initial entry added to portal.",
+      "date": "1/1/2025",
+      "author": "Lindsay McGinnis"
+    },
+    "views": 0,
+    "description": "Claims processing and backup retrieval procedures for Merchants Distributors LLC (MDI) accounts.",
+    "file": "sops/Merchants_Distributors_LLC.docx",
+    "tags": ["MDI", "Merchants Distributors", "wholesale", "distributor", "claims"],
+    "sections": [
+      { "id": "purpose",   "title": "Purpose",          "content": "Define the claims process for Merchants Distributors LLC wholesale accounts." },
+      { "id": "scope",     "title": "Scope",             "content": "All Acosta associates managing MDI accounts." },
+      { "id": "procedure", "title": "Procedure Steps",  "content": "Refer to the formal SOP document for full procedure details." },
+      { "id": "revisions", "title": "Revision History", "content": "v1.0: Initial release." },
+      { "id": "related",   "title": "Related Documents", "content": "Acosta Backup Retrieval Policy" }
+    ]
+  },
+  {
+    "id": "SOP-Acosta-028",
+    "title": "OK Grocery Co. / Giant Eagle SOP",
+    "department": "Claims",
+    "category": "Customer SOP",
+    "owner": "Dawn Regan",
+    "version": "1.0",
+    "status": "Active",
+    "updated": "2025-01-01",
+    "created": "2023-01-01",
+    "last_change": {
+      "description": "Initial entry added to portal.",
+      "date": "1/1/2025",
+      "author": "Dawn Regan"
+    },
+    "views": 0,
+    "description": "Claims processing and backup retrieval procedures for OK Grocery Co. and Giant Eagle accounts.",
+    "file": "sops/OK_Grocery_Co_Giant_Eagle.docx",
+    "tags": ["OK Grocery", "Giant Eagle", "Midwest", "grocery", "claims"],
+    "sections": [
+      { "id": "purpose",   "title": "Purpose",          "content": "Standardize deduction handling for OK Grocery Co. and Giant Eagle accounts." },
+      { "id": "scope",     "title": "Scope",             "content": "All Acosta associates managing OK Grocery and Giant Eagle accounts." },
+      { "id": "procedure", "title": "Procedure Steps",  "content": "Refer to the formal SOP document for full procedure details." },
+      { "id": "revisions", "title": "Revision History", "content": "v1.0: Initial release." },
+      { "id": "related",   "title": "Related Documents", "content": "Acosta Backup Retrieval Policy" }
+    ]
+  },
+  {
+    "id": "SOP-Acosta-029",
+    "title": "Publix Super Markets Inc. SOP",
+    "department": "Claims",
+    "category": "Customer SOP",
+    "owner": "Lindsay McGinnis",
+    "version": "1.0",
+    "status": "Active",
+    "updated": "2025-01-01",
+    "created": "2023-01-01",
+    "last_change": {
+      "description": "Initial entry added to portal.",
+      "date": "1/1/2025",
+      "author": "Lindsay McGinnis"
+    },
+    "views": 0,
+    "description": "Claims processing and backup retrieval procedures for Publix Super Markets Inc. accounts.",
+    "file": "sops/Publix_Super_Markets_Inc.docx",
+    "tags": ["Publix", "Southeast", "grocery", "claims"],
+    "sections": [
+      { "id": "purpose",   "title": "Purpose",          "content": "Define the claims process for Publix Super Markets accounts." },
+      { "id": "scope",     "title": "Scope",             "content": "All Acosta associates managing Publix accounts in the Southeast." },
+      { "id": "procedure", "title": "Procedure Steps",  "content": "Refer to the formal SOP document for full procedure details." },
+      { "id": "revisions", "title": "Revision History", "content": "v1.0: Initial release." },
+      { "id": "related",   "title": "Related Documents", "content": "Acosta Backup Retrieval Policy" }
+    ]
+  },
+  {
+    "id": "SOP-Acosta-030",
+    "title": "Retail Marketing Group (RMG) SOP",
+    "department": "Claims",
+    "category": "Customer SOP",
+    "owner": "Michael Huml",
+    "version": "1.0",
+    "status": "Active",
+    "updated": "2025-01-01",
+    "created": "2023-01-01",
+    "last_change": {
+      "description": "Initial entry added to portal.",
+      "date": "1/1/2025",
+      "author": "Michael Huml"
+    },
+    "views": 0,
+    "description": "Claims processing and backup retrieval procedures for Retail Marketing Group (RMG) accounts.",
+    "file": "sops/Retail_Marketing_Group.docx",
+    "tags": ["RMG", "Retail Marketing Group", "wholesale", "claims"],
+    "sections": [
+      { "id": "purpose",   "title": "Purpose",          "content": "Define deduction procedures for Retail Marketing Group accounts." },
+      { "id": "scope",     "title": "Scope",             "content": "All Acosta associates managing RMG accounts." },
+      { "id": "procedure", "title": "Procedure Steps",  "content": "Refer to the formal SOP document for full procedure details." },
+      { "id": "revisions", "title": "Revision History", "content": "v1.0: Initial release." },
+      { "id": "related",   "title": "Related Documents", "content": "Acosta Backup Retrieval Policy" }
+    ]
+  },
+  {
+    "id": "SOP-Acosta-031",
+    "title": "Save Mart / Yosemite / Food Maxx SOP",
+    "department": "Claims",
+    "category": "Customer SOP",
+    "owner": "Dawn Regan",
+    "version": "1.0",
+    "status": "Active",
+    "updated": "2025-01-01",
+    "created": "2023-01-01",
+    "last_change": {
+      "description": "Initial entry added to portal.",
+      "date": "1/1/2025",
+      "author": "Dawn Regan"
+    },
+    "views": 0,
+    "description": "Claims processing and backup retrieval procedures for Save Mart, Yosemite Farm Credit, and Food Maxx accounts.",
+    "file": "sops/Save_Mart_Yosemite_Save_Mart_Food_Maxx.docx",
+    "tags": ["Save Mart", "Yosemite", "Food Maxx", "California", "grocery", "claims"],
+    "sections": [
+      { "id": "purpose",   "title": "Purpose",          "content": "Standardize deduction handling for Save Mart, Yosemite, and Food Maxx accounts." },
+      { "id": "scope",     "title": "Scope",             "content": "All Acosta associates managing Save Mart and affiliated accounts." },
+      { "id": "procedure", "title": "Procedure Steps",  "content": "Refer to the formal SOP document for full procedure details." },
+      { "id": "revisions", "title": "Revision History", "content": "v1.0: Initial release." },
+      { "id": "related",   "title": "Related Documents", "content": "Acosta Backup Retrieval Policy" }
+    ]
+  },
+  {
+    "id": "SOP-Acosta-032",
+    "title": "Smart & Final SOP",
+    "department": "Claims",
+    "category": "Customer SOP",
+    "owner": "Dawn Regan",
+    "version": "1.0",
+    "status": "Active",
+    "updated": "2025-01-01",
+    "created": "2023-01-01",
+    "last_change": {
+      "description": "Initial entry added to portal.",
+      "date": "1/1/2025",
+      "author": "Dawn Regan"
+    },
+    "views": 0,
+    "description": "Claims processing and backup retrieval procedures for Smart & Final accounts.",
+    "file": "sops/Smart_and_Final.docx",
+    "tags": ["Smart & Final", "California", "warehouse", "grocery", "claims"],
+    "sections": [
+      { "id": "purpose",   "title": "Purpose",          "content": "Define the claims process for Smart & Final accounts." },
+      { "id": "scope",     "title": "Scope",             "content": "All Acosta associates managing Smart & Final accounts in the Western US." },
+      { "id": "procedure", "title": "Procedure Steps",  "content": "Refer to the formal SOP document for full procedure details." },
+      { "id": "revisions", "title": "Revision History", "content": "v1.0: Initial release." },
+      { "id": "related",   "title": "Related Documents", "content": "Acosta Backup Retrieval Policy" }
+    ]
+  },
+  {
+    "id": "SOP-Acosta-033",
+    "title": "Spartan Stores Inc. / Nash Finch SOP",
+    "department": "Claims",
+    "category": "Customer SOP",
+    "owner": "Dawn Regan",
+    "version": "1.0",
+    "status": "Active",
+    "updated": "2025-01-01",
+    "created": "2023-01-01",
+    "last_change": {
+      "description": "Initial entry added to portal.",
+      "date": "1/1/2025",
+      "author": "Dawn Regan"
+    },
+    "views": 0,
+    "description": "Claims processing and backup retrieval procedures for Spartan Stores Inc. and Nash Finch accounts.",
+    "file": "sops/Spartan_Stores_Inc_Nash_Finch.docx",
+    "tags": ["Spartan Stores", "Nash Finch", "Midwest", "wholesale", "claims"],
+    "sections": [
+      { "id": "purpose",   "title": "Purpose",          "content": "Establish procedures for Spartan Stores and Nash Finch deduction management." },
+      { "id": "scope",     "title": "Scope",             "content": "All Acosta associates managing Spartan and Nash Finch accounts." },
+      { "id": "procedure", "title": "Procedure Steps",  "content": "Refer to the formal SOP document for full procedure details." },
+      { "id": "revisions", "title": "Revision History", "content": "v1.0: Initial release." },
+      { "id": "related",   "title": "Related Documents", "content": "Acosta Backup Retrieval Policy" }
+    ]
+  },
+  {
+    "id": "SOP-Acosta-034",
+    "title": "Stater Bros. Markets SOP",
+    "department": "Claims",
+    "category": "Customer SOP",
+    "owner": "Dawn Regan",
+    "version": "1.0",
+    "status": "Active",
+    "updated": "2025-01-01",
+    "created": "2023-01-01",
+    "last_change": {
+      "description": "Initial entry added to portal.",
+      "date": "1/1/2025",
+      "author": "Dawn Regan"
+    },
+    "views": 0,
+    "description": "Claims processing and backup retrieval procedures for Stater Bros. Markets accounts.",
+    "file": "sops/Stater_Bros.doc",
+    "tags": ["Stater Bros", "California", "grocery", "claims"],
+    "sections": [
+      { "id": "purpose",   "title": "Purpose",          "content": "Define the claims process for Stater Bros. Markets accounts." },
+      { "id": "scope",     "title": "Scope",             "content": "All Acosta associates managing Stater Bros. accounts in Southern California." },
+      { "id": "procedure", "title": "Procedure Steps",  "content": "Refer to the formal SOP document for full procedure details." },
+      { "id": "revisions", "title": "Revision History", "content": "v1.0: Initial release." },
+      { "id": "related",   "title": "Related Documents", "content": "Acosta Backup Retrieval Policy" }
+    ]
+  },
+  {
+    "id": "SOP-Acosta-035",
+    "title": "Tops Markets SOP",
+    "department": "Claims",
+    "category": "Customer SOP",
+    "owner": "Lindsay McGinnis",
+    "version": "1.0",
+    "status": "Active",
+    "updated": "2025-01-01",
+    "created": "2023-01-01",
+    "last_change": {
+      "description": "Initial entry added to portal.",
+      "date": "1/1/2025",
+      "author": "Lindsay McGinnis"
+    },
+    "views": 0,
+    "description": "Claims processing and backup retrieval procedures for Tops Markets LLC accounts.",
+    "file": "sops/Tops_Markets.docx",
+    "tags": ["Tops Markets", "Northeast", "grocery", "claims"],
+    "sections": [
+      { "id": "purpose",   "title": "Purpose",          "content": "Standardize deduction handling for Tops Markets accounts in the Northeast." },
+      { "id": "scope",     "title": "Scope",             "content": "All Acosta associates managing Tops Markets accounts." },
+      { "id": "procedure", "title": "Procedure Steps",  "content": "Refer to the formal SOP document for full procedure details." },
+      { "id": "revisions", "title": "Revision History", "content": "v1.0: Initial release." },
+      { "id": "related",   "title": "Related Documents", "content": "Acosta Backup Retrieval Policy" }
+    ]
+  },
+  {
+    "id": "SOP-Acosta-036",
+    "title": "UNFI Conventional SOP",
+    "department": "Claims",
+    "category": "Customer SOP",
+    "owner": "Michael Huml",
+    "version": "1.0",
+    "status": "Active",
+    "updated": "2025-01-01",
+    "created": "2023-01-01",
+    "last_change": {
+      "description": "Initial entry added to portal.",
+      "date": "1/1/2025",
+      "author": "Michael Huml"
+    },
+    "views": 0,
+    "description": "Claims processing and backup retrieval procedures for UNFI Conventional (conventional grocery) accounts.",
+    "file": "sops/UNFI_Conventional.docx",
+    "tags": ["UNFI", "United Natural Foods", "conventional", "wholesale", "distributor", "claims"],
+    "sections": [
+      { "id": "purpose",   "title": "Purpose",          "content": "Define deduction procedures for UNFI Conventional wholesale distribution accounts." },
+      { "id": "scope",     "title": "Scope",             "content": "All Acosta associates managing UNFI Conventional accounts." },
+      { "id": "procedure", "title": "Procedure Steps",  "content": "Refer to the formal SOP document for full procedure details." },
+      { "id": "revisions", "title": "Revision History", "content": "v1.0: Initial release." },
+      { "id": "related",   "title": "Related Documents", "content": "Acosta Backup Retrieval Policy" }
+    ]
+  },
+  {
+    "id": "SOP-Acosta-037",
+    "title": "United Natural Foods West (UNFI) Accounts Payable SOP",
+    "department": "Claims",
+    "category": "Customer SOP",
+    "owner": "Michael Huml",
+    "version": "1.0",
+    "status": "Active",
+    "updated": "2025-01-01",
+    "created": "2023-01-01",
+    "last_change": {
+      "description": "Initial entry added to portal.",
+      "date": "1/1/2025",
+      "author": "Michael Huml"
+    },
+    "views": 0,
+    "description": "Claims processing and backup retrieval procedures for United Natural Foods West (UNFI West) accounts payable.",
+    "file": "sops/United_Natural_Foods_West_UNFI_Accounts_Payable.docx",
+    "tags": ["UNFI", "UNFI West", "United Natural Foods", "natural", "organic", "wholesale", "claims"],
+    "sections": [
+      { "id": "purpose",   "title": "Purpose",          "content": "Define deduction and AP procedures for United Natural Foods West accounts." },
+      { "id": "scope",     "title": "Scope",             "content": "All Acosta associates managing UNFI West accounts." },
+      { "id": "procedure", "title": "Procedure Steps",  "content": "Refer to the formal SOP document for full procedure details." },
+      { "id": "revisions", "title": "Revision History", "content": "v1.0: Initial release." },
+      { "id": "related",   "title": "Related Documents", "content": "SOP-Acosta-036 (UNFI Conventional) · Acosta Backup Retrieval Policy" }
+    ]
+  },
+  {
+    "id": "SOP-Acosta-038",
+    "title": "URM Stores / Spokane SOP",
+    "department": "Claims",
+    "category": "Customer SOP",
+    "owner": "Dawn Regan",
+    "version": "1.0",
+    "status": "Active",
+    "updated": "2025-01-01",
+    "created": "2023-01-01",
+    "last_change": {
+      "description": "Initial entry added to portal.",
+      "date": "1/1/2025",
+      "author": "Dawn Regan"
+    },
+    "views": 0,
+    "description": "Claims processing and backup retrieval procedures for URM Stores (Spokane) accounts.",
+    "file": "sops/URM_Spokane.docx",
+    "tags": ["URM", "Spokane", "Pacific Northwest", "wholesale", "claims"],
+    "sections": [
+      { "id": "purpose",   "title": "Purpose",          "content": "Establish deduction procedures for URM Stores Spokane distribution accounts." },
+      { "id": "scope",     "title": "Scope",             "content": "All Acosta associates managing URM Spokane accounts." },
+      { "id": "procedure", "title": "Procedure Steps",  "content": "Refer to the formal SOP document for full procedure details." },
+      { "id": "revisions", "title": "Revision History", "content": "v1.0: Initial release." },
+      { "id": "related",   "title": "Related Documents", "content": "Acosta Backup Retrieval Policy" }
+    ]
+  },
+  {
+    "id": "SOP-Acosta-039",
+    "title": "Wakefern Corporation (ShopRite) SOP",
+    "department": "Claims",
+    "category": "Customer SOP",
+    "owner": "Lindsay McGinnis",
+    "version": "1.0",
+    "status": "Active",
+    "updated": "2025-01-01",
+    "created": "2023-01-01",
+    "last_change": {
+      "description": "Initial entry added to portal.",
+      "date": "1/1/2025",
+      "author": "Lindsay McGinnis"
+    },
+    "views": 0,
+    "description": "Claims processing and backup retrieval procedures for Wakefern Corporation (ShopRite) accounts.",
+    "file": "sops/Wakefern_Corporation.docx",
+    "tags": ["Wakefern", "ShopRite", "Northeast", "cooperative", "claims"],
+    "sections": [
+      { "id": "purpose",   "title": "Purpose",          "content": "Define the claims process for Wakefern Corporation (ShopRite) cooperative accounts." },
+      { "id": "scope",     "title": "Scope",             "content": "All Acosta associates managing Wakefern and ShopRite accounts in the Northeast." },
+      { "id": "procedure", "title": "Procedure Steps",  "content": "Refer to the formal SOP document for full procedure details." },
+      { "id": "revisions", "title": "Revision History", "content": "v1.0: Initial release." },
+      { "id": "related",   "title": "Related Documents", "content": "Acosta Backup Retrieval Policy" }
+    ]
+  },
+  {
+    "id": "SOP-Acosta-040",
+    "title": "Weis Markets SOP",
+    "department": "Claims",
+    "category": "Customer SOP",
+    "owner": "Lindsay McGinnis",
+    "version": "1.0",
+    "status": "Active",
+    "updated": "2025-01-01",
+    "created": "2023-01-01",
+    "last_change": {
+      "description": "Initial entry added to portal.",
+      "date": "1/1/2025",
+      "author": "Lindsay McGinnis"
+    },
+    "views": 0,
+    "description": "Claims processing and backup retrieval procedures for Weis Markets Inc. accounts.",
+    "file": "sops/Weis_Markets.docx",
+    "tags": ["Weis Markets", "Mid-Atlantic", "grocery", "claims"],
+    "sections": [
+      { "id": "purpose",   "title": "Purpose",          "content": "Standardize deduction handling for Weis Markets accounts in the Mid-Atlantic region." },
+      { "id": "scope",     "title": "Scope",             "content": "All Acosta associates managing Weis Markets accounts." },
+      { "id": "procedure", "title": "Procedure Steps",  "content": "Refer to the formal SOP document for full procedure details." },
+      { "id": "revisions", "title": "Revision History", "content": "v1.0: Initial release." },
+      { "id": "related",   "title": "Related Documents", "content": "Acosta Backup Retrieval Policy" }
     ]
   }
 ]

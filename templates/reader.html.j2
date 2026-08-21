@@ -89,6 +89,27 @@
       </div>
     </header>
 
+    <!-- ── CURRENT VERSION HISTORY ── -->
+    {% if sop.last_change is defined %}
+    <div class="version-history-banner">
+      <div class="vh-label">CURRENT VERSION HISTORY</div>
+      <div class="vh-table">
+        <div class="vh-col vh-col-desc">
+          <div class="vh-head">UPDATE DESCRIPTION</div>
+          <div class="vh-val">{{ sop.last_change.description }}</div>
+        </div>
+        <div class="vh-col vh-col-date">
+          <div class="vh-head">DATE</div>
+          <div class="vh-val">{{ sop.last_change.date }}</div>
+        </div>
+        <div class="vh-col vh-col-author">
+          <div class="vh-head">AUTHOR</div>
+          <div class="vh-val">{{ sop.last_change.author }}</div>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
     <!-- Sections -->
     {% for section in sop.sections %}
     <section class="reader-section" id="{{ section.id }}" data-section="{{ loop.index0 }}">
