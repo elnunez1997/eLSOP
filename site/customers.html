@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>eLSOP — Customer SOP Matrix</title>
+<link rel="stylesheet" href="portal.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ── Nav ── -->
+<nav class="topnav">
+  <div class="topnav-inner">
+    <a class="brand" href="index.html">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+      </svg>
+      <span class="brand-name">eLSOP</span>
+      <span class="brand-badge">SOP</span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="library.html" class="nav-link">SOP Library</a>
+      <a href="dashboard.html" class="nav-link">Dashboard</a>
+      <a href="customers.html" class="nav-link active">Customer Matrix</a>
+      <a href="sops.html" class="nav-link">Formal SOPs</a>
+    </div>
+    <div class="nav-actions">
+      <button class="theme-toggle" onclick="toggleTheme()" title="Toggle dark mode" aria-label="Toggle dark mode">
+        <svg id="themeIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+          <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<div class="page">
+  <div class="page-title">
+    <h1>Customer SOP Matrix</h1>
+    <p>Backup retrieval &amp; claims processing reference &nbsp;·&nbsp; ACOSTA customers only</p>
+  </div>
+
+  <!-- Toolbar -->
+  <div class="toolbar">
+    <div class="search-wrap">
+      <svg class="search-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input id="searchInput" type="text" placeholder="Search customer name, signon code, or client…" oninput="filterTable()">
+    </div>
+    <select id="typeFilter" onchange="filterTable()">
+      <option value="">All Types</option>
+      <option value="direct">Direct</option>
+      <option value="wholesaler">Wholesaler / Distributor</option>
+      <option value="indirect">Indirect</option>
+      <option value="third">Third Party</option>
+    </select>
+    <select id="portalFilter" onchange="filterTable()">
+      <option value="">Any Portal Status</option>
+      <option value="yes">Portal: Yes</option>
+      <option value="no">Portal: No</option>
+    </select>
+    <select id="sopFilter" onchange="filterTable()">
+      <option value="">All Customers</option>
+      <option value="yes">Has Formal SOP</option>
+    </select>
+    <span id="countBadge" class="count-badge"></span>
+  </div>
+
+  <!-- Table -->
+  <div class="table-wrap">
+    <table id="mainTable">
+      <thead>
+        <tr>
+          <th class="col-name" onclick="sortTable(0)">Customer Name <span class="sort-arrow" data-col="0">↕</span></th>
+          <th class="col-signon">Customer Signon</th>
+          <th class="col-type" onclick="sortTable(2)">Type <span class="sort-arrow" data-col="2">↕</span></th>
+          <th class="col-claims">Claims Processing Information</th>
+          <th class="col-client">Client Specific Info</th>
+          <th class="col-linelvl" title="Is line level detail indexed on the customer's documentation?">Line Level Indexed?</th>
+          <th class="col-backup">Backup Retrieval Information</th>
+          <th class="col-portal">Portal?</th>
+          <th class="col-sop">Formal SOP</th>
+          <th class="col-updated" onclick="sortTable(9)">Updated <span class="sort-arrow" data-col="9">↕</span></th>
+        </tr>
+      </thead>
+      <tbody id="tableBody">
+        <tr><td colspan="10" style="text-align:center;padding:32px;color:#57606a;">Loading customers…</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div id="noResults" class="no-results" style="display:none;">
+    No customers match your filters. <a href="#" onclick="clearFilters();return false;">Clear filters</a>
+  </div>
+</div>
+
+<!-- Detail Drawer -->
+<div id="drawer" class="drawer" style="display:none;">
+  <div class="drawer-inner">
+    <button class="drawer-close" onclick="closeDrawer()">✕ Close</button>
+    <h2 id="drawerName"></h2>
+    <div id="drawerContent"></div>
+  </div>
+</div>
+<div id="drawerOverlay" class="drawer-overlay" style="display:none;" onclick="closeDrawer()"></div>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-brand">eLSOP Knowledge Portal</div>
+    <div class="footer-meta">ACOSTA customers only &nbsp;·&nbsp; Non-ACOSTA entries removed</div>
+    <div class="footer-made">Made with IBM Bob</div>
+  </div>
+</footer>
+
+<script>
+function toggleTheme() {
+  const html = document.documentElement;
+  const isDark = html.getAttribute('data-theme') === 'dark';
+  html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+  localStorage.setItem('theme', isDark ? 'light' : 'dark');
+}
+(function() {
+  const saved = localStorage.getItem('theme') || 'light';
+  document.documentElement.setAttribute('data-theme', saved);
+})();
+</script>
+<script src="customers.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
