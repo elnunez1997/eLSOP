@@ -35,11 +35,30 @@ function Get-DocxSections($path) {
             $currentHeading = $text.Trim()
             $currentLines   = [System.Collections.Generic.List[string]]::new()
         } elseif ($null -ne $currentHeading -and $text.Trim()) {
-            $currentLines.Add($text.Trim())
+            $t = $text.Trim()
+            # Intra-paragraph dedup: DOCX image annotations sometimes repeat the full
+            # text twice within one <w:p> run. Only check even-length strings.
+            if ($t.Length -gt 40 -and $t.Length % 2 -eq 0) {
+                $half = $t.Length / 2
+                if ($t.Substring(0, $half) -eq $t.Substring($half, $half)) {
+                    $t = $t.Substring(0, $half)
+                }
+            }
+            # Skip exact duplicate of the immediately preceding paragraph
+            if ($currentLines.Count -eq 0 -or $currentLines[$currentLines.Count - 1] -ne $t) {
+                $currentLines.Add($t)
+            }
         }
     }
     if ($null -ne $currentHeading) {
-        $sections.Add(@{ heading = $currentHeading; content = ($currentLines -join "`n") })
+        # Final dedup pass: remove any line that is an exact duplicate of the previous
+        $deduped = [System.Collections.Generic.List[string]]::new()
+        $prev = $null
+        foreach ($line in $currentLines) {
+            if ($line -ne $prev) { $deduped.Add($line) }
+            $prev = $line
+        }
+        $sections.Add(@{ heading = $currentHeading; content = ($deduped -join "`n") })
     }
     return $sections
 }

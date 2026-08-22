@@ -665,6 +665,54 @@ button { font-family: var(--font); cursor: pointer; }
   line-height: 1.7;
 }
 
+/* Version History Banner */
+.version-history-banner {
+  margin: 0 0 16px 0;
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--accent);
+  border-radius: var(--radius-sm);
+  background: var(--surface2);
+  overflow: hidden;
+}
+.vh-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  text-transform: uppercase;
+  padding: 8px 16px 4px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+.vh-table {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+}
+.vh-col {
+  padding: 10px 16px;
+  border-right: 1px solid var(--border);
+  min-width: 140px;
+  flex: 1;
+}
+.vh-col:last-child { border-right: none; }
+.vh-col-desc { flex: 3; }
+.vh-col-date { flex: 1; }
+.vh-col-author { flex: 1.5; }
+.vh-head {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+.vh-val {
+  font-size: 13px;
+  color: var(--text);
+  line-height: 1.5;
+}
+
 /* Comments */
 .comments-area { padding: 20px 24px; }
 .comments-list { margin-bottom: 20px; }
