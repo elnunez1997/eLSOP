@@ -920,3 +920,19 @@ canvas { display: block; width: 100%; padding: 0 16px 0; }
   .kpi-grid { grid-template-columns: 1fr; }
   .brand-name { display: none; }
 }
+.card-dl-btn {
+  font-size: 11px;
+  font-weight: 600;
+  color: #059669;
+  background: #d1fae5;
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  transition: background 0.14s;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.card-dl-btn:hover { background: #a7f3d0; text-decoration: none; }
+[data-theme="dark"] .card-dl-btn { color: #34d399; background: #052e16; }
+[data-theme="dark"] .card-dl-btn:hover { background: #064e3b; }

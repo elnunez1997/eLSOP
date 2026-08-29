@@ -512,7 +512,10 @@ function cardHTML(s) {
     '<div class="sop-card-meta"><span class="meta-dept">' + s.department + '</span><span class="meta-ver">v' + s.version + '</span>' +
     '<span class="meta-status ' + statusClass(s.status) + '">' + s.status + '</span></div>' +
     '<div class="sop-card-footer"><span class="meta-date">Updated ' + s.updated + '</span>' +
-    '<a class="card-read-btn" href="reader/' + s.id + '.html">Read \u2192</a></div></div>';
+    '<div style="display:flex;gap:6px;align-items:center">' +
+    (s.file ? '<a class="card-dl-btn" href="' + s.file + '" download title="Download DOCX"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> DOCX</a>' : '') +
+    '<a class="card-read-btn" href="reader/' + s.id + '.html">Read \u2192</a>' +
+    '</div></div></div>';
 }
 function rowHTML(s) {
   const bm = isBookmarked(s.id);
@@ -524,6 +527,7 @@ function rowHTML(s) {
     '<span class="meta-date">Updated ' + s.updated + '</span><span class="meta-views">' + s.views + ' views</span></div></div>' +
     '<div class="lib-row-actions"><button class="bookmark-btn' + (bm?' bookmarked':'') + '" data-bookmark="' + s.id + '" onclick="toggleBookmark(\'' + s.id + '\')" title="Bookmark" aria-label="Bookmark">' +
     '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button>' +
+    (s.file ? '<a class="card-dl-btn" href="' + s.file + '" download title="Download DOCX"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> DOCX</a>' : '') +
     '<a class="card-read-btn" href="reader/' + s.id + '.html">Read \u2192</a></div></div>';
 }
 function getFilters() {
@@ -776,7 +780,7 @@ $recentCardsHtml = ($recentSops | ForEach-Object {
         $changeHtml = "        <div class=`"sop-card-change`"><span class=`"change-dot`"></span><span class=`"change-desc`">$cdShort</span></div>"
     }
     $descShort = if ($sd.Length -gt 120) { $sd.Substring(0,120) + "&#x2026;" } else { $sd }
-    "      <div class=`"sop-card`">`n        <div class=`"sop-card-top`"><span class=`"sop-id-badge`">$($s.id)</span><button class=`"bookmark-btn`" data-bookmark=`"$($s.id)`" onclick=`"toggleBookmark('$($s.id)')`" title=`"Bookmark`" aria-label=`"Bookmark`"><svg width=`"14`" height=`"14`" viewBox=`"0 0 24 24`" fill=`"currentColor`" stroke=`"currentColor`" stroke-width=`"2`"><path d=`"M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z`"/></svg></button></div>`n        <h3 class=`"sop-card-title`"><a href=`"reader/$($s.id).html`">$st</a></h3>`n        <p class=`"sop-card-desc`">$descShort</p>`n$changeHtml`n        <div class=`"sop-card-meta`"><span class=`"meta-dept`">$($s.department)</span><span class=`"meta-ver`">v$($s.version)</span><span class=`"meta-status $sc`">$($s.status)</span></div>`n        <div class=`"sop-card-footer`"><span class=`"meta-date`">Updated $($s.updated) &middot; $(EH $s.owner)</span><a class=`"card-read-btn`" href=`"reader/$($s.id).html`">Read &#x2192;</a></div>`n      </div>"
+    "      <div class=`"sop-card`">`n        <div class=`"sop-card-top`"><span class=`"sop-id-badge`">$($s.id)</span><button class=`"bookmark-btn`" data-bookmark=`"$($s.id)`" onclick=`"toggleBookmark('$($s.id)')`" title=`"Bookmark`" aria-label=`"Bookmark`"><svg width=`"14`" height=`"14`" viewBox=`"0 0 24 24`" fill=`"currentColor`" stroke=`"currentColor`" stroke-width=`"2`"><path d=`"M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z`"/></svg></button></div>`n        <h3 class=`"sop-card-title`"><a href=`"reader/$($s.id).html`">$st</a></h3>`n        <p class=`"sop-card-desc`">$descShort</p>`n$changeHtml`n        <div class=`"sop-card-meta`"><span class=`"meta-dept`">$($s.department)</span><span class=`"meta-ver`">v$($s.version)</span><span class=`"meta-status $sc`">$($s.status)</span></div>`n        <div class=`"sop-card-footer`"><span class=`"meta-date`">Updated $($s.updated) &middot; $(EH $s.owner)</span><div style=`"display:flex;gap:6px;align-items:center`">$(if($s.file){"<a class=`"card-dl-btn`" href=`"$($s.file)`" download title=`"Download DOCX`"><svg width=`"13`" height=`"13`" viewBox=`"0 0 24 24`" fill=`"none`" stroke=`"currentColor`" stroke-width=`"2.5`"><path d=`"M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4`"/><polyline points=`"7 10 12 15 17 10`"/><line x1=`"12`" y1=`"15`" x2=`"12`" y2=`"3`"/></svg> DOCX</a>"})<a class=`"card-read-btn`" href=`"reader/$($s.id).html`">Read &#x2192;</a></div></div>`n      </div>"
 }) -join "`n"
 
 $homeContent = @"
@@ -855,7 +859,7 @@ function renderBookmarks() {
   section.style.display='';
   const items = SOPS_DATA.filter(s => bm.includes(s.id));
   grid.innerHTML = items.map(s =>
-    '<div class="sop-card"><div class="sop-card-top"><span class="sop-id-badge">'+s.id+'</span><button class="bookmark-btn bookmarked" data-bookmark="'+s.id+'" onclick="toggleBookmark(\''+s.id+'\');renderBookmarks()" title="Remove bookmark" aria-label="Remove bookmark"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button></div><h3 class="sop-card-title"><a href="reader/'+s.id+'.html">'+s.title+'</a></h3><p class="sop-card-desc">'+s.description.slice(0,120)+(s.description.length>120?'\u2026':'')+'</p><div class="sop-card-footer"><span class="meta-date">Updated '+s.updated+'</span><a class="card-read-btn" href="reader/'+s.id+'.html">Read \u2192</a></div></div>'
+    '<div class="sop-card"><div class="sop-card-top"><span class="sop-id-badge">'+s.id+'</span><button class="bookmark-btn bookmarked" data-bookmark="'+s.id+'" onclick="toggleBookmark(\''+s.id+'\');renderBookmarks()" title="Remove bookmark" aria-label="Remove bookmark"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button></div><h3 class="sop-card-title"><a href="reader/'+s.id+'.html">'+s.title+'</a></h3><p class="sop-card-desc">'+s.description.slice(0,120)+(s.description.length>120?'\u2026':'')+'</p><div class="sop-card-footer"><span class="meta-date">Updated '+s.updated+'</span><div style="display:flex;gap:6px;align-items:center">'+(s.file?'<a class="card-dl-btn" href="'+s.file+'" download title="Download DOCX"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> DOCX</a>':'')+' <a class="card-read-btn" href="reader/'+s.id+'.html">Read \u2192</a></div></div></div>'
   ).join('');
 }
 function clearAllBookmarks() { localStorage.removeItem('bookmarks'); renderBookmarks(); }
